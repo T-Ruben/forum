@@ -1,7 +1,4 @@
 <x-layout>
-
-    <div class="bg-slate-600/75 p-2 rounded-t-xl relative z-2">
-
         <x-header />
 
         <main class="text-gray-300">
@@ -13,6 +10,17 @@
                     <div>
                             <div class="dark:bg-blue-950">
                                 <h2 class="text-xl py-4 pl-4">Game Updates</h2>
+                            </div>
+                            <div>
+                                <ul>
+                                    @foreach ($forums as $forum)
+                                        <li class=" text-xl font-medium">
+                                            <a class="m-4 text-gray-300 hover:dark:text-blue-950/75 duration-300 hover:scale-101 inline-block"
+                                            href="/forums/{{ $forum->slug }}">
+                                            {{ $forum->title }}</a></li>
+                                        <x-divide />
+                                    @endforeach
+                                </ul>
                             </div>
                     </div>
 
@@ -27,9 +35,6 @@
             <x-footer>
                 Test
             </x-footer>
-
-    </div>
-
 
 
 </x-layout>
