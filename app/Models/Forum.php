@@ -11,6 +11,10 @@ class Forum extends Model
     /** @use HasFactory<\Database\Factories\ForumFactory> */
     use HasFactory;
 
+    public function threads() {
+        return $this->hasMany(Thread::class);
+    }
+
     protected $fillable = [
         'title',
         'slug',

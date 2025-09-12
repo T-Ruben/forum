@@ -17,6 +17,15 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+    public function threads() {
+        return $this->hasMany(Thread::class);
+    }
+
+    public function posts() {
+        return $this->hasMany(Post::class);
+    }
+
     protected $fillable = [
         'name',
         'email',
