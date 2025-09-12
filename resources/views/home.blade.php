@@ -15,7 +15,7 @@
                                 <ul>
                                     @foreach ($forums as $forum)
                                         <li class=" text-xl font-medium">
-                                            <a class="m-4 text-gray-300 hover:dark:text-blue-950/75 duration-300 hover:scale-101 inline-block"
+                                            <a class="m-4 text-lg text-gray-300 hover:dark:text-blue-950/75 duration-300 hover:scale-101 inline-block"
                                             href="/forums/{{ $forum->slug }}">
                                             {{ $forum->title }}</a></li>
                                         <x-divide />

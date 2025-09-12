@@ -9,8 +9,7 @@ Route::get('/', function () {
     return view('home', ['forums' => $forums]);
 });
 
-Route::get('/forums/{slug}', function ($slug) {
-    $forum = Forum::where('slug', $slug)->firstOrFail();
 
-    return view('forums', ['forum' => $forum]);
+Route::get('forums/{forum:slug}', function (Forum $forum) {
+    return view('forums.forums', ['forum' => $forum]);
 });
