@@ -20,11 +20,11 @@
             </style>
         @endif
     </head>
-    <body class="bg-[#FDFDFC] dark:bg-[#1e2732db] text-[#c1c1c1] flex-2 p-6 lg:p-8 items-center h-full min-h-full">
-        <main class="max-w-7xl m-auto">
-            <div class="bg-slate-600/75 p-2 rounded-t-xl relative z-2">
-                {{ $slot }}
-            </div>
-        </main>
+    <body class="bg-[#FDFDFC] dark:bg-[#1e2732db] text-[#c1c1c1] flex-2 items-center h-full min-h-full">
+            <main class="max-w-7xl m-auto p-6 lg:p-8">
+                <div class="bg-slate-600/75 p-2 rounded-t-xl relative z-2">
+                    {{ $slot }}
+                </div>
+            </main>
     </body>
 </html>
