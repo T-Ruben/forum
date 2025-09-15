@@ -20,7 +20,7 @@
             </style>
         @endif
     </head>
-    <body class="bg-[#FDFDFC] dark:bg-[#1e2732db] text-[#c1c1c1] flex-2 items-center h-full min-h-full">
+    <body class="bg-[#FDFDFC] dark:bg-[#1e2732db] bg-linear-to-b from-gray-600 to-slate-900 bg-no-repeat text-[#c1c1c1] flex-2 items-center min-h-screen">
             <main class="max-w-7xl m-auto p-6 lg:p-8">
                 <div class="bg-slate-600/75 p-2 rounded-t-xl relative z-2">
                     {{ $slot }}

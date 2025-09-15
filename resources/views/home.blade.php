@@ -7,22 +7,24 @@
 
                     <h1 class="text-2xl py-2">Game Updates Forum</h1>
 
-                    <div>
+                    <section>
+
+                    @foreach ($forumsCategory as $category)
                             <div class="dark:bg-blue-950">
-                                <h2 class="text-xl py-4 pl-4">Game Updates</h2>
+                                <h2 class="text-xl py-4 pl-4">{{ $category->title }}</h2>
                             </div>
-                            <div>
-                                <ul>
-                                    @foreach ($forums as $forum)
-                                        <li class=" text-xl font-medium">
-                                            <a class="m-4 text-lg text-gray-300 hover:dark:text-blue-950/75 duration-300 hover:scale-101 inline-block"
-                                            href="/forums/{{ $forum->slug }}">
-                                            {{ $forum->title }}</a></li>
-                                        <x-divide />
-                                    @endforeach
-                                </ul>
-                            </div>
-                    </div>
+                        <div>
+                            <ul>
+                                @foreach ($category->forums as $forum)
+                                    <li class="text-xl">
+                                        <x-link href="/forums/{{ $forum->slug }}">{{ $forum->title }}</x-link>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endforeach
+
+                    </section>
 
                 </section>
 

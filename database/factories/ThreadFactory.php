@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Forum;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,9 @@ class ThreadFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'forum_id' => Forum::all()->random()->id,
+            'user_id' => User::all()->random()->id,
+            'title' => fake()->sentence(2),
         ];
     }
 }

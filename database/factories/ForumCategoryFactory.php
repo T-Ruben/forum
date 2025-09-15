@@ -2,13 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\ForumCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Forum>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ForumCategory>
  */
-class ForumFactory extends Factory
+class ForumCategoryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +17,7 @@ class ForumFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->words(2, true),
-            'forum_category_id' => ForumCategory::all()->random()->id,
+            //
         ];
     }
 }

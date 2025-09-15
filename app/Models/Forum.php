@@ -15,6 +15,10 @@ class Forum extends Model
         return $this->hasMany(Thread::class);
     }
 
+    public function forumcategory() {
+        return $this->belongsTo(ForumCategory::class);
+    }
+
     protected $fillable = [
         'title',
         'slug',
