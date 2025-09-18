@@ -2,6 +2,7 @@
 
 use App\Models\Forum;
 use App\Models\ForumCategory;
+use App\Models\Post;
 use App\Models\Thread;
 use Illuminate\Support\Facades\Route;
 
@@ -23,5 +24,9 @@ Route::get('forums/{forum:slug}', function (Forum $forum) {
 });
 
 Route::get('threads/{thread:slug}', function (Thread $thread) {
+    $posts = $thread->load('posts.user');
+    $thread->load(['posts.user' => function($query) {
+        $query->withCount('posts');
+    }]);
     return view('threads.show', ['thread' => $thread]);
 });

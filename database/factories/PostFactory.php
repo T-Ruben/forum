@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,9 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'thread_id' => Thread::all()->random()->id,
+            'user_id' => User::all()->random()->id,
+            'content' => fake()->paragraph(),
         ];
     }
 }

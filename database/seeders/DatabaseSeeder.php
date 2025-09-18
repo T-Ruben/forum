@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Forum;
 use App\Models\ForumCategory;
+use App\Models\Post;
 use App\Models\Thread;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -33,5 +34,7 @@ class DatabaseSeeder extends Seeder
         Forum::factory(10)->create();
 
         Thread::factory(30)->create();
+
+        Post::factory(50)->create();
     }
 }

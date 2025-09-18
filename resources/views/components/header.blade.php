@@ -1,5 +1,5 @@
 
-<header >
+<header>
     <div class="dark:bg-blue-950 flex py-5 text-center items-center rounded-t-xl">
         <a href="/" class="mx-10 font-medium text-3xl"><h1>Game Updates</h1></a>
         <nav class="flex gap-2">
