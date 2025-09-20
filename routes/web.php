@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ThreadController;
 use App\Models\Forum;
 use App\Models\ForumCategory;
 use App\Models\Post;
@@ -23,10 +25,6 @@ Route::get('forums/{forum:slug}', function (Forum $forum) {
     return view('forums.show', ['forum' => $forum]);
 });
 
-Route::get('threads/{thread:slug}', function (Thread $thread) {
-    $posts = $thread->load('posts.user');
-    $thread->load(['posts.user' => function($query) {
-        $query->withCount('posts');
-    }]);
-    return view('threads.show', ['thread' => $thread]);
-});
+ Route::get('threads/{thread:slug}', [ThreadController::class, 'show']);
+
+Route::post('/posts', [PostController::class, 'store']);
