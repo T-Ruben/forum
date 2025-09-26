@@ -4,11 +4,11 @@
 
     <div class="h-full py-3 bg-gray-400/25 border-gray-400 border shadow-sm shadow-black/50 float-left text-left flex flex-col items-center justify-center w-42">
         <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black">
-            @foreach ($thread->posts as $post)
-                <img src="{{ $post->user->getProfileImageUrl() }}"
+            <img src="{{ optional($post->user)->getProfileImageUrl() ?? asset('images/default-avatar.png') }}"
                 class="w-32 h-32 object-cover"
-                alt="{{ $post->user->name }}'s profile image">
-            @endforeach
+                alt="{{ $post->user->name ?? 'Deleted user' }}'s profile image">
+
+
 
 
 
@@ -36,14 +36,17 @@
         <div class="h-full w-full">
             <x-divide />
 
-            <form action="/posts" method="POST" class="flex justify-end align-text-bottom">
+            {{--
+                REPLY HERE?
+
+                 <form action="/posts" method="POST" class="flex justify-end align-text-bottom">
                 @csrf
                 <input type="hidden" name="thread_id" value="{{ $thread->id }}">
                 <input type="hidden" name='parent_id' value="{{ $post->id ?? null  }}">
-                <button type="submit" name="replyBtn" class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                <button type="button" name="replyBtn" class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
                     Reply
                 </button>
-            </form>
+            </form> --}}
 
         </div>
     </div>

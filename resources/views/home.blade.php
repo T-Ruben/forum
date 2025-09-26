@@ -17,8 +17,10 @@
                             <ul>
                                 @foreach ($category->forums as $forum)
                                     <li class="text-xl">
-                                        <x-link href="/forums/{{ $forum->slug }}">{{ $forum->title }}</x-link>
+                                        <x-link :active="true" href="/forums/{{ $forum->slug }}">{{ $forum->title }}</x-link>
+                                        <p>{{ $forum->threads_count }}</p>
                                     </li>
+                                    <x-divide />
                                 @endforeach
                             </ul>
                         </div>

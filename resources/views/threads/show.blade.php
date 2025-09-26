@@ -16,11 +16,13 @@
         <div class="flex border border-black min-h-[200px] h-auto w-full max-w-full bg-gray-200/75">
 
         <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black m-2">
-            @foreach ($thread->posts as $post)
-                <img src="{{ $post->user->getProfileImageUrl() }}"
+            @foreach ($thread->posts as $posts)
+                <img src="{{ optional($post->user)->getProfileImageUrl() ?? asset('images/default-avatar.png') }}"
                 class="w-32 h-32 object-cover"
-                alt="{{ $post->user->name }}'s profile image">
+                alt="{{ $post->user->name ?? 'Deleted user' }}'s profile image">
             @endforeach
+
+
 
         </div>
 
@@ -30,6 +32,7 @@
                     @csrf
 
                     <input type="hidden" name="thread_id" value="{{ $thread->id }}">
+                    <input type="hidden" name="parent_id" value="{{ $post->id ?? null }}">
 
 
                     <textarea class="h-full w-full resize-none outline-0 border-1 p-1 text-black bg-gray-100" name="content" id="content" placeholder="Write your reply..."></textarea>

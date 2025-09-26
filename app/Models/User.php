@@ -17,12 +17,13 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-
-    public function threads() {
+    public function threads()
+    {
         return $this->hasMany(Thread::class);
     }
 
-    public function posts() {
+    public function posts()
+    {
         return $this->hasMany(Post::class);
     }
 
@@ -55,7 +56,11 @@ class User extends Authenticatable
         ];
     }
 
-    public function getProfileImageUrl() {
+
+
+
+    public function getProfileImageUrl()
+    {
         return $this->profile_image ? asset('storage/' . $this->profile_image) : asset('images/default-avatar.png');
     }
 }

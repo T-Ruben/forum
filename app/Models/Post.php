@@ -14,14 +14,36 @@ class Post extends Model
         'content',
         'thread_id',
         'user_id',
+        'parent_id',
     ];
 
-    public function thread() {
+    public function thread()
+    {
         return $this->belongsTo(Thread::class);
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
+
+    public function parent()
+    {
+        return $this->belongsTo(Post::class, 'parent_id');
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Post::class, 'parent_id');
+    }
+
+    public function getAuthorAttribute()
+    {
+        return $this->user ?? new User([
+            'name' => 'Deleted user',
+            'profile_image' => null,
+        ]);
+    }
+
 
 }

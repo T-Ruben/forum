@@ -1,30 +1,25 @@
 <?php
 
+use App\Http\Controllers\ForumController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ThreadController;
-use App\Models\Forum;
-use App\Models\ForumCategory;
-use App\Models\Post;
-use App\Models\Thread;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    $forums = Forum::all();
-    $forumsCategory = ForumCategory::with(['forums' => function ($query) {
-        $query->limit(5);
-    }])->get();
+// Homepage - shows forum categories
+Route::get('/', [ForumController::class, 'index']);
 
-    return view('home', [
-        'forums' => $forums,
-        'forumsCategory' => $forumsCategory,
-    ]);
-});
+// Individual forum - shows threads in that forum
+Route::get('forums/{forum:slug}', [ForumController::class, 'show']);
 
+// Individual thread - shows posts in that thread
+Route::get('threads/{thread:slug}', [ThreadController::class, 'show']);
 
-Route::get('forums/{forum:slug}', function (Forum $forum) {
-    return view('forums.show', ['forum' => $forum]);
-});
-
- Route::get('threads/{thread:slug}', [ThreadController::class, 'show']);
-
+// Create posts
 Route::post('/posts', [PostController::class, 'store']);
+
+// Auth routes
+Route::get('/register', [RegisteredUserController::class, 'create']);
+Route::post('/register', [RegisteredUserController::class, 'store']);
+Route::get('/login', [SessionController::class, 'create']);

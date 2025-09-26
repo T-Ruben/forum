@@ -15,7 +15,7 @@ class Forum extends Model
         return $this->hasMany(Thread::class);
     }
 
-    public function forumcategory() {
+    public function forumCategory() {
         return $this->belongsTo(ForumCategory::class);
     }
 
