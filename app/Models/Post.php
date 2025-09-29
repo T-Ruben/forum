@@ -37,13 +37,18 @@ class Post extends Model
         return $this->hasMany(Post::class, 'parent_id');
     }
 
+
     public function getAuthorAttribute()
     {
         return $this->user ?? new User([
-            'name' => 'Deleted user',
+            'name'          => 'Deleted User',
             'profile_image' => null,
+            'role'          => 'Former Member',
+            'email'         => null,
+            'created_at'    => now(),
         ]);
     }
+
 
 
 }

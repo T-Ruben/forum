@@ -19,6 +19,14 @@ class Forum extends Model
         return $this->belongsTo(ForumCategory::class);
     }
 
+    public function posts() {
+        return $this->hasManyThrough(Post::class, Thread::class);
+    }
+
+    public function latestThread() {
+        return $this->hasOne(Thread::class)->latestOfMany();
+    }
+
     protected $fillable = [
         'title',
         'slug',

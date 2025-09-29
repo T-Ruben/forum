@@ -11,7 +11,7 @@ class ThreadController extends Controller
         $thread->load([
             'posts.user' => function ($query) {
             $query->withCount('posts');
-        }]);
+        }])->paginate(10);
 
         return view('threads.show', ['thread' => $thread]);
     }

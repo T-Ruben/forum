@@ -8,26 +8,57 @@
                     <h1 class="text-2xl py-2">Game Updates Forum</h1>
 
                     <section>
-
-                    @foreach ($forumsCategory as $category)
-                            <div class="dark:bg-blue-950">
-                                <h2 class="text-xl py-4 pl-4">{{ $category->title }}</h2>
+                        @foreach ($forumsCategory as $category)
+                            <div class="dark:bg-blue-950 px-4 py-2">
+                                <h2 class="text-xl">{{ $category->title }}</h2>
                             </div>
-                        <div>
-                            <ul>
+                            <ul class="">
+
                                 @foreach ($category->forums as $forum)
-                                    <li class="text-xl">
-                                        <x-link :active="true" href="/forums/{{ $forum->slug }}">{{ $forum->title }}</x-link>
-                                        <p>{{ $forum->threads_count }}</p>
+
+                                    <li class="flex justify-between items-center py-1 px-4">
+
+                                        <div class="w-4/5">
+                                            <x-link :active="true" href="/forums/{{ $forum->slug }}">
+                                                {{ $forum->title }}
+                                            </x-link>
+
+                                            <div class="flex gap-2 mt-1 text-sm text-gray-300/75">
+                                                <div class="flex gap-1">
+                                                    <span>Discussions:</span>
+                                                    <span class="text-gray-200">{{ $forum->threads_count }}</span>
+                                                </div>
+                                                <div class="flex gap-1">
+                                                    <span>Messages:</span>
+                                                    <span class="text-gray-200">{{ $forum->posts_count }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="w-2/5 text-left text-sm text-gray-300/75">
+                                            <span class="text-gray-200">
+                                                <span class="float-left mr-1">Latest:</span>
+                                                <a href="/threads/{{ $forum->latestThread?->slug }}"  class="flex-grow overflow-hidden whitespace-nowrap text-ellipsis block text-white hover:underline min-w-0">
+                                                    {{ $forum->latestThread?->title ?? 'No threads yet' }}</a>
+                                            </span>
+                                            <span class="block">
+                                                <span class="text-gray-200">
+{{-- POSSIBLE PROBLEM HERE, CHECK PROPERLY AFTER CRUD. NAME MIGHT NOT BE RIGHT --}}
+                                                    {{ $forum->latestThread?->user->name }},
+                                                </span>
+                                                <span>
+                                                    {{ $forum->latestThread?->created_at->diffForHumans() ?? '' }}
+                                                </span>
+                                            </span>
+                                        </div>
                                     </li>
                                     <x-divide />
                                 @endforeach
                             </ul>
-                        </div>
-                    @endforeach
+                        @endforeach
 
                     </section>
-
                 </section>
 
                 <section class="p-2 flex bg-gray-500/75 w-2/6 rounded-t-md h-auto">

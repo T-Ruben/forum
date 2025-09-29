@@ -17,9 +17,9 @@
 
         <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black m-2">
             @foreach ($thread->posts as $posts)
-                <img src="{{ optional($post->user)->getProfileImageUrl() ?? asset('images/default-avatar.png') }}"
+                <img src="{{ optional($post->author)->getProfileImageUrl() ?? asset('images/default-avatar.png') }}"
                 class="w-32 h-32 object-cover"
-                alt="{{ $post->user->name ?? 'Deleted user' }}'s profile image">
+                alt="{{ $post->author->name ?? 'Deleted user' }}'s profile image">
             @endforeach
 
 
@@ -36,11 +36,20 @@
 
 
                     <textarea class="h-full w-full resize-none outline-0 border-1 p-1 text-black bg-gray-100" name="content" id="content" placeholder="Write your reply..."></textarea>
-
-                    <button type="submit" class="text-white dark:bg-blue-900 hover:dark:bg-blue-900/75 cursor-pointer duration-200 ml-auto block border rounded-md p-1">
-
+                    @auth
+                        <button type="submit" class="text-white dark:bg-blue-900 hover:dark:bg-blue-900/75 cursor-pointer duration-200 ml-auto block border rounded-md p-1">
                         Post Reply
-                    </button>
+                        </button>
+                    @endauth
+                    @guest
+                    <div class="flex">
+                        <a href="{{ url('login') }}" class="text-white dark:bg-blue-900 hover:dark:bg-blue-900/75
+                        cursor-pointer duration-200 ml-auto block text-center no-underline border rounded-md p-1">
+                            Post Reply (Login required)
+                        </a>
+                    </div>
+                    @endguest
+
                 </form>
                 <div class="my-auto block">
                     @error('content')
