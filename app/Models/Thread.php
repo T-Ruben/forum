@@ -23,6 +23,11 @@ class Thread extends Model
         return $this->hasMany(Post::class);
     }
 
+    public function latestPost()
+    {
+        return $this->hasOne(Post::class)->latestOfMany();
+    }
+
     protected $fillable = [
         'title',
         'slug',
@@ -36,5 +41,16 @@ class Thread extends Model
         static::creating(function ($thread) {
             $thread->slug = Str::slug($thread->title);
         });
+    }
+
+        public function getAuthorAttribute()
+    {
+        return $this->user ?? new User([
+            'name'          => 'Deleted User',
+            'profile_image' => null,
+            'role'          => 'Former Member',
+            'email'         => null,
+            'created_at'    => now(),
+        ]);
     }
 }

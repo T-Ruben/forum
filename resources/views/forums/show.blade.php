@@ -3,10 +3,18 @@
 
     <x-main>
 
-        <h2 class="text-2xl">{{ $forum->title }}</h2>
-        <x-divide />
+        <h2 class="text-2xl mb-3">{{ $forum->title }}</h2>
+
+        <div>
+            {{ $threads->links() }}
+        </div>
+
+
+        <div class="dark:bg-blue-950 w-full h-10">
+
+        </div>
         <ul class="">
-            @foreach ($forum->threads as $thread)
+            @foreach ($threads as $thread)
                     <li class="text-lg ml-2">
                         <p>
                             <span>
@@ -14,11 +22,7 @@
                             </span>
                             <span class="flex">
                                 <x-link :active="false" href="#">
-                                    @if ($thread->user)
-                                        <span class="mr-1">{{ $thread->user->name }}, </span>
-                                        @else
-                                        <span class="mr-1">User Deleted, </span>
-                                    @endif
+                                        <span class="mr-1">{{ $thread->author->name }}, </span>
                                 </x-link>
                                 <x-link :active="false" href="/threads/{{ $thread->slug }}">
                                     {{ $thread->created_at->format('M d, Y') }}
@@ -29,7 +33,9 @@
                     <x-divide />
             @endforeach
         </ul>
-
+        <div>
+            {{ $threads->links() }}
+        </div>
     </x-main>
 
     <x-footer />

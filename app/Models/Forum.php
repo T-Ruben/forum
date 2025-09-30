@@ -39,4 +39,6 @@ class Forum extends Model
             $forum->slug = Str::slug($forum->title);
         });
     }
+
+
 }

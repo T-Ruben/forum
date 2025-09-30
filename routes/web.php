@@ -17,7 +17,7 @@ Route::get('forums/{forum:slug}', [ForumController::class, 'show']);
 Route::get('threads/{thread:slug}', [ThreadController::class, 'show']);
 
 // Create posts
-Route::post('/posts', [PostController::class, 'store']);
+Route::post('/posts', [PostController::class, 'store'])->middleware('auth');
 
 // Auth routes
 Route::get('/register', [RegisteredUserController::class, 'create']);

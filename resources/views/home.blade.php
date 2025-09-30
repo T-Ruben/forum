@@ -19,7 +19,7 @@
                                     <li class="flex justify-between items-center py-1 px-4">
 
                                         <div class="w-4/5">
-                                            <x-link :active="true" href="/forums/{{ $forum->slug }}">
+                                            <x-link :active="true" href="/forums/{{ $forum->slug }}" title="{{ $forum->title }}">
                                                 {{ $forum->title }}
                                             </x-link>
 
@@ -39,16 +39,18 @@
                                         <div class="w-2/5 text-left text-sm text-gray-300/75">
                                             <span class="text-gray-200">
                                                 <span class="float-left mr-1">Latest:</span>
-                                                <a href="/threads/{{ $forum->latestThread?->slug }}"  class="flex-grow overflow-hidden whitespace-nowrap text-ellipsis block text-white hover:underline min-w-0">
+                                                <a href="/threads/{{ $forum->latestThread?->slug }}" aria-current="{{ $forum->latestThread?->title }}"
+                                                    title="{{ $forum->latestThread?->title }}"
+                                                    class="flex-grow overflow-hidden whitespace-nowrap text-ellipsis block text-white hover:underline min-w-0">
                                                     {{ $forum->latestThread?->title ?? 'No threads yet' }}</a>
                                             </span>
                                             <span class="block">
                                                 <span class="text-gray-200">
 {{-- POSSIBLE PROBLEM HERE, CHECK PROPERLY AFTER CRUD. NAME MIGHT NOT BE RIGHT --}}
-                                                    {{ $forum->latestThread?->user->name }},
+                                                    {{ $forum->latestThread?->latestPost?->user->name ?? 'No post yet'}},
                                                 </span>
                                                 <span>
-                                                    {{ $forum->latestThread?->created_at->diffForHumans() ?? '' }}
+                                                    {{ $forum->latestThread?->latestPost?->created_at->diffForHumans() ?? '' }}
                                                 </span>
                                             </span>
                                         </div>

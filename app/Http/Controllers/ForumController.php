@@ -4,23 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Forum;
 use App\Models\ForumCategory;
+use App\Models\Post;
 use Illuminate\Http\Request;
+
 
 class ForumController extends Controller
 {
-    public function show(Forum $forum) {
-        $forum->load([
-            'threads',
-            'threads.user',
-            'threads.posts'
-        ]);
+        public function show(Forum $forum) {
+        $threads = $forum->threads()
+            ->with(['user', 'posts', 'latestPost', 'latestPost.user'])
+            ->paginate(20);
 
-        return view('forums.show', ['forum' => $forum]);
+        return view('forums.show', [
+            'forum' => $forum,
+            'threads' => $threads
+        ]);
     }
 
     public function index() {
 
-        $forums = Forum::with(['latestThread', 'latestThread.user'])
+        $forums = Forum::with(['latestThread', 'latestThread.user', 'threads.latestPost', 'threads.latestPost.user'])
             ->withCount(['threads', 'posts'])
             ->get();
 
@@ -29,8 +32,9 @@ class ForumController extends Controller
 
         $forumsCategory = ForumCategory::with(['forums' => function ($query) {
             $query->limit(5)
-                ->withCount('threads', 'posts')
-                ->with('threads', 'latestThread', 'latestThread.user');
+                ->withCount(['threads', 'posts'])
+                ->with(['latestThread.latestPost', 'latestThread.latestPost.user', 'latestThread.user'
+            ]);
         }])->get();
 
         return view('home', [
