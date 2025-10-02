@@ -14,7 +14,7 @@ Route::get('/', [ForumController::class, 'index']);
 Route::get('forums/{forum:slug}', [ForumController::class, 'show']);
 
 // Individual thread - shows posts in that thread
-Route::get('threads/{thread:slug}', [ThreadController::class, 'show']);
+Route::get('threads/{thread}/{slug}', [ThreadController::class, 'show']);
 
 // Create posts
 Route::post('/posts', [PostController::class, 'store'])->middleware('auth');

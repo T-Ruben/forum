@@ -26,7 +26,7 @@
 
             </div>
             <div class="flex justify-between">
-                <p class="text-sm"><span class="text-gray-950/75">Messages: </span></p><p>{{ $post->author->posts_count }}</p>
+                <p class="text-sm"><span class="text-gray-950/75">Messages: </span></p><p>{{ optional($post->author)->posts_count ?? 0 }}</p>
             </div>
         </div>
     </div>

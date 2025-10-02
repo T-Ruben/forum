@@ -3,12 +3,13 @@
     <x-header />
 
     <x-main>
-        <div class="text-xl">
+        <div class="text-xl flex-2">
             {{ $thread->title }}
+            {{ $posts->links() }}
         </div>
         <x-divide />
         <div>
-            @foreach ($thread->posts as $post)
+            @foreach ($posts as $post)
                 <x-post :post="$post" :thread="$thread" />
             @endforeach
         </div>
@@ -16,7 +17,7 @@
         <div class="flex border border-black min-h-[200px] h-auto w-full max-w-full bg-gray-200/75">
 
         <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black m-2">
-            @foreach ($thread->posts as $posts)
+            @foreach ($posts as $post)
                 <img src="{{ optional($post->author)->getProfileImageUrl() ?? asset('images/default-avatar.png') }}"
                 class="w-32 h-32 object-cover"
                 alt="{{ $post->author->name ?? 'Deleted user' }}'s profile image">
@@ -61,6 +62,11 @@
 
 
         </div>
+
+        <div class="mt-4">
+             {{ $posts->links() }}
+        </div>
+
     </x-main>
 
     <x-footer />

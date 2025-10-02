@@ -13,6 +13,7 @@ class ForumController extends Controller
         public function show(Forum $forum) {
         $threads = $forum->threads()
             ->with(['user', 'posts', 'latestPost', 'latestPost.user'])
+            ->orderByDesc('created_at')
             ->paginate(20);
 
         return view('forums.show', [

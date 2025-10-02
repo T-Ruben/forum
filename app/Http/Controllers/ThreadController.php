@@ -9,13 +9,15 @@ class ThreadController extends Controller
 {
     public function show(Thread $thread)
     {
-        $thread->load([
-            'posts.user',
-            'latestPost.user',
-        ]);
+        $thread->load(['latestPost.user',]);
 
 
-        $posts = $thread->posts()->with('user')->paginate(20);
+        $posts = $thread->posts()
+            ->with(['user' => function ($query) {
+                $query->withCount('posts');
+            }])
+            ->orderBy('created_at', 'asc')
+            ->paginate(10);
 
         return view('threads.show', [
             'thread' => $thread,
