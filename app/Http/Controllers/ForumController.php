@@ -13,6 +13,7 @@ class ForumController extends Controller
         public function show(Forum $forum) {
         $threads = $forum->threads()
             ->with(['user', 'posts', 'latestPost', 'latestPost.user'])
+            ->withCount('posts')
             ->orderByDesc('created_at')
             ->paginate(20);
 
@@ -24,7 +25,7 @@ class ForumController extends Controller
 
     public function index() {
 
-        $forums = Forum::with(['latestThread', 'latestThread.user', 'threads.latestPost', 'threads.latestPost.user'])
+        $forums = Forum::with(['threads' ,'latestThread', 'latestThread.user', 'threads.latestPost', 'threads.latestPost.user'])
             ->withCount(['threads', 'posts'])
             ->get();
 
