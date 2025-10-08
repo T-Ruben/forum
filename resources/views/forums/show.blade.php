@@ -23,9 +23,9 @@
                     <li class="text-lg ml-2 flex items-center">
                         <div class="flex items-center w-2/3 min-w-0">
                             <div class="w-16 h-16 my-2 ml-1 mr-2">
-                                <img src="{{ $thread->author->getProfileImageUrl() }}"
+                                <img src="{{ $thread->author->profile_image_url }}"
                                     class="w-fit h-fit object-cover"
-                                    alt="{{ $thread->author->name ?? 'Deleted user' }}'s profile image">
+                                    alt="{{ $thread->author->display_name ?? 'Deleted Member' }}'s profile image">
                             </div>
                             <p class="truncate">
                                 <span>
@@ -33,7 +33,7 @@
                                 </span>
                                 <span class="flex">
                                     <x-link :active="false" href="#">
-                                            <span class="mr-1 text-gray-200">{{ $thread->author->name }}, </span>
+                                            <span class="mr-1 text-gray-200">{{ $thread->author->display_name }}, </span>
                                     </x-link>
                                     <x-link :active="false" href="/threads/{{ $thread->id }}/{{ $thread->slug }}">
                                         <span class="text-gray-300/75">{{ $thread->created_at->format('M d, Y') }}</span>
@@ -43,7 +43,7 @@
                         </div>
                         <div class="flex items-center justify-center w-1/6 text-sm">Replies: {{ $thread->posts_count ?? '0' }}</div>
                         <div class="flex flex-col justify-center items-start w-1/6 text-sm">
-                            <span class="block">{{ $thread->latestPost?->author->name }}</span>
+                            <span class="block">{{ $thread->latestPost?->author->display_name }}</span>
                             <span class="block">{{ $thread->latestPost?->created_at->diffForHumans() ?? '' }}</span>
                         </div>
 

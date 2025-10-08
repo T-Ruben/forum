@@ -23,6 +23,7 @@ public function run(): void
     $testUser = User::factory()->create([
         'name' => 'Test User',
         'email' => 'test@example.com',
+        'password' => 'testtest'
     ]);
 
     // Create categories

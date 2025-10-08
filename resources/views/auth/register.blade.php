@@ -11,7 +11,7 @@
                 <x-forms.div>
                     <label class="" for="name">Name</label>
                     <input class="outline text-black pl-1 ml-1 text-lg bg-white rounded-sm" type="text" id="name"
-                        name="name" required>
+                        name="name" placeholder="Username" required>
                 </x-forms.div>
 
                 <x-forms.form-error name="name" />
@@ -19,7 +19,7 @@
                 <x-forms.div>
                     <label class="" for="email">Email</label>
                     <input class="outline text-black pl-1 ml-1 text-lg bg-white rounded-sm" type="email"
-                        id="email" name="email" required>
+                        id="email" name="email" placeholder="game@example.com" required>
                 </x-forms.div>
 
                 <x-forms.form-error name="email" />
@@ -27,7 +27,7 @@
                 <x-forms.div>
                     <label class="" for="password">Password</label>
                     <input class="outline text-black pl-1 ml-1 text-lg bg-white rounded-sm" type="password"
-                        id="password" name="password" required>
+                        id="password" name="password" placeholder="Password" required>
                 </x-forms.div>
 
                 <x-forms.form-error name="password" />
@@ -35,16 +35,13 @@
                 <x-forms.div>
                     <label class="" for="password_confirmation">Confirm Password</label>
                     <input class="outline text-black pl-1 ml-1 text-lg bg-white rounded-sm" type="password"
-                        id="password_confirmation" name="password_confirmation" required>
+                        id="password_confirmation" name="password_confirmation" placeholder="Password" required>
                 </x-forms.div>
 
                 <x-forms.form-error name="password_confirmation" />
 
                 <div class="flex justify-center w-full">
-                    <button type="submit"
-                        class="mt-5 text-xl cursor-pointer border border-gray-400 rounded-md p-1 dark:bg-blue-950 hover:dark:bg-blue-950/80 duration-200">
-                        Register
-                    </button>
+                    <x-forms.form-button>Register</x-forms.form-button>
                 </div>
 
             </form>

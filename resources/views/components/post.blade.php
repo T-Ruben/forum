@@ -4,18 +4,15 @@
 
     <div class="h-full py-3 bg-gray-400/25 border-gray-400 border shadow-sm shadow-black/50 float-left text-left flex flex-col items-center justify-center w-42">
         <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black">
-            <img src="{{ $post->author->getProfileImageUrl() }}"
+            <img src="{{ $post->author->profile_image_url }}"
                 class="w-32 h-32 object-cover"
-                alt="{{ $post->author->name ?? 'Deleted user' }}'s profile image">
-
-
-
-
+                alt="{{ $post->author->display_name ?? 'Deleted Member' }}'s profile image"
+                data-pin-nopin="true">
 
         </div>
         <div class="flex flex-col w-full px-2">
             <div class="pt-2">
-                {{ $post->author->name }}
+                {{ $post->author->display_name }}
             </div>
             <div>
                 {{ $post->author->role }}

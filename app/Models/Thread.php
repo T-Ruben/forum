@@ -16,7 +16,7 @@ class Thread extends Model
     }
 
     public function user() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     public function posts() {
@@ -35,6 +35,7 @@ class Thread extends Model
         'user_id',
     ];
 
+
     protected static function boot() {
         parent::boot();
 
@@ -43,14 +44,18 @@ class Thread extends Model
         });
     }
 
-        public function getAuthorAttribute()
+    public function getAuthorAttribute()
     {
-        return $this->user ?? new User([
-            'name'          => 'Deleted User',
+        if ($this->user) {
+            return $this->user;
+        }
+
+        return new User([
+            'id' => $this->user_id,
+            'name'          => 'Deleted Member ' . $this->user_id,
             'profile_image' => null,
             'role'          => 'Former Member',
             'email'         => null,
-            'created_at'    => now(),
         ]);
     }
 }

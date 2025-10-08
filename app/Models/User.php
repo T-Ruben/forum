@@ -4,13 +4,43 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
+
+    protected static function booted()
+    {
+        static::deleting(function ($user) {
+            if(! $user->isForceDeleting()) {
+                $user->anonymize();
+            }
+
+            if($user->isForceDeleting() && $user->profile_image) {
+                Storage::disk('public')->delete($user->profile_image);
+            }
+
+        });
+    }
+
+    public function anonymize() {
+        if($this->profile_image) {
+            Storage::disk('public')->delete($this->profile_image);
+        }
+
+        $this->update([
+            'name' => 'Deleted Member',
+            'email' => 'deleted+' . $this->id . '@email.com',
+            'role' => 'Former Member',
+            'profile_image' => null,
+            'password' => bcrypt(str()->random(40)),
+        ]);
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -31,6 +61,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_image',
+        'role'
     ];
 
     /**
@@ -58,9 +90,16 @@ class User extends Authenticatable
 
 
 
+    public function getDisplayNameAttribute()
+    {
+        if ($this->trashed()) {
+                return 'Deleted Member ' . $this->id;
+            }
 
+        return $this->name;
+    }
 
-    public function getProfileImageUrl()
+    public function getProfileImageUrlAttribute()
     {
     return $this->profile_image
         ? asset('storage/' . $this->profile_image)

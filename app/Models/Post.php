@@ -24,7 +24,7 @@ class Post extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     public function parent()
@@ -38,10 +38,15 @@ class Post extends Model
     }
 
 
+
     public function getAuthorAttribute()
     {
-        return $this->user ?? new User([
-            'name'          => 'Deleted User',
+        if ($this->user) {
+            return $this->user;
+        }
+
+        return new User([
+            'name'          => 'Deleted Member',
             'profile_image' => null,
             'role'          => 'Former Member',
             'email'         => null,

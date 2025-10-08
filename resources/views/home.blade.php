@@ -51,7 +51,7 @@
                                         <span class="block">
                                             <span class="text-gray-200">
                                                 {{-- POSSIBLE PROBLEM HERE, CHECK PROPERLY AFTER CRUD. NAME MIGHT NOT BE RIGHT --}}
-                                                {{ $forum->latestThread?->latestPost?->author->name ?? 'No post yet' }},
+                                                {{ $forum->latestThread?->latestPost?->author->display_name ?? 'No post yet' }},
                                             </span>
                                             <span>
                                                 {{ $forum->latestThread?->latestPost?->created_at->diffForHumans() ?? '' }}

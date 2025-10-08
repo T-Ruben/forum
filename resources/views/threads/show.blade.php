@@ -18,9 +18,10 @@
 
         <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black m-2">
             @foreach ($posts as $post)
-                <img src="{{ optional($post->author)->getProfileImageUrl() ?? asset('images/default-avatar.png') }}"
+                <img src="{{ $post->author->profile_image_url }}"
                 class="w-32 h-32 object-cover"
-                alt="{{ $post->author->name ?? 'Deleted user' }}'s profile image">
+                alt="{{ $post->author->name ?? 'Deleted Member' }}'s profile image"
+                data-pin-nopin="true">
             @endforeach
 
 

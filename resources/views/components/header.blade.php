@@ -1,6 +1,6 @@
 
 <header>
-    <div class="dark:bg-blue-950 flex justify-between py-5 text-center items-center rounded-t-xl">
+    <div class="dark:bg-blue-950 flex justify-between py-5 items-center rounded-t-xl">
         <div class="flex">
             <a href="/" class="mx-10 font-medium text-3xl"><h1>Game Updates</h1></a>
             <nav class="flex gap-2 justify-start">
@@ -13,17 +13,17 @@
         <div class="flex mx-10">
             <nav class="">
             @guest
-                <x-nav-link href="/register" :active="request()->is('#')">Register</x-nav-link>
-                <x-nav-link href="/auth/login" :active="request()->is('#')">Login</x-nav-link>
+                <x-nav-link href="/register" :active="request()->is('/register')">Register</x-nav-link>
+                <x-nav-link href="/login" :active="request()->is('/login')">Login</x-nav-link>
             @endguest
 
             @auth
-                <div class="">
-                    <h3>{{ auth()->user()->name }}!</h3>
-                    <a href="#">View Profile</a>
-                </div>
+
+                <x-user-menu />
+
             @endauth
-        </nav>
+
+            </nav>
         </div>
 
 
