@@ -27,6 +27,13 @@ class Forum extends Model
         return $this->hasOne(Thread::class)->latestOfMany();
     }
 
+    public function latestActiveThread() {
+        return $this->hasOne(Thread::class)
+        ->with('latestPost')
+        ->whereHas('posts')
+        ->withMax('posts', 'created_at');
+    }
+
     protected $fillable = [
         'title',
         'slug',

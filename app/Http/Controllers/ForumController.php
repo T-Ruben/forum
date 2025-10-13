@@ -25,7 +25,8 @@ class ForumController extends Controller
 
     public function index() {
 
-        $forums = Forum::with(['threads' ,'latestThread', 'latestThread.user', 'threads.latestPost', 'threads.latestPost.user'])
+        $forums = Forum::with(['threads' ,'latestThread', 'latestThread.user', 'threads.latestPost',
+            'threads.latestPost.user'])
             ->withCount(['threads', 'posts'])
             ->get();
 
@@ -35,7 +36,7 @@ class ForumController extends Controller
         $forumsCategory = ForumCategory::with(['forums' => function ($query) {
             $query->limit(5)
                 ->withCount(['threads', 'posts'])
-                ->with(['latestThread.latestPost', 'latestThread.latestPost.user', 'latestThread.user'
+                ->with(['latestThread.latestPost', 'latestThread.latestPost.user', 'latestThread.user', 'latestActiveThread.latestPost.user'
             ]);
         }])->get();
 

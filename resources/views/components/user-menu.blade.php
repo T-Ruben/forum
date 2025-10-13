@@ -9,7 +9,7 @@
             <div class="flex">
                 <a href="/users/{{ auth()->user()->id }}">
                 <img src="{{ asset(auth()->user()->profile_image_url) }}" class="w-32 h-32 object-cover"
-                    alt="auth()->user()->name's profile image" data-pin-nopin="true">
+                    alt="{{ auth()->user()->name }}'s profile image" data-pin-nopin="true">
                 </a>
 
 

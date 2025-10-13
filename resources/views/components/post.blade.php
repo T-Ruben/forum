@@ -4,15 +4,18 @@
 
     <div class="h-full py-3 bg-gray-400/25 border-gray-400 border shadow-sm shadow-black/50 float-left text-left flex flex-col items-center justify-center w-42">
         <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black">
+            <a href="{{ route('users.show', $post->author) }}">
             <img src="{{ $post->author->profile_image_url }}"
                 class="w-32 h-32 object-cover"
                 alt="{{ $post->author->display_name ?? 'Deleted Member' }}'s profile image"
                 data-pin-nopin="true">
-
+            </a>
         </div>
         <div class="flex flex-col w-full px-2">
             <div class="pt-2">
+                <a class="hover:underline" href="{{ route('users.show', $post->author) }}">
                 {{ $post->author->display_name }}
+                </a>
             </div>
             <div>
                 {{ $post->author->role }}
@@ -28,12 +31,14 @@
         </div>
     </div>
 
-    <div class="py-2 pr-2 pl-5 w-11/13 h-full text-md wrap-break-word">
+    <div class="py-2 pr-2 pl-5 w-11/13 min-h-full text-md wrap-break-word">
         {{ $post->content }}
         <x-divide />
-        <div class="h-full w-full">
+        <div class="text-sm text-gray-700/75">
+            {{ $post->updated_at->diffForHumans() }}
+        </div>
+        {{-- <div class="">
 
-            {{--
                 REPLY HERE?
 
                  <form action="/posts" method="POST" class="flex justify-end align-text-bottom">
@@ -43,8 +48,8 @@
                 <button type="button" name="replyBtn" class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
                     Reply
                 </button>
-            </form> --}}
+            </form>
 
-        </div>
+        </div> --}}
     </div>
 </section>

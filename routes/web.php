@@ -29,4 +29,4 @@ Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth'
 
 
 // User
-Route::get('/users/{user}', [UserController::class, 'show']);
+Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');

@@ -18,14 +18,13 @@
 
         <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black m-2">
             @foreach ($posts as $post)
-                <img src="{{ $post->author->profile_image_url }}"
+            <a href="{{ route('users.show', auth()->user()->id) }}">
+                <img src="{{ asset(auth()->user()->profile_image_url) }}"
                 class="w-32 h-32 object-cover"
-                alt="{{ $post->author->name ?? 'Deleted Member' }}'s profile image"
+                alt="{{ auth()->user()->name ?? 'Deleted Member' }}'s profile image"
                 data-pin-nopin="true">
+            </a>
             @endforeach
-
-
-
         </div>
 
         <div class="flex-2 flex-col h-2/3 m-2">
