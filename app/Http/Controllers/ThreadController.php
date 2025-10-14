@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Forum;
 use App\Models\Thread;
 use Illuminate\Http\Request;
 
@@ -23,5 +24,19 @@ class ThreadController extends Controller
             'thread' => $thread,
             'posts' => $posts,
         ]);
+    }
+
+    public function create() {
+        return view('threads.create');
+    }
+
+    public function store(Request $request, Forum $forum){
+
+
+
+        // return redirect()
+        //     ->route('threads.show', [$thread->id, $thread->slug])
+        //     ->with('success', 'Thread created successfully!');
+
     }
 }

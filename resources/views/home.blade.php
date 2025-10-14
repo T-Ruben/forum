@@ -21,7 +21,7 @@
                                     </div>
 
                                     <div class="w-4/5">
-                                        <x-link :active="true" href="/forums/{{ $forum->slug }}"
+                                        <x-link :active="true" href="{{ route('forums.show', $forum->slug) }}"
                                             title="{{ $forum->title }}">
                                             {{ $forum->title }}
                                         </x-link>
@@ -42,11 +42,16 @@
                                     <div class="w-2/5 text-left text-sm text-gray-300/75 md:block hidden">
                                         <span class="text-gray-200">
                                             <span class="float-left mr-1">Latest:</span>
-                                            <a href="/threads/{{ $forum->latestActiveThread?->id }}/{{ $forum->latestActiveThread?->slug }}"
+                                            @if ($forum->latestActiveThread?->id)
+                                                <a href="{{ route('threads.show', [$forum->latestActiveThread->id, $forum->latestActiveThread->slug]) }}"
                                                 aria-current="{{ $forum->latestActiveThread?->title }}"
                                                 title="{{ $forum->latestActiveThread?->title }}"
                                                 class="flex-grow truncate block text-white hover:underline min-w-0">
-                                                {{ $forum->latestActiveThread?->title ?? 'No activity yet' }}</a>
+                                                {{ $forum->latestActiveThread?->title }}</a>
+                                                @else
+                                                 <span>No activity yet</span>
+                                            @endif
+
                                         </span>
                                         <span class="block">
                                             <span class="text-gray-200">

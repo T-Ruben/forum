@@ -6,7 +6,7 @@
         <div class="bg-gray-500/80 mx-auto border px-10 py-5 rounded-md border-gray-200/25 flex-2 justify-items-center">
             <h1 class="text-2xl pb-3">Login</h1>
 
-            <form action="/login" method="POST" class="flex-2 justify-items-end">
+            <form action="{{ route('login.store') }}" method="POST" class="flex-2 justify-items-end">
                 @csrf
                 <x-forms.div>
                     <label class="" for="login">Name</label>

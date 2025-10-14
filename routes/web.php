@@ -8,25 +8,56 @@ use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// Homepage - shows forum categories
-Route::get('/', [ForumController::class, 'index']);
+// Homepage
+Route::get('/', [ForumController::class, 'index'])
+    ->name('home');
 
-// Individual forum - shows threads in that forum
-Route::get('forums/{forum:slug}', [ForumController::class, 'show']);
 
-// Individual thread - shows posts in that thread
-Route::get('threads/{thread}/{slug}', [ThreadController::class, 'show']);
+// Forums
+Route::get('forums/{forum:slug}', [ForumController::class, 'show'])
+    ->name('forums.show');
 
-// Create posts
-Route::post('/posts', [PostController::class, 'store'])->middleware('auth');
+
+// Threads
+Route::get('threads/{thread}/{slug}', [ThreadController::class, 'show'])
+    ->name('threads.show');
+
+Route::get('forums/{forum:slug}/create', [ThreadController::class, 'create'])
+    ->middleware('auth')
+    ->name('threads.create');
+
+Route::post('forums/{forum:slug}/threads', [ThreadController::class, 'store'])
+    ->middleware('auth')
+    ->name('threads.store');
+
+
+// Posts
+Route::post('/posts', [PostController::class, 'store'])
+    ->middleware('auth')
+    ->name('posts.store');
+
 
 // Auth routes
-Route::get('/register', [RegisteredUserController::class, 'create'])->middleware('guest');
-Route::post('/register', [RegisteredUserController::class, 'store']);
-Route::get('/login', [SessionController::class, 'create'])->middleware('guest');
-Route::post('/login', [SessionController::class, 'store']);
-Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth');
+Route::get('/register', [RegisteredUserController::class, 'create'])
+    ->middleware('guest')
+    ->name('register');
+
+Route::post('/register', [RegisteredUserController::class, 'store'])
+    ->name('register.store');
+
+Route::get('/login', [SessionController::class, 'create'])
+    ->middleware('guest')
+    ->name('login');
+
+Route::post('/login', [SessionController::class, 'store'])
+    ->name('login.store');
+
+Route::post('/logout', [SessionController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout.destroy');
+
 
 
 // User
-Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+Route::get('/users/{user}', [UserController::class, 'show'])
+    ->name('users.show');
