@@ -10,7 +10,7 @@ class PostController extends Controller
 {
     public function store(Request $request) {
         $validated = $request->validate([
-            'content' => ['required', 'min:1', 'max:4000'],
+            'content' => ['required', 'string', 'min:1', 'max:4000'],
             'thread_id' => 'required|exists:threads,id',
         ]);
 

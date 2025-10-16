@@ -38,12 +38,12 @@
                                     alt="{{ $thread->author->display_name ?? 'Deleted Member' }}'s profile image">
                                 </a>
                             </div>
-                            <p class="truncate">
-                                <span>
+                            <div class="min-w-0 flex flex-col w-full truncate">
+                                <div class="t">
                                     <x-link :active="true" href="{{ route('threads.show', [$thread->id, $thread->slug]) }}">
                                         {{ $thread->title }}
                                     </x-link>
-                                </span>
+                                </div>
                                 <span class="flex">
                                     <x-link :active="false" href="{{ route('users.show', $thread->author) }}">
                                             <span class="mr-1 text-gray-200">{{ $thread->author->display_name }}, </span>
@@ -52,15 +52,17 @@
                                         <span class="text-gray-300/75">{{ $thread->created_at->format('M d, Y') }}</span>
                                     </x-link>
                                 </span>
-                            </p>
+                            </div>
                         </div>
                         <div class="flex items-center justify-center w-1/6 text-sm">Replies: {{ $thread->posts_count ?? '0' }}</div>
                         <div class="flex flex-col justify-center items-start w-1/6 text-sm">
                             @if ($thread->latestPost?->author)
                                 <a href="{{ route('users.show', $thread->latestPost->author) }}">
-                                    <span class="block">{{ $thread->latestPost->author->display_name }}</span>
+                                    <span class="block hover:underline">{{ $thread->latestPost->author->display_name }}</span>
                                 </a>
-                                <span class="block">{{ $thread->latestPost?->created_at->diffForHumans() ?? 'No Activity' }}</span>
+
+                                <x-time-display :time="$thread->latestPost?->created_at" />
+
                             @else
                                 <span class="block">No Activity</span>
                             @endif
@@ -78,3 +80,5 @@
     <x-footer />
 
 </x-layout>
+
+

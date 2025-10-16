@@ -1,1 +1,55 @@
 import './bootstrap';
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.post-time').forEach(el => {
+        const time = el.dataset.time;
+
+        if (!time) return;
+
+        const date = new Date(time);
+
+            el.textContent = getRelativeTime(date);
+
+});
+
+function getRelativeTime(date) {
+    const now = new Date();
+    const diffMs = now - date;
+    const diffSecs = Math.floor(diffMs / 1000);
+    const diffMins = Math.floor(diffSecs / 60);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    const timeString = date.toLocaleTimeString(undefined, {
+        hour: 'numeric',
+        minute: '2-digit'
+    });
+
+    const isToday = now.toDateString() === date.toDateString();
+
+    const yesterday = new Date(now);
+    yesterday.setDate(now.getDate() - 1);
+    const isYesterday = yesterday.toDateString() === date.toDateString();
+
+    if (diffSecs < 10) return 'A moment ago';
+    if (diffSecs < 60) return 'A few seconds ago';
+    if (diffMins < 60) return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
+    if (isToday) {
+        return `Today at ${timeString}`;
+    };
+
+    if (isYesterday) {
+        return `Yesterday at ${timeString}`;
+    }
+
+    if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) !== 1 ? 's' : ''} ago`;
+
+    return date.toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+     });
+}
+});

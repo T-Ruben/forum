@@ -34,8 +34,13 @@
     <div class="py-2 pr-2 pl-5 w-11/13 min-h-full text-md wrap-break-word">
         {{ $post->content }}
         <x-divide />
-        <div class="text-sm text-gray-700/75">
-            {{ $post->updated_at->diffForHumans() }}
+        <div>
+        <span class="text-sm text-gray-700/75">
+            <x-user-link :user="$post->author" />
+        </span>
+        <span class="text-sm text-gray-700/75">
+            <x-time-display :time="$post->updated_at" />
+        </span>
         </div>
         {{-- <div class="">
 

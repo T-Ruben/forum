@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Forum;
 use App\Models\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ThreadController extends Controller
 {
@@ -26,17 +27,30 @@ class ThreadController extends Controller
         ]);
     }
 
-    public function create() {
-        return view('threads.create');
+    public function create(Forum $forum) {
+        return view('threads.create', ['forum' => $forum]);
     }
 
     public function store(Request $request, Forum $forum){
 
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'min:4', 'max:100'],
+            'content' => ['required', 'string', 'min:1', 'max:4000']
+        ]);
 
+        $thread = $forum->threads()->create([
+            'title' => $validated['title'],
+            'user_id' => Auth::user()->id,
+        ]);
 
-        // return redirect()
-        //     ->route('threads.show', [$thread->id, $thread->slug])
-        //     ->with('success', 'Thread created successfully!');
+        $thread->posts()->create([
+            'user_id' => Auth::user()->id,
+            'content' => $validated['content']
+        ]);
+
+        return redirect()
+            ->route('threads.show', [$thread->id, $thread->slug])
+            ->with('success', 'Thread created successfully!');
 
     }
 }

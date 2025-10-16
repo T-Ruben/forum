@@ -20,8 +20,8 @@
                         id="password" name="password" placeholder="Password" required>
                 </x-forms.div>
 
-                <x-forms.form-error name="password" />
-                <x-forms.form-error name="login" />
+                <x-forms.form-error error="password" />
+                <x-forms.form-error error="login" />
 
                 <div class="flex justify-center mt-4 w-full h-full select-none">
                     <input class="cursor-pointer" type="checkbox" name="remember" id="remember">

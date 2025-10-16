@@ -14,7 +14,7 @@
                         name="name" placeholder="Username" required>
                 </x-forms.div>
 
-                <x-forms.form-error name="name" />
+                <x-forms.form-error error="name" />
 
                 <x-forms.div>
                     <label class="" for="email">Email</label>
@@ -22,7 +22,7 @@
                         id="email" name="email" placeholder="game@example.com" required>
                 </x-forms.div>
 
-                <x-forms.form-error name="email" />
+                <x-forms.form-error error="email" />
 
                 <x-forms.div>
                     <label class="" for="password">Password</label>
@@ -30,7 +30,7 @@
                         id="password" name="password" placeholder="Password" required>
                 </x-forms.div>
 
-                <x-forms.form-error name="password" />
+                <x-forms.form-error error="password" />
 
                 <x-forms.div>
                     <label class="" for="password_confirmation">Confirm Password</label>
@@ -38,7 +38,7 @@
                         id="password_confirmation" name="password_confirmation" placeholder="Password" required>
                 </x-forms.div>
 
-                <x-forms.form-error name="password_confirmation" />
+                <x-forms.form-error error="password_confirmation" />
 
                 <div class="flex justify-center w-full">
                     <x-forms.form-button>Register</x-forms.form-button>

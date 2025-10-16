@@ -39,28 +39,29 @@
                                     </div>
 
 
-                                    <div class="w-2/5 text-left text-sm text-gray-300/75 md:block hidden">
+                                    <div class="w-2/5 text-left truncate text-sm text-gray-300/75 md:block hidden">
                                         <span class="text-gray-200">
                                             <span class="float-left mr-1">Latest:</span>
-                                            @if ($forum->latestActiveThread?->id)
-                                                <a href="{{ route('threads.show', [$forum->latestActiveThread->id, $forum->latestActiveThread->slug]) }}"
-                                                aria-current="{{ $forum->latestActiveThread?->title }}"
-                                                title="{{ $forum->latestActiveThread?->title }}"
+                                            @if ($forum->latestThread?->id)
+                                                <a href="{{ route('threads.show', [$forum->latestThread->id, $forum->latestThread->slug]) }}"
+                                                aria-current="{{ $forum->latestThread?->title }}"
+                                                title="{{ $forum->latestThread?->title }}"
                                                 class="flex-grow truncate block text-white hover:underline min-w-0">
-                                                {{ $forum->latestActiveThread?->title }}</a>
+                                                {{ $forum->latestThread?->title }}</a>
                                                 @else
-                                                 <span>No activity yet</span>
+                                                 <span class="text-gray-400 italic">No activity yet</span>
                                             @endif
 
                                         </span>
                                         <span class="block">
                                             <span class="text-gray-200">
-                                                {{-- POSSIBLE PROBLEM HERE, CHECK PROPERLY AFTER CRUD. NAME MIGHT NOT BE RIGHT --}}
                                                 <x-user-link :user="$forum->latestThread?->latestPost?->author" />
                                             </span>
-                                            <span>
-                                                {{ $forum->latestActiveThread?->latestPost?->created_at->diffForHumans() ?? '' }}
-                                            </span>
+                                            {{-- <span class="post-time" data-time="{{ $forum->latestThread?->latestPost->updated_at->toIso8601String() }}">
+                                                {{ $forum->latestThread?->latestPost?->created_at->diffForHumans() ?? '' }}
+                                                at {{ $forum->latestThread?->latestPost?->created_at->format('H:i A') }}
+                                            </span> --}}
+                                                <x-time-display :time="$forum->latestThread?->latestPost->updated_at"/>
                                         </span>
                                     </div>
                                 </li>
