@@ -90,6 +90,7 @@ class User extends Authenticatable
 
 
 
+
     public function getDisplayNameAttribute()
     {
         if ($this->trashed()) {

@@ -16,7 +16,7 @@
 
         <div class="flex border border-black min-h-[200px] h-auto w-full max-w-full bg-gray-200/75">
 
-            <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black m-2">
+            <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black m-2 text-black">
                 @foreach ($posts as $post)
                     @auth
                         <a href="{{ route('users.show', auth()->user()->id) }}">

@@ -31,10 +31,10 @@
             @foreach ($threads as $thread)
                     <li class="text-lg ml-2 flex items-center">
                         <div class="flex items-center w-2/3 min-w-0">
-                            <div class="w-16 h-16 my-2 ml-1 mr-2">
+                            <div class="w-16 h-16 my-2 ml-1 mr-2 border shadow-xs shadow-black text-black">
                                 <a href="{{ route('users.show', $thread->author) }}">
                                 <img src="{{ $thread->author->profile_image_url }}"
-                                    class="w-fit h-fit object-cover"
+                                    class="w-16 h-16 object-cover"
                                     alt="{{ $thread->author->display_name ?? 'Deleted Member' }}'s profile image">
                                 </a>
                             </div>

@@ -3,7 +3,7 @@
 <section class="my-2 border p-2 flex bg-gray-200/75 text-black">
 
     <div class="h-full py-3 bg-gray-400/25 border-gray-400 border shadow-sm shadow-black/50 float-left text-left flex flex-col items-center justify-center w-42">
-        <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black">
+        <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black text-black">
             <a href="{{ route('users.show', $post->author) }}">
             <img src="{{ $post->author->profile_image_url }}"
                 class="w-32 h-32 object-cover"
@@ -12,21 +12,21 @@
             </a>
         </div>
         <div class="flex flex-col w-full px-2">
-            <div class="pt-2">
+            <div class="pt-2 font-bold">
                 <a class="hover:underline" href="{{ route('users.show', $post->author) }}">
                 {{ $post->author->display_name }}
                 </a>
             </div>
-            <div>
+            <div class="text-sm">
                 {{ $post->author->role }}
             </div>
             <x-divide />
             <div class="flex justify-between">
-                <p class="text-sm"><span class="text-gray-950/75">Joined: </span></p><p>{{ $post->author->created_at?->format('M d, Y') }}</p>
+                <p class="text-sm"><span class="text-gray-950/75">Joined: </span></p><p class="text-sm">{{ $post->author->created_at?->format('M d, Y') }}</p>
 
             </div>
             <div class="flex justify-between">
-                <p class="text-sm"><span class="text-gray-950/75">Messages: </span></p><p>{{ optional($post->author)->posts_count ?? 0 }}</p>
+                <p class="text-sm"><span class="text-gray-950/75">Messages: </span></p><p class="text-sm">{{ optional($post->author)->posts_count ?? 0 }}</p>
             </div>
         </div>
     </div>
