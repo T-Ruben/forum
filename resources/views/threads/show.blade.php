@@ -36,7 +36,7 @@
 
             <div class="flex-2 flex-col h-2/3 m-2">
 
-                <form action="{{ route('posts.store') }}" method="POST" class="h-full">
+                <form action="{{ route('posts.store') }}" method="POST" class="formReload h-full">
                     @csrf
 
                     <input type="hidden" name="thread_id" value="{{ $thread->id }}">

@@ -8,37 +8,12 @@
 
             <form action="{{ route('register.store') }}" method="POST" class="flex-2 justify-items-end">
                 @csrf
-                <x-forms.div>
-                    <label class="" for="name">Name</label>
-                    <input class="outline text-black pl-1 ml-1 text-lg bg-white rounded-sm" type="text" id="name"
-                        name="name" placeholder="Username" required>
-                </x-forms.div>
 
-                <x-forms.form-error error="name" />
-
-                <x-forms.div>
-                    <label class="" for="email">Email</label>
-                    <input class="outline text-black pl-1 ml-1 text-lg bg-white rounded-sm" type="email"
-                        id="email" name="email" placeholder="game@example.com" required>
-                </x-forms.div>
-
-                <x-forms.form-error error="email" />
-
-                <x-forms.div>
-                    <label class="" for="password">Password</label>
-                    <input class="outline text-black pl-1 ml-1 text-lg bg-white rounded-sm" type="password"
-                        id="password" name="password" placeholder="Password" required>
-                </x-forms.div>
-
-                <x-forms.form-error error="password" />
-
-                <x-forms.div>
-                    <label class="" for="password_confirmation">Confirm Password</label>
-                    <input class="outline text-black pl-1 ml-1 text-lg bg-white rounded-sm" type="password"
-                        id="password_confirmation" name="password_confirmation" placeholder="Password" required>
-                </x-forms.div>
-
-                <x-forms.form-error error="password_confirmation" />
+                <x-forms.input label="Name" name="name" placeholder="Username" title="Minimum of 3 characters."  />
+                <x-forms.input label="Email" name="email" placeholder="Email" title="Email" />
+                <x-forms.input label=" Password" type="password" name="password" placeholder="Password" title="Password" />
+                <x-forms.input label="Password Confirmation" type="password" id="password_confirmation"
+                               name="password_confirmation" placeholder="Password" title="Password" />
 
                 <div class="flex justify-center w-full">
                     <x-forms.form-button>Register</x-forms.form-button>

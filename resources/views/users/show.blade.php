@@ -14,7 +14,7 @@
         <section class="w-4/6">
             <div>
                 <p class="text-xl">{{ $user->display_name }}</p>
-                <p>{{ $user->role }}</p>
+                <p class="text-sm"><span>{{ $user->profile_summary }}</span></p>
             </div>
         </section>
 

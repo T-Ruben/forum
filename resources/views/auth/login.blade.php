@@ -8,20 +8,9 @@
 
             <form action="{{ route('login.store') }}" method="POST" class="flex-2 justify-items-end">
                 @csrf
-                <x-forms.div>
-                    <label class="" for="login">Name</label>
-                    <input class="outline text-black pl-1 ml-1 text-lg bg-white rounded-sm" type="text" id="login"
-                        name="login" placeholder="Username/Email" required>
-                </x-forms.div>
 
-                <x-forms.div>
-                    <label class="" for="password">Password</label>
-                    <input class="outline text-black pl-1 ml-1 text-lg bg-white rounded-sm" type="password"
-                        id="password" name="password" placeholder="Password" required>
-                </x-forms.div>
-
-                <x-forms.form-error error="password" />
-                <x-forms.form-error error="login" />
+                <x-forms.input name="login" label="Name" placeholder="Username/Email" title="Title" />
+                <x-forms.input type="password" name="password" label="Password" placeholder="Password" title="Password" />
 
                 <div class="flex justify-center mt-4 w-full h-full select-none">
                     <input class="cursor-pointer" type="checkbox" name="remember" id="remember">

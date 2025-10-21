@@ -53,3 +53,17 @@ function getRelativeTime(date) {
      });
 }
 });
+
+document.querySelectorAll('.formReload').forEach(form => {
+    form.addEventListener('submit', function (e) {
+        sessionStorage.setItem('scrollPosition', window.scrollY);
+    })
+})
+
+window.addEventListener('load', function () {
+    const scrollPosition = sessionStorage.getItem('scrollPosition');
+    if (scrollPosition !== null) {
+        window.scrollTo(0, parseInt(scrollPosition));
+        sessionStorage.removeItem('scrollPosition');
+    }
+})

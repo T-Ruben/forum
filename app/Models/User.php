@@ -89,7 +89,22 @@ class User extends Authenticatable
     }
 
 
+    public function getProfileSummaryAttribute()
+    {
+        $parts = array_filter([
+            $this->role,
+            $this->age,
+            $this->gender,
+        ]);
 
+        $summary = implode(', ', $parts);
+
+        if ($this->country) {
+            $summary .= ($summary ? ' from ' : "") . $this->country;
+        }
+
+        return $summary ?: 'No information provided';
+    }
 
     public function getDisplayNameAttribute()
     {

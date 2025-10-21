@@ -1,8 +1,8 @@
 @props(['error'])
 
 
-<div class="flex w-full justify-center">
+<ul class="">
     @error($error)
-        <p class="text-red-500 text-md text-shadow-lg/25 will-change-transform translate-z-0">{{ $message }}</p>
+        <li class="text-red-500 text-md text-shadow-lg/25 will-change-transform translate-z-0">{{ $message }}</li>
     @enderror
-</div>
+</ul>
