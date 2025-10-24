@@ -6,7 +6,7 @@
         <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black text-black">
             <a href="{{ route('users.show', $post->author) }}">
             <img src="{{ $post->author->profile_image_url }}"
-                class="w-32 h-32 object-cover"
+                class="object-cover"
                 alt="{{ $post->author->display_name ?? 'Deleted Member' }}'s profile image"
                 data-pin-nopin="true">
             </a>

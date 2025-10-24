@@ -1,18 +1,31 @@
-@props(['name', 'label', 'placeholder' => '','type' => 'text', 'required' => true, 'title'])
+@props(['name', 'label' => null, 'placeholder' => '','type' => 'text', 'required' => true, 'title' => null, 'value' => old($name)])
 
-<div class="py-4 flex-row">
+<div class="grid grid-cols-[8rem_1fr] items-center gap-4">
 
-    <label for="{{ $name }}" title="{{ $title }}">
+    <label class="text-right" for="{{ $name }}" title="{{ $title }}">
         {{ $label }}
     </label>
 
-    <input
-        type="{{ $type }}"
-        name="{{ $name }}"
-        id="{{ $name }}"
-        placeholder="{{ $placeholder }}"
-        class="outline text-black pl-1 ml-1 text-lg bg-white rounded-sm">
+    @if ($type === 'password')
+            <input
+            type="{{ $type }}"
+            name="{{ $name }}"
+            id="{{ $name }}"
+            placeholder="{{ $placeholder }}"
+            class="outline text-black pl-1 ml-1 text-lg bg-white rounded-sm w-full">
+        @else
+            <input
+            type="{{ $type }}"
+            name="{{ $name }}"
+            id="{{ $name }}"
+            placeholder="{{ $placeholder }}"
+            value="{{ $value }}"
+            class="outline text-black pl-1 ml-1 text-lg bg-white rounded-sm w-full">
+    @endif
+
+
+
 
 </div>
 
-<x-forms.form-error :error="$name" />
+<x-forms.form-error class="text-center" :error="$name" />

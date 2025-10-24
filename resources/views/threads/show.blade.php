@@ -44,7 +44,7 @@
 
 
                     <textarea class="h-full w-full resize-none outline-0 border-1 p-1 text-black bg-gray-100" name="content" id="content"
-                        placeholder="Write your reply..."></textarea>
+                        placeholder="Write your reply...">{{ old('content') }}</textarea>
 
                     <button type="submit"
                         class="text-white dark:bg-blue-900 hover:dark:bg-blue-900/75 cursor-pointer duration-200 ml-auto block border rounded-md p-1">

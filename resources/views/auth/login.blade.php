@@ -9,8 +9,11 @@
             <form action="{{ route('login.store') }}" method="POST" class="flex-2 justify-items-end">
                 @csrf
 
-                <x-forms.input name="login" label="Name" placeholder="Username/Email" title="Title" />
-                <x-forms.input type="password" name="password" label="Password" placeholder="Password" title="Password" />
+                <div class="space-y-4">
+                    <x-forms.input name="login" label="Name" placeholder="Username/Email" title="Title" />
+                    <x-forms.input type="password" name="password" label="Password" placeholder="Password" title="Password" />
+                </div>
+
 
                 <div class="flex justify-center mt-4 w-full h-full select-none">
                     <input class="cursor-pointer" type="checkbox" name="remember" id="remember">

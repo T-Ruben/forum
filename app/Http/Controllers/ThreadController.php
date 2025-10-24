@@ -6,6 +6,8 @@ use App\Models\Forum;
 use App\Models\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ThreadController extends Controller
 {
@@ -38,6 +40,9 @@ class ThreadController extends Controller
             'content' => ['required', 'string', 'min:1', 'max:4000']
         ]);
 
+    try {
+        DB::beginTransaction();
+
         $thread = $forum->threads()->create([
             'title' => $validated['title'],
             'user_id' => Auth::user()->id,
@@ -48,9 +53,17 @@ class ThreadController extends Controller
             'content' => $validated['content']
         ]);
 
+        DB::commit();
+
         return redirect()
-            ->route('threads.show', [$thread->id, $thread->slug])
-            ->with('success', 'Thread created successfully!');
+        ->route('threads.show', [$thread->id, $thread->slug])
+        ->with('success', 'Thread created successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Thread creation failed', ['error' => $e->getMessage()]);
+            return back()->withErrors(['title' => 'Failed to create thread. Please try again.']);
+        }
+
 
     }
 }

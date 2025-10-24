@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -14,8 +15,18 @@ class PostController extends Controller
             'thread_id' => 'required|exists:threads,id',
         ]);
 
+        try {
         Auth::user()->posts()->create($validated);
+        } catch (\Exception $e) {
+            Log::error('Post creation failed', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
 
-        return redirect()->back();
+            return back()
+                ->withErrors(['content' => 'Something went wrong. Please try again later.']);
+        }
+
+        return back()->with('success', 'Post created successfully!');
     }
 }
