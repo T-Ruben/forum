@@ -17,12 +17,14 @@ class RegisteredUserController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:100', 'unique:users', 'regex:/^\S+$/' ],
             'email' => ['required', 'string', 'email',  'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed']
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'gender' => ['required'],
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
+            'gender' => $validated['gender'],
             'password'=> Hash::make($validated['password']),
             'profile_image'=> null
         ]);

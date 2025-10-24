@@ -5,7 +5,7 @@
     <div class="flex space-x-6">
         @foreach ($options as $option)
             <label class="inline-flex items-center space-x-2 select-none">
-                <input type="radio" name="{{ $name }}" value="{{ strtolower($option) }}">
+                <input type="radio" name="{{ $name }}" value="{{ $option }}">
                 <span>{{ $option }}</span>
             </label>
         @endforeach
