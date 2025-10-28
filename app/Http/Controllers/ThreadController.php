@@ -61,7 +61,9 @@ class ThreadController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Thread creation failed', ['error' => $e->getMessage()]);
-            return back()->withErrors(['title' => 'Failed to create thread. Please try again.']);
+            return back()
+                ->withErrors(['title' => 'Failed to create thread. Please try again.'])
+                ->withInput();
         }
 
 

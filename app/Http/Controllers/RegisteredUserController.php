@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class RegisteredUserController extends Controller
 {
@@ -20,8 +21,8 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'gender' => ['required'],
         ]);
-
-        $user = User::create([
+        try {
+            $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'gender' => $validated['gender'],
@@ -29,10 +30,19 @@ class RegisteredUserController extends Controller
             'profile_image'=> null
         ]);
 
-        Auth::login($user);
+            Log::info('New user registered', ['user_id' => $user->id]);
 
 
-        return redirect('/');
+        return redirect()
+            ->route('login')
+            ->with('success', 'Account successfully created! You may now log in.');
+
+        } catch (\Exception $e) {
+            Log::error('Account creation failed', ['error' => $e->getMessage()]);
+            return back()
+                ->withErrors('error', 'Something went wrong while creating your account. Please try again.')
+                ->withInput();
+        }
     }
 
 }

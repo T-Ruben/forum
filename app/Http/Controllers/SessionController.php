@@ -28,7 +28,7 @@ class SessionController extends Controller
 
         return back()->withErrors([
             'login' => 'Invalid credentials provided.',
-        ])->onlyInput('/');
+        ])->onlyInput('login');
 
     }
 
@@ -38,6 +38,6 @@ class SessionController extends Controller
         request()->session()->invalidate();
         request()->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/')->with('success', 'Logged out successfully.');
     }
 }

@@ -17,6 +17,9 @@ class PostController extends Controller
 
         try {
         Auth::user()->posts()->create($validated);
+
+        return back()->with('success', 'Post created successfully!');
+
         } catch (\Exception $e) {
             Log::error('Post creation failed', [
                 'user_id' => Auth::id(),
@@ -24,9 +27,10 @@ class PostController extends Controller
             ]);
 
             return back()
-                ->withErrors(['content' => 'Something went wrong. Please try again later.']);
+                ->withErrors(['content' => 'Something went wrong. Please try again later.'])
+                ->withInput();
         }
 
-        return back()->with('success', 'Post created successfully!');
+
     }
 }
