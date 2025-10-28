@@ -20,6 +20,12 @@
                     <label class="cursor-pointer" for="remember">Remember me</label>
                 </div>
 
+
+                @if (session('success'))
+                    <p class="text-gray-300 p-2 border mt-2 bg-linear-to-bl from-blue-500 to-cyan-500 shadow-black shadow-md">
+                        {{ session('success') }}</p>
+                @endif
+
                 <div class="flex justify-center w-full">
                     <x-forms.form-button>Login</x-forms.form-button>
                 </div>

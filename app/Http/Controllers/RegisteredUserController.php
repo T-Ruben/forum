@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'email',  'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'gender' => ['required'],
-            'location' => ['max:75'],
+            'location' => ['nullable', 'string', 'max:75'],
             'date_of_birth' => ['required', 'date', 'before:today', 'after:1900-01-01'],
         ]);
         try {
@@ -44,7 +44,7 @@ class RegisteredUserController extends Controller
         } catch (\Exception $e) {
             Log::error('Account creation failed', ['error' => $e->getMessage()]);
             return back()
-                ->withErrors('error', 'Something went wrong while creating your account. Please try again.')
+                ->withErrors(['error' => 'Something went wrong while creating your account. Please try again.'])
                 ->withInput();
         }
     }
