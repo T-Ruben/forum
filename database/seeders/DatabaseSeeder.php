@@ -23,9 +23,9 @@ public function run(): void
     $testUser = User::factory()->create([
         'name' => 'Test User',
         'email' => 'test@example.com',
-        'age' => 22,
+        'date_of_birth' => fake()->dateTimeThisCentury(),
         'gender' => 'Male',
-        'country' => 'Moon',
+        'location' => 'Moon',
         'password' => 'testtest'
     ]);
 

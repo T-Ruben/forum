@@ -13,6 +13,10 @@
                 <x-forms.input label="Email" name="email" placeholder="Email" title="Email" />
 
                 <x-forms.radio-group label="Gender" name="gender" :options="['Female', 'Male', 'Unspecified']" />
+                <x-forms.input label="Location*" name="location" placeholder="" title="Your location." placeholder="Location"
+                    title="Optional" />
+
+                <x-forms.input label="Date of Birth*" name="date_of_birth" type="date" title="Optional" required />
 
                 <x-forms.input label="Password" type="password" name="password" placeholder="Password" title="Minimum of 3 characters." />
                 <x-forms.input label="Password Confirmation" type="password" id="password_confirmation"

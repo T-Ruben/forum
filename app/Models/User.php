@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
@@ -64,8 +65,8 @@ class User extends Authenticatable
         'profile_image',
         'role',
         'gender',
-        'country',
-        'age'
+        'location',
+        'date_of_birth'
     ];
 
     /**
@@ -94,16 +95,18 @@ class User extends Authenticatable
 
     public function getProfileSummaryAttribute()
     {
+        $age = Carbon::parse($this->date_of_birth)->age;
+
         $parts = array_filter([
             $this->role,
-            $this->age,
+            $age,
             $this->gender,
         ]);
 
         $summary = implode(', ', $parts);
 
-        if ($this->country) {
-            $summary .= ($summary ? ' from ' : "") . $this->country;
+        if ($this->location) {
+            $summary .= ($summary ? ' from ' : "") . $this->location;
         }
 
         return $summary ?: 'No information provided';

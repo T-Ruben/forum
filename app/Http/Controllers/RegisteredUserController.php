@@ -20,12 +20,16 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'email',  'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'gender' => ['required'],
+            'location' => ['max:75'],
+            'date_of_birth' => ['required', 'date', 'before:today', 'after:1900-01-01'],
         ]);
         try {
             $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'gender' => $validated['gender'],
+            'location' => $validated['location'],
+            'date_of_birth' => $validated['date_of_birth'],
             'password'=> Hash::make($validated['password']),
             'profile_image'=> null
         ]);
