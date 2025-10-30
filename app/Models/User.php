@@ -106,7 +106,7 @@ class User extends Authenticatable
         $summary = implode(', ', $parts);
 
         if ($this->location) {
-            $summary .= ($summary ? ' from ' : "") . $this->location;
+            $summary .= ($summary ? ', from ' : "") . $this->location;
         }
 
         return $summary ?: 'No information provided';

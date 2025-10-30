@@ -4,8 +4,8 @@
 
     <x-main>
 
-        <div class='bg-gray-500/80 mx-auto h-full w-full border px-10 py-5 rounded-md border-gray-200/25 flex-2'>
-            <h1 class="text-2xl text-start mb-5">Create Thread</h1>
+        <div class=' mx-auto h-full w-full  px-10 py-5  flex-2'>
+            <h1 class="text-2xl text-center mb-5">Create Thread</h1>
             <p></p>
 
 

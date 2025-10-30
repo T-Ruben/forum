@@ -3,7 +3,7 @@
     <x-header />
 
     <x-main>
-        <div class="text-xl flex-2 min-w-0 wrap-break-word">
+        <div class="text-2xl flex-2 min-w-0 wrap-break-word">
             {{ $thread->title }}
             {{ $posts->links() }}
         </div>
@@ -14,7 +14,7 @@
             @endforeach
         </div>
 
-        <div class="flex border border-black min-h-[200px] h-auto w-full max-w-full bg-gray-200/75">
+        <div class="flex border border-black min-h-[200px] h-auto w-full max-w-full bg-gray-200/85">
 
             <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black m-2 text-black">
                 @foreach ($posts as $post)

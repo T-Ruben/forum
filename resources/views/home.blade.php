@@ -1,9 +1,14 @@
+<!-- Changes:
+Took from first section: bg-gray-500/75
+Took from second section: bg-gray-500/75
+-->
+
 <x-layout>
     <x-header />
 
     <main>
         <div class="flex flex-row w-full h-full gap-2">
-            <section class="p-4 flex flex-col justify-start bg-gray-500/75 w-4/6 rounded-t-md h-auto max-lg:w-6/6">
+            <section class="p-4 flex flex-col justify-start w-4/6 rounded-t-md h-auto max-lg:w-6/6">
 
                 <h1 class="text-2xl py-2">Game Updates Forum</h1>
 
@@ -73,7 +78,7 @@
                 </section>
             </section>
 
-            <section class="p-2 bg-gray-500/75 w-2/6 rounded-t-md h-auto hidden lg:flex">
+            <section class="p-2 w-2/6 rounded-t-md h-auto hidden lg:flex">
                 test
             </section>
         </div>

@@ -11,3 +11,4 @@
         @endforeach
     </div>
 </div>
+<x-forms.form-error class="text-center" :error="$name" />

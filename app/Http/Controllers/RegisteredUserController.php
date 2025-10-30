@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class RegisteredUserController extends Controller
 {
@@ -16,19 +18,43 @@ class RegisteredUserController extends Controller
 
     public function store(Request $request) {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:100', 'unique:users', 'regex:/^\S+$/' ],
-            'email' => ['required', 'string', 'email',  'max:255', 'unique:users'],
+            'name' => ['required', 'string', 'min:3', 'max:100', 'unique:users', 'regex:/^\S+$/'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'gender' => ['required'],
             'location' => ['nullable', 'string', 'max:75'],
-            'date_of_birth' => ['required', 'date', 'before:today', 'after:1900-01-01'],
+            'year' => ['required', 'integer', 'min:1900', 'max:' . now()->year],
+            'month' => ['required', 'integer', 'min:1', 'max:12'],
+            'day' => ['required', 'integer', 'min:1', 'max:31']
         ]);
+
+        $date_of_birth = sprintf('%04d-%02d-%02d',
+            $request->year,
+            $request->month,
+            $request->day
+        );
+
+        try {
+            $dob = Carbon::createFromFormat('Y-m-d', $date_of_birth);
+            if ($dob->isFuture()) {
+                throw ValidationException::withMessages([
+                    'date_of_birth' => 'Your birth date cannot be in the future.',
+                ]);
+            }
+        } catch (\Exception $e) {
+            throw ValidationException::withMessages([
+                'date_of_birth' => 'Invalid date provided.',
+            ]);
+        }
+
+        $validated['date_of_birth'] = $dob->format('Y-m-d');
+
         try {
             $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'gender' => $validated['gender'],
-            'location' => $validated['location'],
+            'location' => $validated['location'] ?? null,
             'date_of_birth' => $validated['date_of_birth'],
             'password'=> Hash::make($validated['password']),
             'profile_image'=> null
