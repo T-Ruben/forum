@@ -17,7 +17,7 @@
                 </x-forms.div>
 
                 <x-forms.div>
-                    <textarea class="outline text-black pl-1 ml-1 w-[60%] min-h-96 bg-white resize-none"
+                    <textarea class="outline field-sizing-content text-black pl-1 ml-1 w-[60%] min-h-96 bg-white resize-none"
                         name="content" id="content" required></textarea>
                 </x-forms.div>
 

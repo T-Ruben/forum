@@ -1,0 +1,41 @@
+<x-layout>
+
+    <x-header />
+    <x-main>
+        <div class="grid grid-cols-[25%_75%] gap-4">
+            <aside>
+                <h2 class="text-2xl font-bold mb-2">{{ $title }}</h2>
+
+                <div>
+                    <h3 class="p-2 relative dark:bg-blue-950">Settings</h3>
+                </div>
+                <ul class="">
+                    <li>
+                        <x-link page="settings_link" :active="request()->routeIs('settings.personal')" href="{{ route('settings.personal') }}">Personal
+                            Details</x-link>
+                        <div class="w-full h-px bg-gray-600"></div>
+                    </li>
+                    <li>
+                        <x-link page="settings_link" :active="request()->routeIs('settings.privacy')"
+                            href="{{ route('settings.privacy') }}">Privacy</x-link>
+                        <div class="w-full h-px bg-gray-600"></div>
+                    </li>
+                    <li>
+                        <form action="{{ route('logout.destroy') }}" method="POST">
+                            @csrf
+                            <button
+                                class="w-fit text-left cursor-pointer text-red-400 hover:text-red-600">Logout</button>
+                        </form>
+                    </li>
+                </ul>
+
+            </aside>
+
+            <section>
+                {{ $slot }}
+            </section>
+        </div>
+    </x-main>
+    <x-footer />
+
+</x-layout>

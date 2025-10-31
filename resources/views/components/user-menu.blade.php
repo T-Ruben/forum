@@ -1,5 +1,5 @@
 <div class="">
-    <div class="relative group">
+    <div class="relative group field-sizing-content">
         <a href="{{ route('users.show', auth()->user()->id) }}">
             <h3 class=" text-center cursor-pointer text-lg hover:dark:bg-blue-900/70 w-25 h-10 pt-2 m-1 rounded-md">
             {{ auth()->user()->name }}</h3>
@@ -22,11 +22,33 @@
 
             </div>
             <x-divide />
-            <div class="hover:bg-gray-400/75 w-fit p-1 duration-200">
-                <form class="" action="{{ route('logout.destroy') }}" method="Post">
-                    @csrf
-                    <button type="submit" class="cursor-pointer">Logout</button>
-                </form>
+            <div class="grid grid-cols-2 gap-2">
+            <div class="">
+                <ul class="">
+                    <li>
+                        <x-link page="settings_link" :active="request()->routeIs('settings.personal')" href="{{ route('settings.personal') }}">Personal
+                            Details</x-link>
+                    </li>
+                    <li>
+                        <x-link page="settings_link" :active="request()->routeIs('settings.privacy')"
+                            href="{{ route('settings.privacy') }}">Privacy</x-link>
+                    </li>
+                </ul>
             </div>
+            <div class="">
+                <!-- Second side of the menu -->
+            </div>
+            </div>
+            <x-divide />
+            <div>
+                <div class="hover:bg-gray-400/50 w-fit p-1 duration-200">
+                    <form class="" action="{{ route('logout.destroy') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="cursor-pointer">Logout</button>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
+</div>

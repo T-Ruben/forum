@@ -5,10 +5,12 @@
 
     <div class="flex gap-3">
         <section class="w-1/6">
-            <img src="{{ $user->profile_image_url }}"
+            <a href="{{ route('settings.personal') }}">
+                <img src="{{ $user->profile_image_url }}"
                 alt="{{ $user->display_name }}"
                 class="cursor-pointer object-cover w-full"
                 itemprop="photo">
+            </a>
         </section>
 
         <section class="w-4/6">
