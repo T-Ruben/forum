@@ -67,3 +67,22 @@ window.addEventListener('load', function () {
         sessionStorage.removeItem('scrollPosition');
     }
 })
+
+
+const fileInput = document.querySelector('#avatar');
+const imagePreview = document.querySelector('#imagePreview');
+
+fileInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+
+    if(file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            imagePreview.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    }
+});
+

@@ -62,6 +62,9 @@ Route::post('/logout', [SessionController::class, 'destroy'])
 // User
 Route::get('/members/{user}', [UserController::class, 'show'])
     ->name('users.show');
+Route::put('/user/avatar', [UserController::class, 'updateProfileImage'])
+    ->name('user.avatar.update')
+    ->middleware('auth');
 
 // Settings
 

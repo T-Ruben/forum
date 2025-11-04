@@ -2,11 +2,13 @@
 
 <section class="my-2 border p-2 flex bg-gray-200/85 text-black">
 
-    <div class="h-full py-3 bg-gray-400/25 border-gray-400 border shadow-sm shadow-black/50 float-left text-left flex flex-col items-center justify-center w-42">
+    <div class="h-full py-3 bg-gray-400/25 border-gray-400 border shadow-sm shadow-black/50 float-left
+        text-left flex flex-col items-center justify-center w-42
+        ">
         <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black text-black">
             <a href="{{ route('users.show', $post->author) }}">
             <img src="{{ $post->author->profile_image_url }}"
-                class="object-cover"
+                class="w-32 h-32 object-cover"
                 alt="{{ $post->author->display_name ?? 'Deleted Member' }}'s profile image"
                 data-pin-nopin="true">
             </a>
