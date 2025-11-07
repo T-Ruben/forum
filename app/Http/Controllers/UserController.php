@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\Laravel\Facades\Image;
 
 use function Laravel\Prompts\error;
 
@@ -29,12 +31,27 @@ class UserController extends Controller
 
         try {
             if($user->profile_image) {
-                Storage::disk('public')->delete($user->profile_image);
+                Storage::disk('public')->delete('avatars/' . $user->profile_image);
             }
 
-            $path = $request->file('avatar')->store('avatars', 'public');
+                $image = Image::read($request->file('avatar'));
 
-            $user->update(['profile_image' => $path]);
+                $filename = 'avatar_' . Auth::user()->id . '_' . time() . '.jpg';
+
+                Log::info('Avatar upload:', [
+                    'mime' => $request->file('avatar')->getMimeType(),
+                    'size' => $request->file('avatar')->getSize(),
+                    'original_name' => $request->file('avatar')->getClientOriginalName(),
+                ]);
+
+                $image
+                    ->scaleDown(512)
+                    ->encodeByExtension('jpg', 85)
+                    ->save(storage_path("app/public/avatars/{$filename}"));
+
+                $user->update([
+                    'profile_image' => $filename,
+                ]);
 
             return back()->with('success', 'Profile image uploaded.');
         } catch(\Exception $e) {
