@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 
 class RegisteredUserController extends Controller
@@ -18,9 +19,9 @@ class RegisteredUserController extends Controller
 
     public function store(Request $request) {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:100', 'unique:users', 'regex:/^\S+$/'],
+            'name' => ['required', 'string', 'min:3', 'max:20', 'unique:users', 'regex:/^[a-zA-Z0-9._-]{3, 20}$/'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'max:128', 'confirmed', Password::defaults()],
             'gender' => ['required'],
             'location' => ['nullable', 'string', 'max:75'],
             'year' => ['required', 'integer', 'min:1900', 'max:' . now()->year],

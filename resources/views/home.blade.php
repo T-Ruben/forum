@@ -4,6 +4,7 @@ Took from second section: bg-gray-500/75
 -->
 
 <x-layout>
+
     <x-header />
 
     <main>

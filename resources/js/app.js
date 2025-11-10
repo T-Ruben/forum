@@ -85,4 +85,3 @@ fileInput.addEventListener('change', function(e) {
         reader.readAsDataURL(file);
     }
 });
-

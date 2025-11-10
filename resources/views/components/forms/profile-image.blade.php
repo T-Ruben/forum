@@ -8,8 +8,8 @@
 
         <div class="flex justify-between gap-2 mt-2">
         <div class="block border w-fit p-0.5 border-white/75 max-md:hidden">
-            <img src="{{ Auth::user()->profile_image_url }}"
-            alt="{{ Auth::user()->display_name }}"
+            <img src="{{ $user->profile_image_url }}"
+            alt="{{ $user->display_name }}"
             class="cursor-pointer object-cover w-[192px] h-full"
             itemprop="photo"
             id="imagePreview">
