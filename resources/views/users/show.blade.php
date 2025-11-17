@@ -1,10 +1,13 @@
-    <x-forms.profile-image :user="$user" />
 <x-layout>
 <x-header />
 
 
 
 <x-main>
+
+    @push('modals')
+    <x-forms.profile-image :user="$user" />
+    @endpush
 
     <div class="flex gap-2">
 

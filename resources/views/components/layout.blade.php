@@ -20,11 +20,14 @@
             </style>
         @endif
     </head>
-    <body class="bg-[#FDFDFC] dark:bg-[#1e2732db] bg-linear-to-b from-gray-600 to-slate-900 bg-no-repeat text-[#c1c1c1] flex-2 items-center min-h-screen">
-            <main class="max-w-7xl m-auto p-6 lg:p-8">
-                <div class="p-2 rounded-t-xl relative z-2">
-                    {{ $slot }}
-                </div>
-            </main>
+    <body class="bg-[#FDFDFC] dark:bg-[#1e2732db] bg-linear-to-b from-gray-600 to-slate-900 bg-no-repeat
+                 text-[#c1c1c1] min-h-screen">
+
+    @stack('modals')
+
+    <main class="max-w-7xl mx-auto p-4">
+        {{ $slot }}
+    </main>
+
     </body>
 </html>

@@ -44,6 +44,7 @@ class UserController extends Controller
                     'original_name' => $request->file('avatar')->getClientOriginalName(),
                 ]);
 
+
                 $image
                     ->scaleDown(512)
                     ->encodeByExtension('jpg', 85)
