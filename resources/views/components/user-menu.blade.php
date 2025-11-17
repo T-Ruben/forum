@@ -9,7 +9,7 @@
         </div>
 
 
-        <div class="p-2 absolute w-80 right-0 top-full pointer-events-none opacity-0 bg-gray-500/75 border transform
+        <div class="p-2 absolute w-80 right-0 top-full pointer-events-none opacity-0 bg-gray-600/95 border transform
                 -translate-y-2 transition-all border-gray-400/50 duration-300 group-hover:opacity-100
                 group-hover:pointer-events-auto group-hover:translate-y-0 z-50">
             <div class="flex">

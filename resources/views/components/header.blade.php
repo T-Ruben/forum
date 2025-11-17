@@ -3,7 +3,7 @@
     <div class="dark:bg-blue-950 flex justify-between py-5 items-center rounded-t-xl">
         <div class="flex">
             <a href="/" class="mx-10 font-medium text-3xl"><h1>Game Updates</h1></a>
-            <nav class="flex gap-2 justify-start">
+            <nav class="flex gap-2 justify-start items-center">
                 <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">Home</x-nav-link>
                 <x-nav-link href="#" :active="request()->routeIs('')">Blogs</x-nav-link>
                 <x-nav-link href="#" :active="request()->routeIs('')">Members</x-nav-link>

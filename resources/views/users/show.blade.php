@@ -12,13 +12,18 @@
     <div class="flex gap-2">
 
         <section class="w-[192px]">
-            <div class="w-[192px] p-0.5 border">
-                <a href="{{ route('settings.personal') }}">
+            <div id="avatarChange" class="w-[192px] p-0.5 border">
+                    <img src="{{ $user->profile_image_url }}"
+                    alt="{{ $user->display_name }}"
+                    class="cursor-pointer object-cover w-full"
+                    data-pin-nopin="true"
+                    itemprop="photo">
+                {{-- <a href="{{ route('settings.personal') }}">
                     <img src="{{ $user->profile_image_url }}"
                     alt="{{ $user->display_name }}"
                     class="cursor-pointer object-cover w-full"
                     itemprop="photo">
-                </a>
+                </a> --}}
             </div>
         </section>
 

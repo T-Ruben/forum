@@ -1,4 +1,3 @@
-import Croppie from 'croppie';
 import './bootstrap';
 
 
@@ -69,95 +68,46 @@ window.addEventListener('load', function () {
     }
 })
 
-// document.addEventListener('DOMContentLoaded', () => {
-//     let croppie = null;
+const avatarChange = document.querySelector('#avatarChange');
+if(avatarChange) {
+avatarChange.addEventListener('click', () => {
+    const avatarEditor = document.querySelector('#avatarEditor');
+    const editorContent = document.querySelector('#editorContent');
+    const closeBtn = document.querySelector('#closeBtn');
 
-//     const fileInput = document.querySelector('#avatar');
-//     const imagePreview = document.querySelector('#imagePreview');
-//     const croppedImage = document.querySelector('#croppedImage');
-//     const croppieContainer = document.querySelector('#croppie-container');
-//     const hiddenInput = document.querySelector('#cropped_image');
+    avatarEditor.classList.replace('hidden', 'flex');
 
-// fileInput.addEventListener('change', function(e) {
-//     const file = e.target.files[0];
-//     if(!file) return;
-
-//     if(croppie) {
-//         croppie.destroy();
-//         croppie = null;
-//     }
-
-//     croppie = new Croppie(croppieContainer, {
-//         viewport: { width: 128, height: 128, type: 'square' },
-//         boundary: { width: 160, height: 160 },
-//         enableZoom: true,
-//         showZoomer: false,
-//         mouseWheelZoom: true
-//     })
-
-//     if(file) {
-//         const reader = new FileReader();
-
-//         reader.onload = function (e) {
-
-//             croppie.bind({url: e.target.result}).catch(function(err) {
-//                 console.error('Croppier bind error: ', err);
-//             });
-//             imagePreview.src = e.target.result;
-//         };
-
-//         reader.readAsDataURL(file);
-//     }
-// });
-// })
-
-document.addEventListener('DOMContentLoaded', function () {
-    let croppie = null;
-
-    const croppieContainer = document.querySelector('#croppieContainer');
-    const cropBtn = document.querySelector('#cropBtn');
-    const fileInput = document.querySelector('#avatarInput');
-    const hiddenInput = document.querySelector('#croppedImageInput');
-    const imagePreview = document.querySelector('#imagePreview');
-    const avatarForm = document.querySelector('#avatarForm');
-
-    fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if(!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const dataUrl = e.target.result;
-
-            imagePreview.src = dataUrl;
-
-            if(croppie) {
-                croppie.destroy();
-                croppie = null;
-            }
-
-            croppie = new Croppie(croppieContainer, {
-                viewport: { width: 128, height: 128, type: 'square' },
-                boundary: { width: 160, height: 160 },
-                enableZoom: true,
-                showZoomer: true,
-                mouseWheelZoom: true,
-                enableOrientation: true,
-            })
-
-            croppie.bind({url: dataUrl, orientation: 1}).catch(function (err) {
-                console.log('Croppie bind error: ', err);
-            })
-        }
-        reader.readAsDataURL(file);
-    });
-
-    avatarForm.addEventListener("submit", async function (e) {
-        const base64 = await croppie.result({
-            type: "base64",
-            size: { width: 128, height: 128}
-        })
-
-        hiddenInput.value = base64;
+    closeBtn.addEventListener('click', () => {
+       avatarEditor.classList.replace('flex', 'hidden');
     })
-})
+
+    const outsideClickHandler = (event) => {
+        if (!editorContent.contains(event.target) && event.target !== document.querySelector('#avatarChange')) {
+
+            avatarEditor.classList.replace('flex', 'hidden');
+
+            document.removeEventListener('click', outsideClickHandler);
+        }
+    };
+    setTimeout(() => {
+        document.addEventListener('click', outsideClickHandler);
+    }, 0);
+
+        const fileInput = document.querySelector('#avatar');
+    const imagePreview = document.querySelector('#imagePreview');
+
+fileInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if(!file) return;
+
+    if(file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            imagePreview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+});
+};
