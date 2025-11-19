@@ -4,7 +4,7 @@
 
     <div class="h-full py-3 bg-gray-400/25 border-gray-400 border shadow-sm shadow-black/50
         text-left flex flex-col items-center justify-center min-w-42 max-w-42
-        max-sm:min-w-full max-sm:flex-row max-sm:pl-2 max-sm:max-h-32 max-sm:py-2">
+        max-sm:min-w-full max-sm:flex-row max-sm:pl-2 max-sm:max-h-32 max-sm:py-2 max-sm:items-start">
         <div class="w-32 h-32 max-sm:min-w-26  max-sm:min-h-26 max-sm:max-h-26 max-sm:max-w-26 overflow-hidden border shadow-xs shadow-black text-black">
             <a href="{{ route('users.show', $post->author) }}">
             <img src="{{ $post->author->profile_image_url }}"
@@ -13,7 +13,7 @@
                 data-pin-nopin="true">
             </a>
         </div>
-        <div class="flex flex-col w-full px-2">
+        <div class="flex flex-col w-full px-2 max-sm:">
             <div>
                 <div class="pt-2 font-bold">
                     <a class="hover:underline" href="{{ route('users.show', $post->author) }}">

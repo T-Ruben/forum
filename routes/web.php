@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisteredUserController;
@@ -62,12 +63,16 @@ Route::post('/logout', [SessionController::class, 'destroy'])
 // User
 Route::get('/members/{user}', [UserController::class, 'show'])
     ->name('users.show');
-Route::put('/user/avatar', [UserController::class, 'updateProfileImage'])
-    ->name('user.avatar.update')
-    ->middleware('auth');
+
+// User Avatar
+Route::middleware('auth')->group(function () {
+    Route::put('/avatar', [AvatarController::class, 'update'])
+        ->name('avatar.update');
+    Route::delete('/avatar', [AvatarController::class, 'destroy'])
+        ->name('avatar.destroy');
+});
 
 // Settings
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/settings/personal', [SettingsController::class, 'personal'])->name('settings.personal');
     Route::get('/settings/privacy', [SettingsController::class, 'privacy'])->name('settings.privacy');

@@ -18,12 +18,6 @@
                     class="cursor-pointer object-cover w-full"
                     data-pin-nopin="true"
                     itemprop="photo">
-                {{-- <a href="{{ route('settings.personal') }}">
-                    <img src="{{ $user->profile_image_url }}"
-                    alt="{{ $user->display_name }}"
-                    class="cursor-pointer object-cover w-full"
-                    itemprop="photo">
-                </a> --}}
             </div>
         </section>
 
