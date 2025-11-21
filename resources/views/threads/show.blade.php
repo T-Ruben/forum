@@ -42,8 +42,13 @@
                     <input type="hidden" name="thread_id" value="{{ $thread->id }}">
                     <input type="hidden" name="parent_id" value="{{ $post->id ?? null }}">
 
-                    <textarea class="min-h-42 w-full field-sizing-content resize-none outline-0 border-1 p-1 text-black bg-gray-100" name="content" id="content"
+                    <div class="size-auto">
+                        <textarea
+                        class="min-h-42 w-full resize-none overflow-hidden outline-0 border-1 p-1 text-black bg-gray-100 whitespace-normal"
+                        name="content"
+                        id="content"
                         placeholder="Write your reply...">{{ old('content') }}</textarea>
+                    </div>
 
                     <button type="submit"
                         class="text-white dark:bg-blue-900 hover:dark:bg-blue-900/75 cursor-pointer duration-200 ml-auto block border rounded-md p-1">

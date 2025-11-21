@@ -13,7 +13,7 @@
                 data-pin-nopin="true">
             </a>
         </div>
-        <div class="flex flex-col w-full px-2 max-sm:">
+        <div class="flex flex-col w-full px-2">
             <div>
                 <div class="pt-2 font-bold">
                     <a class="hover:underline" href="{{ route('users.show', $post->author) }}">
@@ -37,8 +37,8 @@
         </div>
     </div>
 
-    <div class="py-2 pr-2 pl-5 w-11/13 min-h-full max-sm:size-auto size-auto text-md wrap-break-word">
-        <p class="wrap-break-word">
+    <div class="py-2 pr-2 pl-5 w-full min-h-full text-md break-words overflow-hidden ">
+        <p class="whitespace-pre-line">
             {{ $post->content }}
         </p>
         <x-divide />

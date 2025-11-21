@@ -1,6 +1,6 @@
 import './bootstrap';
 
-
+// Time
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.post-time').forEach(el => {
         const time = el.dataset.time;
@@ -54,11 +54,13 @@ function getRelativeTime(date) {
 }
 });
 
+// Fixed position reload post
 document.querySelectorAll('.formReload').forEach(form => {
     form.addEventListener('submit', function (e) {
         sessionStorage.setItem('scrollPosition', window.scrollY);
     })
 })
+
 
 window.addEventListener('load', function () {
     const scrollPosition = sessionStorage.getItem('scrollPosition');
@@ -68,6 +70,7 @@ window.addEventListener('load', function () {
     }
 })
 
+// Avatar change
 const avatarChange = document.querySelector('#avatarChange');
 if(avatarChange) {
 avatarChange.addEventListener('click', () => {
@@ -111,3 +114,10 @@ fileInput.addEventListener('change', function(e) {
 });
 });
 };
+
+// Textarea auto height
+
+document.querySelector('#content').addEventListener('input', function () {
+    this.style.height = 'auto';
+    this.style.height = this.scrollHeight + 'px';
+})

@@ -16,7 +16,8 @@ class PostController extends Controller
         ]);
 
         try {
-        Auth::user()->posts()->create($validated);
+            $validated['content'] = trim($validated['content']);
+            Auth::user()->posts()->create(($validated));
 
         return back()->with('success', 'Post created successfully!');
 
@@ -30,7 +31,5 @@ class PostController extends Controller
                 ->withErrors(['content' => 'Something went wrong. Please try again later.'])
                 ->withInput();
         }
-
-
     }
 }
