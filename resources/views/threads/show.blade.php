@@ -36,19 +36,55 @@
 
             <div class="flex-2 flex-col h-2/3 m-2">
 
-                <form action="{{ route('posts.store') }}" method="POST" class="formReload h-full">
+
+                <form action="{{ route('posts.store') }}" method="POST" class="formReload h-full" id="postForm">
                     @csrf
 
                     <input type="hidden" name="thread_id" value="{{ $thread->id }}">
                     <input type="hidden" name="parent_id" value="{{ $post->id ?? null }}">
 
-                    <div class="size-auto">
+                    <div id="editor" class="border text-black bg-gray-100 mb-1">
+                        <div id="toolbar-container">
+                            <span class="ql-formats">
+                                <select class="ql-font"></select>
+                                <select class="ql-size"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-bold"></button>
+                                <button class="ql-italic"></button>
+                                <button class="ql-underline"></button>
+                                <button class="ql-strike"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <select class="ql-color"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-list" value="ordered"></button>
+                                <button class="ql-list" value="bullet"></button>
+                                <button class="ql-indent" value="-1"></button>
+                                <button class="ql-indent" value="+1"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-link"></button>
+                                <button class="ql-image"></button>
+                                <button class="ql-video"></button>
+                            </span>
+
+                            <span class="ql-formats">
+                                <button class="ql-clean"></button>
+                            </span>
+                        </div>
+                        <div id="editor-container" class="min-h-42 w-full p-2 bg-white text-black border rounded">
+                            {{ old('content') }}
+                        </div>
+                    </div>
+
                         <textarea
-                        class="min-h-42 w-full resize-none overflow-hidden outline-0 border-1 p-1 text-black bg-gray-100 whitespace-normal"
+                        class="hidden min-h-42 w-full resize-none overflow-hidden outline-0 border-1 p-1 text-black bg-gray-100 whitespace-normal"
                         name="content"
                         id="content"
                         placeholder="Write your reply...">{{ old('content') }}</textarea>
-                    </div>
+
 
                     <button type="submit"
                         class="text-white dark:bg-blue-900 hover:dark:bg-blue-900/75 cursor-pointer duration-200 ml-auto block border rounded-md p-1">

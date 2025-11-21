@@ -6,17 +6,18 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Mews\Purifier\Facades\Purifier;
 
 class PostController extends Controller
 {
     public function store(Request $request) {
         $validated = $request->validate([
-            'content' => ['required', 'string', 'min:1', 'max:4000'],
+            'content' => ['required', 'string', 'min:1', 'max:5000'],
             'thread_id' => 'required|exists:threads,id',
         ]);
 
         try {
-            $validated['content'] = trim($validated['content']);
+            $validated['content'] = Purifier::clean(trim($validated['content']), 'quill');
             Auth::user()->posts()->create(($validated));
 
         return back()->with('success', 'Post created successfully!');

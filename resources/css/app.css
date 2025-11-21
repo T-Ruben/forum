@@ -10,3 +10,30 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 
 }
+.ql-toolbar button:hover,
+.ql-toolbar .ql-picker:hover {
+    border: 1px solid #007bff;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    transition: all 0.35s ease-in-out;
+}
+
+#editor .ql-editor {
+    min-height: 150px;
+    padding: 0;
+    margin: 0;
+    font-size: medium;
+}
+
+.ql-editor {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    padding: 0;
+
+}
+
+.ql-toolbar .ql-formats {
+    background-color: white;
+    border-radius: 4px;
+}

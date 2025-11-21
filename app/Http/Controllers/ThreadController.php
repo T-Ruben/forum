@@ -37,7 +37,7 @@ class ThreadController extends Controller
 
         $validated = $request->validate([
             'title' => ['required', 'string', 'min:4', 'max:100'],
-            'content' => ['required', 'string', 'min:1', 'max:4000']
+            'content' => ['required', 'string', 'min:1', 'max:5000']
         ]);
 
     try {

@@ -38,9 +38,14 @@
     </div>
 
     <div class="py-2 pr-2 pl-5 w-full min-h-full text-md break-words overflow-hidden ">
-        <p class="whitespace-pre-line">
+        {{-- <p class="whitespace-pre-line">
             {{ $post->content }}
-        </p>
+        </p> --}}
+        <div class="ql-snow">
+            <div class="ql-editor">
+                {!! $post->content !!}
+            </div>
+        </div>
         <x-divide />
         <div class="w-full">
         <span class="text-sm text-gray-700/75">
