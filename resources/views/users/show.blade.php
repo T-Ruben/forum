@@ -1,36 +1,45 @@
 <x-layout>
-<x-header />
+    <x-header />
 
 
 
-<x-main>
+    <x-main>
 
-    @push('modals')
-    <x-forms.profile-image :user="$user" />
-    @endpush
+        @push('modals')
+            @can('edit-user', $user)
+                <x-forms.profile-image :user="$user" />
+            @endcan
+        @endpush
 
-    <div class="flex gap-2">
+        <div class="flex gap-2">
 
         <section class="w-[192px]">
-            <div id="avatarChange" class="w-[192px] p-0.5 border">
-                    <img src="{{ $user->profile_image_url }}"
+            <div
+                class="w-[192px] p-0.5 border"
+                @can('edit-user', $user)
+                    id="avatarChange"
+                @endcan>
+                <img
+                    src="{{ $user->profile_image_url }}"
                     alt="{{ $user->display_name }}"
                     class="cursor-pointer object-cover w-full"
                     data-pin-nopin="true"
-                    itemprop="photo">
+                    itemprop="photo"
+                >
             </div>
         </section>
 
-        <section class="">
-            <div>
-                <p class="text-xl">{{ $user->display_name }}</p>
-                <p class="text-sm"><span>{{ $user->profile_summary }}</span></p>
-            </div>
-        </section>
 
-    </div>
+            <section class="">
+                <div>
+                    <p class="text-xl">{{ $user->display_name }}</p>
+                    <p class="text-sm"><span>{{ $user->profile_summary }}</span></p>
+                </div>
+            </section>
 
-</x-main>
+        </div>
 
-<x-footer />
+    </x-main>
+
+    <x-footer />
 </x-layout>

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Mews\Purifier\Facades\Purifier;
 
 class ThreadController extends Controller
 {
@@ -34,14 +35,29 @@ class ThreadController extends Controller
     }
 
     public function store(Request $request, Forum $forum){
+        $content = $request->input('content');
+
+        $plain = trim(strip_tags($content));
+        if(strlen($plain) < 1) {
+            return back()
+                ->withErrors(['content' => 'Must have at least one character.']);
+        }
+        if(strlen($plain) > 5000) {
+            return back()
+                ->withErrors(['content' => 'Must have less than 5000 characters.']);
+        }
+
+
 
         $validated = $request->validate([
             'title' => ['required', 'string', 'min:4', 'max:100'],
-            'content' => ['required', 'string', 'min:1', 'max:5000']
+            'content' => ['required', 'string']
         ]);
 
     try {
         DB::beginTransaction();
+        $validated['content'] = Purifier::clean(trim($validated['content']), 'quill');
+
 
         $thread = $forum->threads()->create([
             'title' => $validated['title'],

@@ -119,10 +119,11 @@ fileInput.addEventListener('change', function(e) {
 
 // Textarea auto height
 
+if(document.querySelector('#content')){
 document.querySelector('#content').addEventListener('input', function () {
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
-})
+})}
 
 // Quill
 
@@ -144,6 +145,17 @@ const toolbarOptions = [
   ['clean']                                         // remove formatting button
 ];
 
+document.addEventListener('DOMContentLoaded', () => {
+const editorDiv = document.querySelector('#editor-container')
+const hiddenInput = document.querySelector('#content');
+const form = document.querySelector('#postForm');
+
+if (!editorDiv || !hiddenInput || !form) return;
+
+if(!editorDiv ) {
+    return;
+}
+
 const quill = new Quill('#editor-container', {
     theme: 'snow',
     syntax: true,
@@ -153,6 +165,18 @@ const quill = new Quill('#editor-container', {
     placeholder: 'Write your reply...',
 });
 
-document.querySelector('#postForm').addEventListener('submit', function(e) {
-    document.querySelector('#content').value = quill.root.innerHTML;
-});
+if(hiddenInput.value.trim().length > 0) {
+    quill.root.innerHTML = hiddenInput.value;
+}
+
+form.addEventListener('submit', () => {
+        let html = quill.root.innerHTML.trim();
+
+        if (html === '<p><br></p>') {
+            html = '';
+        }
+
+        hiddenInput.value = html;
+})
+
+})

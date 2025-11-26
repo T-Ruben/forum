@@ -68,6 +68,7 @@ Route::get('/members/{user}', [UserController::class, 'show'])
 Route::middleware('auth')->group(function () {
     Route::put('/avatar', [AvatarController::class, 'update'])
         ->name('avatar.update');
+
     Route::delete('/avatar', [AvatarController::class, 'destroy'])
         ->name('avatar.destroy');
 });

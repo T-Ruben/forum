@@ -74,17 +74,17 @@
                                 <button class="ql-clean"></button>
                             </span>
                         </div>
-                        <div id="editor-container" class="min-h-42 w-full p-2 bg-white text-black border rounded">
-                            {{ old('content') }}
-                        </div>
+                        <div id="editor-container" class="min-h-42 w-full p-2 bg-white text-black border rounded"></div>
                     </div>
 
-                        <textarea
-                        class="hidden min-h-42 w-full resize-none overflow-hidden outline-0 border-1 p-1 text-black bg-gray-100 whitespace-normal"
-                        name="content"
-                        id="content"
-                        placeholder="Write your reply...">{{ old('content') }}</textarea>
+                    <input type="hidden" id="content" name="content">
 
+
+                    <div class="my-auto block">
+                        @error('content')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
 
                     <button type="submit"
                         class="text-white dark:bg-blue-900 hover:dark:bg-blue-900/75 cursor-pointer duration-200 ml-auto block border rounded-md p-1">
@@ -92,15 +92,7 @@
                     </button>
 
                 </form>
-                <div class="my-auto block">
-                    @error('content')
-                        <p class="text-red-500">{{ $message }}</p>
-                    @enderror
-                </div>
-
             </div>
-
-
         </div>
 
         <div class="mt-4">
