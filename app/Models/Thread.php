@@ -39,8 +39,17 @@ class Thread extends Model
     protected static function boot() {
         parent::boot();
 
-        static::creating(function ($thread) {
-            $thread->slug = Str::slug($thread->title);
+        static::creating(function (Thread $thread) {
+            $baseSlug = Str::slug($thread->title);
+            $slug = $baseSlug;
+            $i = 1;
+
+            while(Thread::where('forum_id', $thread->forum_id)
+                ->where('slug', $slug)
+                ->exists()) {
+                    $slug = $baseSlug . '-' . $i++;
+                }
+                $thread->slug = $slug;
         });
     }
 

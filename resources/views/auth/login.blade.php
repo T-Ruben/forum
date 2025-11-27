@@ -25,6 +25,8 @@
                         {{ session('success') }}</p>
                 @endif
 
+                <x-forms.form-error error="spam" />
+
                 <div class="flex justify-center w-full">
                     <x-forms.form-button>Login</x-forms.form-button>
                 </div>

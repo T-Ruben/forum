@@ -29,13 +29,13 @@ Route::get('forums/{forum:slug}/create', [ThreadController::class, 'create'])
     ->name('threads.create');
 
 Route::post('forums/{forum:slug}/threads', [ThreadController::class, 'store'])
-    ->middleware('auth')
+    ->middleware(['auth', 'throttle:make-thread'])
     ->name('threads.store');
 
 
 // Posts
 Route::post('/posts', [PostController::class, 'store'])
-    ->middleware('auth')
+    ->middleware(['auth', 'throttle:make-post'])
     ->name('posts.store');
 
 
@@ -45,6 +45,7 @@ Route::get('/register', [RegisteredUserController::class, 'create'])
     ->name('register');
 
 Route::post('/register', [RegisteredUserController::class, 'store'])
+    ->middleware('throttle:register')
     ->name('register.store');
 
 Route::get('/login', [SessionController::class, 'create'])
@@ -52,7 +53,8 @@ Route::get('/login', [SessionController::class, 'create'])
     ->name('login');
 
 Route::post('/login', [SessionController::class, 'store'])
-    ->name('login.store');
+    ->name('login.store')
+    ->middleware('throttle:login');
 
 Route::post('/logout', [SessionController::class, 'destroy'])
     ->middleware('auth')
@@ -67,6 +69,7 @@ Route::get('/members/{user}', [UserController::class, 'show'])
 // User Avatar
 Route::middleware('auth')->group(function () {
     Route::put('/avatar', [AvatarController::class, 'update'])
+        ->middleware('throttle:avatar-update')
         ->name('avatar.update');
 
     Route::delete('/avatar', [AvatarController::class, 'destroy'])

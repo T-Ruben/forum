@@ -24,6 +24,9 @@
                 <x-forms.input label="Password Confirmation" type="password" id="password_confirmation"
                                name="password_confirmation" placeholder="Password" title="Confirm password" />
 
+                <x-forms.form-error error="spam" />
+
+
                 <div class="flex justify-center w-full">
                     <x-forms.form-button>Register</x-forms.form-button>
                 </div>

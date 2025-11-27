@@ -77,7 +77,7 @@
                         <div id="editor-container" class="min-h-42 w-full p-2 bg-white text-black border rounded"></div>
                     </div>
 
-                    <input type="hidden" id="content" name="content">
+                    <input type="hidden" id="content" name="content" value="{{ old('content') }}">
 
 
                     <div class="my-auto block">

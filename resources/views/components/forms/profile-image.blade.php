@@ -40,14 +40,15 @@
                         <button type="button" id="closeBtn" class="border hover:bg-gray-400/30 duration-200 bg-gray-400/60
                             py-1 px-2 cursor-pointer">Close</button>
                     </div>
-                        @error('avatar')
-                            <p class="text-red-400 text-sm mt-2">{{ $message }}</p>
-                        @enderror
-                        @error('avatar-delete')
-                            <p class="text-red-400 text-sm mt-2">{{ $message }}</p>
-                        @enderror
+
                 </div>
-                <x-forms.form-error error="avatar" />
+                @error('avatar')
+                    <p class="text-red-400 text-sm mt-2">{{ $message }}</p>
+                @enderror
+                @error('avatar-delete')
+                    <p class="text-red-400 text-sm mt-2">{{ $message }}</p>
+                @enderror
+
             </form>
         </div>
         </div>
