@@ -43,39 +43,7 @@
                     <input type="hidden" name="thread_id" value="{{ $thread->id }}">
                     <input type="hidden" name="parent_id" value="{{ $post->id ?? null }}">
 
-                    <div id="editor" class="border text-black bg-gray-100 mb-1">
-                        <div id="toolbar-container">
-                            <span class="ql-formats">
-                                <select class="ql-font"></select>
-                                <select class="ql-size"></select>
-                            </span>
-                            <span class="ql-formats">
-                                <button class="ql-bold"></button>
-                                <button class="ql-italic"></button>
-                                <button class="ql-underline"></button>
-                                <button class="ql-strike"></button>
-                            </span>
-                            <span class="ql-formats">
-                                <select class="ql-color"></select>
-                            </span>
-                            <span class="ql-formats">
-                                <button class="ql-list" value="ordered"></button>
-                                <button class="ql-list" value="bullet"></button>
-                                <button class="ql-indent" value="-1"></button>
-                                <button class="ql-indent" value="+1"></button>
-                            </span>
-                            <span class="ql-formats">
-                                <button class="ql-link"></button>
-                                <button class="ql-image"></button>
-                                <button class="ql-video"></button>
-                            </span>
-
-                            <span class="ql-formats">
-                                <button class="ql-clean"></button>
-                            </span>
-                        </div>
-                        <div id="editor-container" class="min-h-42 w-full p-2 bg-white text-black border rounded"></div>
-                    </div>
+                    <x-editor />
 
                     <input type="hidden" id="content" name="content" value="{{ old('content') }}">
 

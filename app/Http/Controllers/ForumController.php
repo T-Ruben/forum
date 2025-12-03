@@ -27,8 +27,8 @@ class ForumController extends Controller
 
         $forums = Forum::with(['threads' ,'latestThread', 'latestThread.user', 'threads.latestPost',
             'threads.latestPost.user'])
-            ->withCount(['threads', 'posts'])
-            ->get();
+            ->withCount(['threads', 'posts']);
+            // ->get();
 
         // $forums = Forum::withCount(['threads', 'posts'])->get();
 

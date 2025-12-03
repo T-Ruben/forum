@@ -42,7 +42,7 @@
             {{ $post->content }}
         </p> --}}
         <div class="ql-snow">
-            <div class="ql-editor">
+            <div class="ql-editor quill-content">
                 {!! $post->content !!}
             </div>
         </div>
