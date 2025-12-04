@@ -1,4 +1,3 @@
-import Quill from 'quill';
 import './bootstrap';
 
 
@@ -125,58 +124,24 @@ document.querySelector('#content').addEventListener('input', function () {
     this.style.height = this.scrollHeight + 'px';
 })}
 
-// Quill
+// Posting
 
-const toolbarOptions = [
-  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-  ['link', 'image', 'video'],
+function insertBBCode(tag) {
+    const textarea = document.getElementById('content');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+    const before = textarea.value.substring(0, start);
+    const after = textarea.value.substring(end);
 
-  [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
-  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+    let insertion;
+    if (selectedText) {
+        insertion = `[${tag}]${selectedText}[/${tag}]`;
+    } else {
+        insertion = `[${tag}][/${tag}]`;
+    }
 
-  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-  [{ 'font': [] }],
-  [{ 'align': [] }],
-
-  ['clean']                                         // remove formatting button
-];
-
-document.addEventListener('DOMContentLoaded', () => {
-const editorDiv = document.querySelector('#editor-container')
-const hiddenInput = document.querySelector('#content');
-const form = document.querySelector('#postForm');
-
-if (!editorDiv || !hiddenInput || !form) return;
-
-if(!editorDiv ) {
-    return;
+    textarea.value = before + insertion + after;
+    textarea.focus();
+    textarea.setSelectionRange(start + tag.length + 2, start + insertion.length - tag.length - 3);
 }
-
-const quill = new Quill('#editor-container', {
-    theme: 'snow',
-    syntax: true,
-    modules: {
-        toolbar: '#toolbar-container',
-    },
-    placeholder: 'Write your reply...',
-});
-
-if(hiddenInput.value.trim().length > 0) {
-    quill.root.innerHTML = hiddenInput.value;
-}
-
-form.addEventListener('submit', () => {
-        let html = quill.root.innerHTML.trim();
-
-        if (html === '<p><br></p>') {
-            html = '';
-        }
-
-        hiddenInput.value = html;
-})
-
-})

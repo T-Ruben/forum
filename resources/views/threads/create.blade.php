@@ -18,7 +18,13 @@
 
                     <x-editor />
 
-                    <input type="hidden" id="content" name="content" value="{{ old('content') }}">
+                    <textarea
+                        id="content"
+                        name="content"
+                        rows="6"
+                        class="w-full p-2 bg-gray-200 text-black resize-none overflow-hidden border border-gray-600
+                        outline-none"
+                        placeholder="Write your post...">{{ old('content') }}</textarea>
 
                 <x-forms.form-error error="title" />
                 <x-forms.form-error error="content" />

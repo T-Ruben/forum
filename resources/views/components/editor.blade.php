@@ -1,35 +1,41 @@
-<div id="editor" class="border text-black bg-gray-100 mb-1">
-    <div id="toolbar-container">
-        <span class="ql-formats">
-            <select class="ql-font" title="Font"></select>
-            <select class="ql-size" title="Size"></select>
-        </span>
-        <span class="ql-formats">
-            <button class="ql-bold" title="Bold"></button>
-            <button class="ql-italic" title="Italic"></button>
-            <button class="ql-underline" title="Underline"></button>
-            <button class="ql-strike" title="Strike"></button>
-        </span>
-        <span class="ql-formats">
-            <select class="ql-color" title="Color"></select>
-            <select class="ql-background" title="Background Color"></select>
-        </span>
-        <span class="ql-formats">
-            <button class="ql-list" value="ordered" title="Ordered"></button>
-            <button class="ql-list" value="bullet" title="Bullet"></button>
-            <button class="ql-indent" value="-1" title="Outdent"></button>
-            <button class="ql-indent" value="+1" title="Indent"></button>
-            <select class="ql-align" title="Align"></select>
-        </span>
-        <span class="ql-formats">
-            <button class="ql-link" title="Link"></button>
-            <button class="ql-image" title="Image"></button>
-            <button class="ql-video" title="Video"></button>
-        </span>
+<div class="border border-gray-600">
+    <div class="flex gap-1 flex-wrap justify-center bg-gray-400 p-1 w-auto">
+        <button type="button" onclick="insertBBCode('b')" class="cursor-pointer px-2 py-1 bg-gray-300 text-black hover:bg-gray-500 rounded">
+            <strong>B</strong>
+        </button>
+        <button type="button" onclick="insertBBCode('i')" class="cursor-pointer px-2 py-1 bg-gray-300 text-black hover:bg-gray-500 rounded">
+            <em>I</em>
+        </button>
+        <button type="button" onclick="insertBBCode('u')" class="cursor-pointer px-2 py-1 bg-gray-300 text-black hover:bg-gray-500 rounded">
+            <u>U</u>
+        </button>
+        <button type="button" onclick="insertBBCode('s')" class="cursor-pointer px-2 py-1 bg-gray-300 text-black hover:bg-gray-500 rounded">
+            <s>S</s>
+        </button>
 
-        <span class="ql-formats">
-            <button class="ql-clean" title="Clean"></button>
-        </span>
     </div>
-    <div id="editor-container" class="min-h-42 w-full p-2 bg-white text-black border rounded"></div>
+
 </div>
+
+<script>
+    function insertBBCode(tag) {
+    const textarea = document.getElementById('content');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+    const before = textarea.value.substring(0, start);
+    const after = textarea.value.substring(end);
+
+    let insertion;
+    if (selectedText) {
+        insertion = `[${tag}]${selectedText}[/${tag}]`;
+    } else {
+        insertion = `[${tag}][/${tag}]`;
+    }
+
+    textarea.value = before + insertion + after;
+    textarea.focus();
+    textarea.setSelectionRange(start + tag.length + 2, start + insertion.length - tag.length - 3);
+}
+
+</script>

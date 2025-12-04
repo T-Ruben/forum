@@ -41,10 +41,8 @@
         {{-- <p class="whitespace-pre-line">
             {{ $post->content }}
         </p> --}}
-        <div class="ql-snow">
-            <div class="ql-editor quill-content">
-                {!! $post->content !!}
-            </div>
+        <div class="post-content whitespace-pre-line break-words">
+            {!! \App\Services\BBCodeParser::parse($post->content) !!}
         </div>
         <x-divide />
         <div class="w-full">

@@ -22,8 +22,7 @@
                 <fieldset class="p-2 rounded-sm border mb-2">
                     <label class="cursor-pointer" for="avatar">Upload a new custom avatar: </label>
                     <input class="w-full border border-gray-500 hover:bg-gray-400/30 transition-colors duration-200
-                        bg-gray-400/60 cursor-pointer p-2 text-white rounded file:mr-4 file:py-2 file:px-4 file:rounded
-                        file:border-0 file:text-sm file:font-semibold file:bg-gray-600 file:text-white hover:file:bg-gray-500
+                        bg-gray-400/60 cursor-pointer p-2 text-white rounded file:mr-4 file:py-2 file:px-4 file:text-sm file:font-semibold file:bg-gray-600 file:text-white hover:file:bg-gray-500
                         file:cursor-pointer"
                     type="file" name="avatar" id="avatar" accept="image/*">
                     <p class="text-xs pt-1 text-gray-500">Image size should not exceed 2MB.</p>
