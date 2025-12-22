@@ -15,9 +15,28 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('parent_id')->nullable()->constrained('posts')->cascadeOnDelete();
-            $table->foreignIdFor(Thread::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(User::class)->nullable()->constrained()->nullOnDelete();
+
+            $table->enum('type', ['forum', 'profile'])->default('forum');
+
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('profile_user_id')
+                ->nullable()
+                ->constrained('users')
+                ->cascadeOnDelete();
+
+            $table->foreignId('thread_id')
+                ->nullable()
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('parent_id')
+                ->nullable()
+                ->constrained('posts')
+                ->cascadeOnDelete();
+
             $table->text('content');
             $table->timestamps();
         });

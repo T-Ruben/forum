@@ -27,21 +27,26 @@
             </div>
             <x-divide />
             <div class="grid grid-cols-2 gap-2">
-            <div class="">
-                <ul class="">
-                    <li>
-                        <x-link page="settings_link" :active="request()->routeIs('settings.personal')" href="{{ route('settings.personal') }}">Personal
-                            Details</x-link>
-                    </li>
-                    <li>
-                        <x-link page="settings_link" :active="request()->routeIs('settings.privacy')"
-                            href="{{ route('settings.privacy') }}">Privacy</x-link>
-                    </li>
-                </ul>
-            </div>
-            <div class="">
-                <!-- Second side of the menu -->
-            </div>
+                <div class="">
+                    <ul class="">
+                        <li>
+                            <x-link page="settings_link" :active="request()->routeIs('settings.personal')" href="{{ route('settings.personal') }}">Personal
+                                Details</x-link>
+                        </li>
+                        <li>
+                            <x-link page="settings_link" :active="request()->routeIs('settings.privacy')"
+                                href="{{ route('settings.privacy') }}">Privacy</x-link>
+                        </li>
+                    </ul>
+                </div>
+                <div class="">
+                    <ul class="">
+                        <li>
+                            <x-link page="settings_link" :active="request()->routeIs('settings.threads')"
+                                href="{{ route('settings.threads') }}">Created Threads</x-link>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <x-divide />
             <div>

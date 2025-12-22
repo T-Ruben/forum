@@ -7,6 +7,8 @@ use App\Models\ForumCategory;
 use App\Models\Post;
 use App\Models\Thread;
 use App\Models\User;
+use App\Models\UserFollows;
+use Database\Factories\UserFollowsFactory;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,6 +21,7 @@ public function run(): void
 {
     // Create users
     User::factory(9)->create();
+    UserFollows::factory(15)->create();
 
     $testUser = User::factory()->create([
         'name' => 'Test User',

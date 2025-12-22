@@ -14,11 +14,11 @@ class ThreadController extends Controller
 {
     public function show(Thread $thread)
     {
-        $thread->load(['latestPost.user',]);
+        $thread->load(['latestPost.user']);
 
 
         $posts = $thread->posts()
-            ->with(['user' => function ($query) {
+            ->with(['user.following', 'user.followers', 'user' => function ($query) {
                 $query->withCount('posts');
             }])
             ->orderBy('created_at', 'asc')
@@ -56,7 +56,7 @@ class ThreadController extends Controller
 
     try {
         DB::beginTransaction();
-        $validated['content'] = Purifier::clean(trim($validated['content']), 'quill');
+        $validated['content'] = trim($validated['content']);
 
 
         $thread = $forum->threads()->create([
@@ -81,7 +81,10 @@ class ThreadController extends Controller
                 ->withErrors(['title' => 'Failed to create thread. Please try again.'])
                 ->withInput();
         }
+    }
 
-
+    public function destroy(Thread $thread) {
+        $thread->delete();
+        return back();
     }
 }

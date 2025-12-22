@@ -15,6 +15,8 @@ class Post extends Model
         'thread_id',
         'user_id',
         'parent_id',
+        'type',
+        'profile_user_id'
     ];
 
     public function thread()

@@ -60,6 +60,30 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+        public function following()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'user_follows',
+            'follower_id',
+            'followed_id'
+        )->withTimestamps();
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'user_follows',
+            'followed_id',
+            'follower_id'
+        )->withTimestamps();
+    }
+
+    public function profilePosts() {
+        return $this->hasMany(Post::class, 'profile_user_id');
+    }
+
     protected $fillable = [
         'name',
         'email',

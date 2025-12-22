@@ -41,7 +41,6 @@
                     @csrf
 
                     <input type="hidden" name="thread_id" value="{{ $thread->id }}">
-                    <input type="hidden" name="parent_id" value="{{ $post->id ?? null }}">
 
                     <x-editor />
 
@@ -60,7 +59,7 @@
                     </div>
 
                     <button type="submit"
-                        class="text-white dark:bg-blue-900 hover:dark:bg-blue-900/75 cursor-pointer duration-200 ml-auto block border rounded-md p-1">
+                        class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 cursor-pointer duration-200 ml-auto block border rounded-md p-1">
                         Post Reply
                     </button>
 

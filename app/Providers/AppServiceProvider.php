@@ -45,7 +45,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('make-thread', function(HttpRequest $request) {
-            return Limit::perMinute(1, 1)->by($request->user()->id)
+            return Limit::perSecond(1, 5)->by($request->user()->id)
                 ->response(function ($request, $headers) {
                     $retryAfter = $headers['Retry-After'] ?? 1;
                     return back()
@@ -82,6 +82,10 @@ class AppServiceProvider extends ServiceProvider
                         ->withErrors(['spam' => "You must wait {$retryAfter} seconds before trying to register again."])
                         ->withInput();
                 });
+        });
+
+        Gate::define('follow-user', function (User $user, $profileUser) {
+            return $user->id !== $profileUser->id;
         });
 
     }

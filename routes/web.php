@@ -32,11 +32,18 @@ Route::post('forums/{forum:slug}/threads', [ThreadController::class, 'store'])
     ->middleware(['auth', 'throttle:make-thread'])
     ->name('threads.store');
 
+Route::delete('/threads/{thread}', [ThreadController::class, 'destroy'])
+    ->middleware(['auth'])
+    ->name('threads.destroy');
+
 
 // Posts
 Route::post('/posts', [PostController::class, 'store'])
     ->middleware(['auth', 'throttle:make-post'])
     ->name('posts.store');
+Route::post('/members/{user}/posts', [PostController::class, 'storeProfile'])
+    ->middleware(['auth', 'throttle:make-post'])
+    ->name('user.posts.store');
 
 
 // Auth routes
@@ -65,6 +72,12 @@ Route::post('/logout', [SessionController::class, 'destroy'])
 // User
 Route::get('/members/{user}', [UserController::class, 'show'])
     ->name('users.show');
+Route::post('/members/{user}', [UserController::class, 'follow'])
+    ->name('users.follow')
+    ->middleware(['auth', 'throttle:20,1']);
+Route::delete('/members/{user}', [UserController::class, 'unfollow'])
+    ->name('users.unfollow')
+    ->middleware(['auth', 'throttle:20,1']);
 
 // User Avatar
 Route::middleware('auth')->group(function () {
@@ -80,5 +93,6 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/settings/personal', [SettingsController::class, 'personal'])->name('settings.personal');
     Route::get('/settings/privacy', [SettingsController::class, 'privacy'])->name('settings.privacy');
+    Route::get('/settings/threads', [SettingsController::class, 'threads'])->name('settings.threads');
 });
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,6 +14,14 @@ class SettingsController extends Controller
     }
     public function privacy() {
         return view('users.privacy', ['user' => Auth::user()]);
+    }
+
+    public function threads(Thread $threads) {
+        $userThreads = Auth::user()->threads()
+            ->orderBy('created_at', 'desc')
+            ->paginate(2);
+
+        return view('users.threads', ['user' => Auth::user(), 'threads' => $userThreads]);
     }
 
 }
