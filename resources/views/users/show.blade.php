@@ -109,7 +109,7 @@
                     </form>
                 </div>
 
-                <div class="bg-gray-200 text-black p-2 w-full max-w-full overflow-x-hidden">
+                <div class="bg-gray-300/60 text-black p-2 w-full max-w-full overflow-x-hidden">
                     @forelse ($posts as $post)
                         <div class="flex shrink-0 gap-3">
                             <div class="w-20 h-20 flex shrink-0 border-1">

@@ -69,7 +69,7 @@
                         </div>
 
                     </li>
-                    <x-divide />
+                    <hr class="border-gray-500 my-2">
             @endforeach
         </ul>
         <div>

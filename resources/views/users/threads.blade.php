@@ -8,8 +8,10 @@
         <ul class="">
             @foreach ($threads as $thread)
                 <li class="text-lg mb-2">
-                    {{ $thread->title }}
-                    <form action="{{ route('threads.destroy', $thread->id) }}" method="POST">
+                    <a href="{{ route('threads.show', [$thread->id, $thread->slug]) }}" class="hover:underline duration-200">
+                        {{ $thread->title }}
+                    </a>
+                    <form action="{{ route('threads.destroy', $thread->id) }}" method="POST" class="mb-2">
                         @csrf
                         @method('DELETE')
 

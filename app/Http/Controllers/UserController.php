@@ -15,7 +15,7 @@ use function Laravel\Prompts\error;
 class UserController extends Controller
 {
     public function show(User $user) {
-        $user->load('profilePosts.user');
+
 
         $posts = $user->profilePosts()
             ->with('user')

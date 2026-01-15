@@ -26,7 +26,14 @@ class Post extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(User::class)->withTrashed()->withDefault([
+                'name' => 'Deleted Member'
+            ]);
+    }
+
+    public function profileOwner()
+    {
+        return $this->belongsTo(User::class, 'profile_user_id');
     }
 
     public function parent()

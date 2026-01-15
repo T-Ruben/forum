@@ -24,7 +24,7 @@
                     {{ $post->author->role }}
                 </div>
             </div>
-            <x-divide class="max-sm:hidden" />
+            <hr class="border-gray-500 max-sm:hidden my-2">
             <div class="max-sm:hidden">
                 <div class="flex justify-between">
                     <p class="text-sm"><span class="text-gray-950/75">Joined: </span></p><p class="text-sm">{{ $post->author->created_at?->format('M d, Y') }}</p>
@@ -50,7 +50,7 @@
         <div class="post-content whitespace-pre-line break-words">
             {!! \App\Services\BBCodeParser::parse($post->content) !!}
         </div>
-        <x-divide />
+        <hr class="border-gray-500 my-2">
         <div class="w-full">
         <span class="text-sm text-gray-700/75">
             <x-user-link :user="$post->author" />

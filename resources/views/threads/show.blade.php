@@ -7,7 +7,7 @@
             {{ $thread->title }}
             {{ $posts->links() }}
         </div>
-        <x-divide />
+        <hr class="border-gray-500 my-2">
         <div>
             @foreach ($posts as $post)
                 <x-post :post="$post" :thread="$thread" />

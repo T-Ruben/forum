@@ -12,6 +12,9 @@
         <button type="button" onclick="insertBBCode('s')" class="cursor-pointer px-2 py-1 bg-gray-300 text-black hover:bg-gray-500 rounded">
             <s>S</s>
         </button>
+        <button type="button" onclick="insertBBCode('URL')" class="cursor-pointer px-2 py-1 bg-gray-300 text-black hover:bg-gray-500 rounded">
+            URL
+        </button>
 
     </div>
 
@@ -32,6 +35,7 @@
     } else {
         insertion = `[${tag}][/${tag}]`;
     }
+
 
     textarea.value = before + insertion + after;
     textarea.focus();

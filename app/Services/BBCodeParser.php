@@ -22,6 +22,12 @@ class BBCodeParser
         $configurator->BBCodes->addFromRepository('U');
         $configurator->BBCodes->addFromRepository('S');
         $configurator->BBCodes->addFromRepository('URL');
+        $configurator->BBCodes->addFromRepository('URL');
+
+        $configurator->tags['URL']->template =
+            '<a href="{@url}" class="text-blue-600 underline hover:text-blue-800 transition-colors duration-200"
+             rel="nofollow ugc noopener" target="_blank"><xsl:apply-templates/></a>';
+
         $configurator->BBCodes->addFromRepository('IMG');
         $configurator->BBCodes->addFromRepository('QUOTE');
         $configurator->BBCodes->addFromRepository('LIST');
@@ -30,6 +36,7 @@ class BBCodeParser
         $configurator->BBCodes->addFromRepository('COLOR');
 
         $configurator->MediaEmbed->add('youtube');
+
 
         extract($configurator->finalize());
 

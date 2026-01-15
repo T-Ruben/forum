@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Forum;
 use App\Models\ForumCategory;
 use App\Models\Post;
+use App\Models\Thread;
 use Illuminate\Http\Request;
 
 
@@ -25,24 +26,26 @@ class ForumController extends Controller
 
     public function index() {
 
-        $forums = Forum::with(['threads' ,'latestThread', 'latestThread.user', 'threads.latestPost',
-            'threads.latestPost.user'])
-            ->withCount(['threads', 'posts']);
-            // ->get();
-
-        // $forums = Forum::withCount(['threads', 'posts'])->get();
-
-
         $forumsCategory = ForumCategory::with(['forums' => function ($query) {
-            $query->limit(5)
-                ->withCount(['threads', 'posts'])
+            $query->withCount(['threads', 'posts'])
                 ->with(['latestThread.latestPost', 'latestThread.latestPost.user', 'latestThread.user', 'latestActiveThread.latestPost.user'
             ]);
         }])->get();
 
+        $forumPosts = Post::with(['user', 'thread.forum',])
+        ->where('type', 'forum')
+        ->latest()
+        ->take(5)
+        ->get();
+
+        $profilePosts = Post::with(['user', 'profileOwner'])
+        ->where('type', 'profile')
+        ->latest()
+        ->take(5)
+        ->get();
+
         return view('home', [
-            'forums' => $forums,
-            'forumsCategory' => $forumsCategory,
+            'forumsCategory' => $forumsCategory, 'forumPosts' => $forumPosts, 'profilePosts' => $profilePosts,
         ]);
     }
 }

@@ -2,7 +2,7 @@
 
 
 @if ($time)
-    <span class="post-time" data-time="{{ $time->toIso8601String() }}">
+    <span {{ $attributes->merge(['class' => "post-time"]) }}  data-time="{{ $time->toIso8601String() }}">
 
     </span>
 @else

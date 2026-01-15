@@ -25,7 +25,7 @@
                 </ul>
 
             </div>
-            <x-divide />
+            <hr class="border-gray-500 my-2">
             <div class="grid grid-cols-2 gap-2">
                 <div class="">
                     <ul class="">
@@ -48,7 +48,7 @@
                     </ul>
                 </div>
             </div>
-            <x-divide />
+            <hr class="border-gray-500 my-2">
             <div>
                 <div class="hover:bg-gray-400/50 w-fit p-1 duration-200">
                     <form class="" action="{{ route('logout.destroy') }}" method="POST">

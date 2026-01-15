@@ -3,13 +3,14 @@ Took from first section: bg-gray-500/75
 Took from second section: bg-gray-500/75
 -->
 
+
 <x-layout>
 
     <x-header />
 
     <main>
         <div class="flex flex-row w-full h-full gap-2">
-            <section class="p-4 flex flex-col justify-start w-4/6 rounded-t-md h-auto max-lg:w-6/6">
+            <section class="p-4 flex flex-col justify-start w-9/12 rounded-t-md h-auto max-lg:w-6/6">
 
                 <h1 class="text-2xl py-2">Game Updates Forum</h1>
 
@@ -71,7 +72,8 @@ Took from second section: bg-gray-500/75
                                         </span>
                                     </div>
                                 </li>
-                                <x-divide />
+                                <hr class="border-gray-500 my-2">
+
                             @endforeach
                         </ul>
                     @endforeach
@@ -79,8 +81,136 @@ Took from second section: bg-gray-500/75
                 </section>
             </section>
 
-            <section class="p-2 w-2/6 rounded-t-md h-auto hidden lg:flex">
-                test
+            <section class="p-2 w-3/12 rounded-t-md h-auto max-lg:hidden">
+                <div class="flex w-full mb-4">
+                    <div class="w-fit h-fit mr-2 border-2 border-double p-0.5">
+                        @auth
+                            <a href="{{ route('users.show', auth()->user()->id) }}">
+                                <img src="{{ asset(auth()->user()->profile_image_url) }}" class="w-32 h-32 object-cover"
+                                    alt="{{ auth()->user()->name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
+                            </a>
+                        @endauth
+
+                        @guest
+                            <a href="#">
+                                <img src="{{ asset('images/default-avatar.png') }}" class="w-32 h-32 object-cover"
+                                    alt="Guest's profile image" data-pin-nopin="true">
+                            </a>
+                        @endguest
+                    </div>
+                    <div class="w-1/2">
+                        <ul>
+                            <li class="mb-2">
+                                <p class="font-bold">
+                                    @auth
+                                        <a href="{{ route('users.show', auth()->user()->id) }}"
+                                            class="hover:underline">
+                                            {{ auth()->user()->name }}
+                                        </a>
+                                    @endauth
+                                    @guest
+                                        Guest
+                                    @endguest
+                                </p>
+                            </li>
+                            <li>
+                                @auth
+                                    <p class="text-sm">Messages: {{ auth()->user()->posts->count() }}</p>
+                                @endauth
+                            </li>
+                        </ul>
+                        <hr/>
+                    </div>
+                </div>
+
+{{-- New Posts Aside --}}
+                <aside class="mb-5">
+                    <div class="mb-2">
+                        <ul class="flex gap-2 justify-center h-10 dark:bg-blue-950 text-lg pl-1">
+                            <li class="flex hover:dark:bg-blue-900/75 items-center cursor-pointer px-1">New Posts</li>
+                        </ul>
+                    </div>
+
+                    <div class="min-w-0 flex flex-col w-full truncate">
+                        <ul class="">
+                            @foreach ($forumPosts as $post)
+                                <li class="mb-2 flex">
+                                    <div class="w-16 h-16 mr-2 flex shrink-0 border">
+                                        <a href="{{ route('users.show', $post->author) }}">
+                                            <img src="{{ asset($post->author->profile_image_url) }}"
+                                            class="object-cover w-full h-full" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="w-full truncate">
+                                        <h3 class="font-semibold flex-grow truncate block break-words">
+                                            <a href="{{ route('threads.show', [$post->thread, $post->thread->id]) }}"
+                                                class="hover:underline duration-200">
+                                                {{ $post->thread->title }}
+                                            </a>
+                                        </h3>
+                                        <p class="truncate">Latest: <a href="{{ route('users.show', $post->user->id) }}"
+                                            class="hover:underline duration-200">
+                                                {{ $post->author->name }}
+                                            </a>,
+                                            <x-time-display :time="$post->updated_at"/>
+                                        </p>
+                                        <p><a href="{{ route('forums.show', $post->thread->forum->slug) }}"
+                                            class="hover:underline duration-200">
+                                            {{ $post->thread->forum->title }}</a></p>
+                                        <hr/>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </aside>
+
+{{-- New Profile Posts Aside --}}
+                <aside>
+                    <div class="mb-2">
+                        <ul class="flex gap-2 justify-center h-10 dark:bg-blue-950 text-lg pl-1">
+                            <li class="flex hover:dark:bg-blue-900/75 items-center cursor-pointer px-1">New Profile Posts</li>
+                        </ul>
+                    </div>
+
+                    <div class="min-w-0 flex flex-col w-full">
+                        <ul>
+                            @foreach ($profilePosts as $post)
+                                <li class="mb-2 flex">
+                                    <div class="w-16 h-16 mr-2 flex shrink-0 border">
+                                        <a href="{{ route('users.show', $post->author) }}">
+                                            <img src="{{ asset($post->author->profile_image_url) }}"
+                                            class="object-cover w-full h-full" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="w-full overflow-hidden">
+                                        <div class="font-semibold flex">
+                                            <a href="{{ route('users.show', $post->user) }}"
+                                                class="hover:underline duration-200">
+                                                <h3>{{ $post->author->name }}</h3>
+                                            </a>
+                                            @if ($post->profileOwner->id !== $post->author->id)
+                                                @include('icons.arrow-right')
+                                                <a href="{{ route('users.show', $post->profile_user_id) }}"
+                                                    class="hover:underline duration-200">
+                                                    {{ $post->profileOwner->name }}</a>
+
+                                            @endif
+                                        </div>
+                                        <div class="text-white break-words line-clamp-5">
+                                            {{ trim($post->content) }}
+                                        </div>
+
+                                        <x-time-display :time="$post->updated_at"/>
+
+                                        <hr/>
+                                    </div>
+
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </aside>
             </section>
         </div>
     </main>
