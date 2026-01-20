@@ -19,7 +19,7 @@ class SettingsController extends Controller
     public function threads(Thread $threads) {
         $userThreads = Auth::user()->threads()
             ->orderBy('created_at', 'desc')
-            ->paginate(2);
+            ->paginate(10);
 
         return view('users.threads', ['user' => Auth::user(), 'threads' => $userThreads]);
     }

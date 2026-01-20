@@ -34,13 +34,54 @@
                 @endforeach
             </div>
 
-            <div class="flex-2 flex-col h-2/3 m-2">
+            <div class="flex-2 flex-col h-2/3 m-2 min-w-0">
+
+                <div class="">
+                    @if ($replyTo)
+                        <div class="mb-4 p-3 border rounded text-sm border-gray-600 text-black">
+                            <p class="flex justify-between border-b">
+                                <span>Replying to <a href="#post-{{ $replyTo->id }}"
+                                    class="hover:underline font-semibold duration-200">{{ $replyTo->author->name }}</a></span>
+                                <a href="{{ route('threads.show', [$thread->id, $thread->slug]) }}"
+                                    class="formReload hover:text-red-500/75 duration-200">@include('icons.cancel')</a>
+                            </p>
+
+                            <div class="relative w-full">
+                                <input type="checkbox" id="limit" class="peer hidden">
+
+                                <div class=" whitespace-pre-line line-clamp-5 peer-checked:line-clamp-none break-words overflow-hidden">
+                                    <span class="">{{ $replyTo->content }}</span>
+                                </div>
+
+                                @if (strlen($replyTo->content) > 300)
+                                <label for="limit"
+                                    class="cursor-pointer text-blue-500 hover:underline mt-2 block peer-checked:hidden">
+                                    Read more...
+                                </label>
+
+                                <label for="limit"
+                                    class="cursor-pointer text-blue-500 hover:underline mt-2 hidden peer-checked:block">
+                                    Show less
+                                </label>
+                                @endif
+                            </div>
+
+                            {{-- <details class="">
+                                <summary class="cursor-pointer mt-2 select-none ">Read More...</summary>
+                                <p class="whitespace-pre-line">
+                                    {{ $replyTo->content }}
+                                </p>
+                            </details> --}}
+                        </div>
+                    @endif
+                </div>
 
 
                 <form action="{{ route('posts.store') }}" method="POST" class="formReload h-full" id="postForm">
                     @csrf
 
-                    <input type="hidden" name="thread_id" value="{{ $thread->id }}">
+                <input type="hidden" name="thread_id" value="{{ $thread->id }}">
+                <input type="hidden" name='parent_id' value="{{ $replyTo?->id ?? null  }}">
 
                     <x-editor />
 

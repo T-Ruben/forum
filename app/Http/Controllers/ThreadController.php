@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Forum;
+use App\Models\Post;
 use App\Models\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,13 +13,21 @@ use Mews\Purifier\Facades\Purifier;
 
 class ThreadController extends Controller
 {
-    public function show(Thread $thread)
+    public function show(Thread $thread, Request $request)
     {
+        $replyTo = null;
+
+        if($request->filled('reply_to'))
+            {
+                $replyTo = Post::where('thread_id', $thread->id)
+                    ->findOrFail($request->reply_to);
+            }
+
         $thread->load(['latestPost.user']);
 
 
         $posts = $thread->posts()
-            ->with(['user.following', 'user.followers', 'user' => function ($query) {
+            ->with(['user.following', 'parent.user', 'user.followers', 'user' => function ($query) {
                 $query->withCount('posts');
             }])
             ->orderBy('created_at', 'asc')
@@ -27,6 +36,7 @@ class ThreadController extends Controller
         return view('threads.show', [
             'thread' => $thread,
             'posts' => $posts,
+            'replyTo' => $replyTo
         ]);
     }
 
@@ -71,8 +81,7 @@ class ThreadController extends Controller
 
         DB::commit();
 
-        return redirect()
-        ->route('threads.show', [$thread->id, $thread->slug])
+        return back()
         ->with('success', 'Thread created successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -84,7 +93,7 @@ class ThreadController extends Controller
     }
 
     public function destroy(Thread $thread) {
-        $thread->delete();
+        $thread->delete($thread->id);
         return back();
     }
 }

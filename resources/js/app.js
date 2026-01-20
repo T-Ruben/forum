@@ -57,8 +57,15 @@ function getRelativeTime(date) {
 
 // Fixed position reload post
 document.querySelectorAll('.formReload').forEach(form => {
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('click', function (e) {
         sessionStorage.setItem('scrollPosition', window.scrollY);
+    })
+})
+
+// Fixed position reload reply
+document.querySelectorAll('.replyReload').forEach(reply => {
+    reply.addEventListener('click', function (e) {
+        sessionStorage.setItem('scrollPosition', window.scrollY = document.body.scrollHeight);
     })
 })
 

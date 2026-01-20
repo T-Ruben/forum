@@ -28,6 +28,7 @@ class PostController extends Controller
     $validated = $request->validate([
         'content' => ['required', 'string'],
         'thread_id' => 'required|exists:threads,id',
+        'parent_id' => 'nullable|exists:posts,id'
     ]);
 
     try {
