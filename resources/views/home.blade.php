@@ -138,7 +138,7 @@ Took from second section: bg-gray-500/75
                                     <div class="w-16 h-16 mr-2 flex shrink-0 border">
                                         <a href="{{ route('users.show', $post->author) }}">
                                             <img src="{{ asset($post->author->profile_image_url) }}"
-                                            class="object-cover w-full h-full" alt="">
+                                            class="object-cover w-full h-full" alt="" data-pin-nopin="true">
                                         </a>
                                     </div>
                                     <div class="w-full truncate">
@@ -180,7 +180,7 @@ Took from second section: bg-gray-500/75
                                     <div class="w-16 h-16 mr-2 flex shrink-0 border">
                                         <a href="{{ route('users.show', $post->author) }}">
                                             <img src="{{ asset($post->author->profile_image_url) }}"
-                                            class="object-cover w-full h-full" alt="">
+                                            class="object-cover w-full h-full" alt="" data-pin-nopin="true">
                                         </a>
                                     </div>
                                     <div class="w-full overflow-hidden">

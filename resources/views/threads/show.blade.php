@@ -42,7 +42,7 @@
                             <p class="flex justify-between border-b">
                                 <span>Replying to <a href="#post-{{ $replyTo->id }}"
                                     class="hover:underline font-semibold duration-200">{{ $replyTo->author->name }}</a></span>
-                                <a href="{{ route('threads.show', [$thread->id, $thread->slug]) }}"
+                                <a href="{{ route('threads.show', [$thread->id, $thread->slug, 'page' => request('page')]) }}"
                                     class="formReload hover:text-red-500/75 duration-200">@include('icons.cancel')</a>
                             </p>
 
@@ -55,12 +55,12 @@
 
                                 @if (strlen($replyTo->content) > 300)
                                 <label for="limit"
-                                    class="cursor-pointer text-blue-500 hover:underline mt-2 block peer-checked:hidden">
+                                    class="select-none cursor-pointer text-blue-500 hover:underline mt-2 block peer-checked:hidden">
                                     Read more...
                                 </label>
 
                                 <label for="limit"
-                                    class="cursor-pointer text-blue-500 hover:underline mt-2 hidden peer-checked:block">
+                                    class="select-none cursor-pointer text-blue-500 hover:underline mt-2 hidden peer-checked:block">
                                     Show less
                                 </label>
                                 @endif

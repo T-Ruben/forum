@@ -47,6 +47,13 @@ class Post extends Model
     }
 
 
+    public function getPageNumber($perPage = 10)
+        {
+            $count = self::where('thread_id', $this->thread_id)
+                ->where('id', '<', $this->id)
+                ->count();
+            return (int) ceil(($count + 1) / $perPage);
+        }
 
     public function getAuthorAttribute()
     {

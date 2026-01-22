@@ -42,5 +42,10 @@ class UserController extends Controller
         return back();
     }
 
+    public function destroy()
+    {
+        Auth::user()->delete(Auth::user()->id);
+        return redirect('/');
+    }
 
 }

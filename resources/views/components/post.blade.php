@@ -47,26 +47,26 @@
     <div class="py-2 pr-2 pl-5 w-full min-h-full text-md break-words overflow-hidden ">
         <article class="post-content break-words" id="post-{{ $post->id }}">
             @if ($post->parent)
-                <blockquote class="flow-root border border-gray-600 p-1 rounded bg-white/25">
+                <blockquote class="flow-root border border-gray-600 p-1 rounded bg-white/25 ">
                     <div class="border-b b-2 py-2 leading-0">
-                        <p class="text-sm inline">Replying to: <span class="font-semibold hover:underline duration-200"><a href="#post-{{ $post->parent_id }}">{{ $post->parent?->user->display_name }}</a></span></p>
+                        <p class="text-sm inline">Replying to: <span class="font-semibold hover:underline duration-200"><a href="{{ route('threads.show', [$thread, $thread->slug, 'page' => $post->parent->getPageNumber()]) }}#post-{{ $post->parent_id }}">{{ $post->parent?->user->display_name }}</a></span></p>
                     </div>
 
                     <div class="relative">
-                        <input type="checkbox" id="secondLimit" class="peer hidden">
+                        <input type="checkbox" id="$post-{{ $post->id }}" class="peer hidden">
 
                         <div class="whitespace-pre-line line-clamp-5 peer-checked:line-clamp-none">
                             {!! \App\Services\BBCodeParser::parse($post->parent?->content) !!}
                         </div>
 
                         @if (strlen($post->parent?->content) > 300)
-                        <label for="secondLimit"
-                            class="cursor-pointer text-blue-500 hover:underline mt-2 block peer-checked:hidden">
+                        <label for="$post-{{ $post->id }}"
+                            class="select-none cursor-pointer text-blue-500 hover:underline mt-2 block peer-checked:hidden">
                             Read more...
                         </label>
 
-                        <label for="secondLimit"
-                            class="cursor-pointer text-blue-500 hover:underline mt-2 hidden peer-checked:block">
+                        <label for="$post-{{ $post->id }}"
+                            class="select-none cursor-pointer text-blue-500 hover:underline mt-2 hidden peer-checked:block">
                             Show less
                         </label>
                         @endif
@@ -86,7 +86,7 @@
             </span>
             </div>
             <div class="">
-                <a href="{{ route('threads.show', ['thread' => $thread->id, 'reply_to' => $post->id, $thread->slug]) }}"
+                <a href="{{ route('threads.show', ['thread' => $thread->id, 'reply_to' => $post->id, $thread->slug, 'page' => request('page')]) }}#post-{{ $post->parent_id }}"
                     class="replyReload cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
                     Reply
                 </a>

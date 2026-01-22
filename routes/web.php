@@ -78,6 +78,9 @@ Route::post('/members/{user}', [UserController::class, 'follow'])
 Route::delete('/members/{user}', [UserController::class, 'unfollow'])
     ->name('users.unfollow')
     ->middleware(['auth', 'throttle:20,1']);
+Route::delete('/members/{user}', [UserController::class, 'destroy'])
+    ->name('users.destroy')
+    ->middleware('auth');
 
 // User Avatar
 Route::middleware('auth')->group(function () {
