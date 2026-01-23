@@ -33,13 +33,13 @@ class ForumController extends Controller
         }])->get();
 
         $forumPosts = Post::with(['user', 'thread.forum',])
-        ->where('type', 'forum')
+        ->whereNotNull('thread_id')
         ->latest()
         ->take(5)
         ->get();
 
         $profilePosts = Post::with(['user', 'profileOwner'])
-        ->where('type', 'profile')
+        ->whereNull('thread_id')
         ->latest()
         ->take(5)
         ->get();

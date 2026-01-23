@@ -150,7 +150,7 @@ Took from second section: bg-gray-500/75
                                         </h3>
                                         <p class="truncate">Latest: <a href="{{ $post->author?->author_url }}"
                                             class="hover:underline duration-200">
-                                                {{ $post->author->name }}
+                                                {{ $post->author->display_name }}
                                             </a>,
                                             <x-time-display :time="$post->updated_at"/>
                                         </p>
@@ -187,7 +187,7 @@ Took from second section: bg-gray-500/75
                                         <div class="font-semibold flex">
                                             <a href="{{ $post->author?->author_url }}"
                                                 class="hover:underline duration-200">
-                                                <h3>{{ $post->author->name }}</h3>
+                                                <h3 class="truncate">{{ $post->author->display_name }}</h3>
                                             </a>
                                             {{-- @if ($post->profileOwner->id !== $post->author->id)
                                                 @include('icons.arrow-right')
@@ -198,9 +198,9 @@ Took from second section: bg-gray-500/75
                                             @endif --}}
                                             @if ($post->profile_user_id !== $post->author->id)
                                                 @include('icons.arrow-right')
-                                                <a href="{{ route('users.show', $post->profile_user_id) }}"
+                                                <a href="{{ $post->profileOwner?->author_url }}"
                                                     class="hover:underline duration-200">
-                                                    {{ $post->profile_user_id }}</a>
+                                                    <span class="">{{ $post->profileOwner->display_name }}</span></a>
 
                                             @endif
                                         </div>

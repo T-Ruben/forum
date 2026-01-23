@@ -80,7 +80,6 @@ class PostController extends Controller
             'user_id' => Auth::id(),
             'profile_user_id' => $user->id,
             'content' => $validated['content'],
-            'type' => 'profile',
         ]);
         return back()->with('success', 'Post created successfully!');
     } catch (\Exception $e) {

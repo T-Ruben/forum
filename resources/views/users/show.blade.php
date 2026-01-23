@@ -114,17 +114,15 @@
                     @forelse ($posts as $post)
                         <div class="flex shrink-0 gap-3">
                             <div class="w-20 h-20 flex shrink-0 border-1">
-                                <a href="{{ route('users.show', $post->user) }}">
-                                    <img src="{{ asset($post->user->profile_image_url) }}" class="w-full h-full object-cover"
-                                        alt="{{ $post->user->name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
+                                <a href="{{ $post->author?->author_url }}">
+                                    <img src="{{ asset($post->author->profile_image_url) }}" class="w-full h-full object-cover"
+                                        alt="{{ $post->author->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
                                 </a>
                             </div>
                             <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
-                                <a href="{{ route('users.show', $post->user) }}"
-                                    class="hover:text-black/50 duration-200"><strong>{{ $post->user->name }}</strong></a>
-                                <div class="post-content whitespace-pre-line break-all md:break-words">
-                                    {!! $post->content !!}
-                                </div>
+                                <a href="{{ $post->author?->author_url }}"
+                                    class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $post->author->display_name }}</strong></a>
+                                <div class="post-content whitespace-pre-line break-all md:break-words">{!! $post->content !!}</div>
                                 <small class="text-gray-500"><x-time-display :time="$post->created_at" /></small>
                             </div>
                         </div>

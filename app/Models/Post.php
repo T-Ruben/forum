@@ -15,7 +15,6 @@ class Post extends Model
         'thread_id',
         'user_id',
         'parent_id',
-        'type',
         'profile_user_id'
     ];
 
@@ -33,7 +32,8 @@ class Post extends Model
 
     public function profileOwner()
     {
-        return $this->belongsTo(User::class, 'profile_user_id');
+        return $this->belongsTo(User::class, 'profile_user_id')
+            ->withTrashed();
     }
 
     public function parent()
@@ -47,7 +47,8 @@ class Post extends Model
     }
 
     public function author() {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(User::class)
+            ->withTrashed();
     }
 
     public function getPageNumber($perPage = 10)
