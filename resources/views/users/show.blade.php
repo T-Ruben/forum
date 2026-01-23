@@ -86,6 +86,7 @@
                             </div>
                     <form action="{{ route('user.posts.store', $user) }}" method="POST" class="formReload w-full" id="postForm">
                         @csrf
+                        <input type="hidden" name="reply_to" value="{{ $replyTo?->id ?? null }}">
 
                         <textarea
                             id="content"

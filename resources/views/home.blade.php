@@ -136,7 +136,7 @@ Took from second section: bg-gray-500/75
                             @foreach ($forumPosts as $post)
                                 <li class="mb-2 flex">
                                     <div class="w-16 h-16 mr-2 flex shrink-0 border">
-                                        <a href="{{ route('users.show', $post->author) }}">
+                                        <a href="{{ $post->author?->author_url }}">
                                             <img src="{{ asset($post->author->profile_image_url) }}"
                                             class="object-cover w-full h-full" alt="" data-pin-nopin="true">
                                         </a>
@@ -148,7 +148,7 @@ Took from second section: bg-gray-500/75
                                                 {{ $post->thread->title }}
                                             </a>
                                         </h3>
-                                        <p class="truncate">Latest: <a href="{{ route('users.show', $post->user->id) }}"
+                                        <p class="truncate">Latest: <a href="{{ $post->author?->author_url }}"
                                             class="hover:underline duration-200">
                                                 {{ $post->author->name }}
                                             </a>,
@@ -178,22 +178,29 @@ Took from second section: bg-gray-500/75
                             @foreach ($profilePosts as $post)
                                 <li class="mb-2 flex">
                                     <div class="w-16 h-16 mr-2 flex shrink-0 border">
-                                        <a href="{{ route('users.show', $post->author) }}">
+                                        <a href="{{ $post->author?->author_url }}">
                                             <img src="{{ asset($post->author->profile_image_url) }}"
                                             class="object-cover w-full h-full" alt="" data-pin-nopin="true">
                                         </a>
                                     </div>
                                     <div class="w-full overflow-hidden">
                                         <div class="font-semibold flex">
-                                            <a href="{{ route('users.show', $post->user) }}"
+                                            <a href="{{ $post->author?->author_url }}"
                                                 class="hover:underline duration-200">
                                                 <h3>{{ $post->author->name }}</h3>
                                             </a>
-                                            @if ($post->profileOwner->id !== $post->author->id)
+                                            {{-- @if ($post->profileOwner->id !== $post->author->id)
                                                 @include('icons.arrow-right')
                                                 <a href="{{ route('users.show', $post->profile_user_id) }}"
                                                     class="hover:underline duration-200">
                                                     {{ $post->profileOwner->name }}</a>
+
+                                            @endif --}}
+                                            @if ($post->profile_user_id !== $post->author->id)
+                                                @include('icons.arrow-right')
+                                                <a href="{{ route('users.show', $post->profile_user_id) }}"
+                                                    class="hover:underline duration-200">
+                                                    {{ $post->profile_user_id }}</a>
 
                                             @endif
                                         </div>

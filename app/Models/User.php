@@ -153,4 +153,9 @@ class User extends Authenticatable
         ? asset('storage/avatars/' . $this->profile_image)
         : asset('images/default-avatar.png');
     }
+
+    public function getAuthorUrlAttribute()
+    {
+        return $this->trashed() ? '' : route('users.show', $this);
+    }
 }

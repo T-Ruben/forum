@@ -46,11 +46,14 @@ class Post extends Model
         return $this->hasMany(Post::class, 'parent_id');
     }
 
+    public function author() {
+        return $this->belongsTo(User::class)->withTrashed();
+    }
 
     public function getPageNumber($perPage = 10)
         {
             $count = self::where('thread_id', $this->thread_id)
-                ->where('id', '<', $this->id)
+                ->where('created_at', '<', $this->created_at)
                 ->count();
             return (int) ceil(($count + 1) / $perPage);
         }

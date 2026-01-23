@@ -13,7 +13,7 @@
                 <x-forms.input label="Email" name="email" placeholder="Email" title="Email" />
 
                 <x-forms.radio-group label="Gender" name="gender" :options="['Female', 'Male', 'Unspecified']" />
-                <x-forms.input label="Location*" name="location" placeholder="" title="Your location." placeholder="Location"
+                <x-forms.input label="Location" name="location" placeholder="" title="Your location." placeholder="Location"
                     title="Optional" />
 
                 {{-- <x-forms.input label="Date of Birth" name="date_of_birth" type="date" required /> --}}
