@@ -145,18 +145,18 @@ Took from second section: bg-gray-500/75
                                         <h3 class="font-semibold flex-grow truncate block break-words">
                                             <a href="{{ route('threads.show', [$post->thread, $post->thread->id]) }}"
                                                 class="hover:underline duration-200">
-                                                {{ $post->thread->title }}
+                                                <span title="{{ $post->thread->title }}">{{ $post->thread->title }}</span>
                                             </a>
                                         </h3>
                                         <p class="truncate">Latest: <a href="{{ $post->author?->author_url }}"
                                             class="hover:underline duration-200">
-                                                {{ $post->author->display_name }}
+                                                <span title="{{ $post->author->display_name }}">{{ $post->author->display_name }}</span>
                                             </a>,
                                             <x-time-display :time="$post->updated_at"/>
                                         </p>
                                         <p><a href="{{ route('forums.show', $post->thread->forum->slug) }}"
                                             class="hover:underline duration-200">
-                                            {{ $post->thread->forum->title }}</a></p>
+                                            <span title="{{ $post->thread->forum->title }}">{{ $post->thread->forum->title }}</span></a></p>
                                         <hr/>
                                     </div>
                                 </li>
@@ -187,22 +187,17 @@ Took from second section: bg-gray-500/75
                                         <div class="font-semibold flex">
                                             <a href="{{ $post->author?->author_url }}"
                                                 class="hover:underline duration-200">
-                                                <h3 class="truncate">{{ $post->author->display_name }}</h3>
+                                                <h3 class="truncate" title="{{ $post->author->display_name }}">{{ $post->author->display_name }}</h3>
                                             </a>
-                                            {{-- @if ($post->profileOwner->id !== $post->author->id)
-                                                @include('icons.arrow-right')
-                                                <a href="{{ route('users.show', $post->profile_user_id) }}"
-                                                    class="hover:underline duration-200">
-                                                    {{ $post->profileOwner->name }}</a>
 
-                                            @endif --}}
                                             @if ($post->profile_user_id !== $post->author->id)
                                                 @include('icons.arrow-right')
                                                 <a href="{{ $post->profileOwner?->author_url }}"
                                                     class="hover:underline duration-200">
-                                                    <span class="">{{ $post->profileOwner->display_name }}</span></a>
+                                                    <span class="" title="{{ $post->profileOwner->display_name }}">{{ $post->profileOwner->display_name }}</span></a>
 
                                             @endif
+
                                         </div>
                                         <div class="text-white break-words line-clamp-5">
                                             {{ trim($post->content) }}

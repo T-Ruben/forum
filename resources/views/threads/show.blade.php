@@ -65,13 +65,6 @@
                                 </label>
                                 @endif
                             </div>
-
-                            {{-- <details class="">
-                                <summary class="cursor-pointer mt-2 select-none ">Read More...</summary>
-                                <p class="whitespace-pre-line">
-                                    {{ $replyTo->content }}
-                                </p>
-                            </details> --}}
                         </div>
                     @endif
                 </div>

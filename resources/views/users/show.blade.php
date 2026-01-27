@@ -86,7 +86,8 @@
                             </div>
                     <form action="{{ route('user.posts.store', $user) }}" method="POST" class="formReload w-full" id="postForm">
                         @csrf
-                        <input type="hidden" name="reply_to" value="{{ $replyTo?->id ?? null }}">
+                        <input type="hidden" name="parent_id" value="{{ $replyTo?->id ?? null }}">
+                        <input type="hidden" name="profile_user_id" value="{{ $user->id }}">
 
                         <textarea
                             id="content"
@@ -112,6 +113,7 @@
 
                 <div class="bg-gray-300/60 text-black p-2 w-full max-w-full overflow-x-hidden">
                     @forelse ($posts as $post)
+                    @if (!$post->parent)
                         <div class="flex shrink-0 gap-3">
                             <div class="w-20 h-20 flex shrink-0 border-1">
                                 <a href="{{ $post->author?->author_url }}">
@@ -120,13 +122,55 @@
                                 </a>
                             </div>
                             <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
-                                <a href="{{ $post->author?->author_url }}"
-                                    class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $post->author->display_name }}</strong></a>
-                                <div class="post-content whitespace-pre-line break-all md:break-words">{!! $post->content !!}</div>
-                                <small class="text-gray-500"><x-time-display :time="$post->created_at" /></small>
+                                <div>
+                                    <div>
+                                        <a href="{{ $post->author?->author_url }}"
+                                            class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $post->author->display_name }}</strong></a>
+                                        <div class="post-content whitespace-pre-line break-all md:break-words pb-10">{!! $post->content !!}</div>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <small class="text-gray-300"><x-time-display :time="$post->created_at" /></small>
+                                        <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $post->id]) }}"
+                                            class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                                            Reply
+                                        </a>
+                                    </div>
+                                </div>
+                                @foreach ($post->replies as $reply)
+                                    <div class="flex shrink-0 gap-3 bg-gray-300/50 px-1 pt-1">
+                                        <div class="w-16 h-16 flex shrink-0 border-1">
+                                            <a href="{{ $reply->author?->author_url }}">
+                                                <img src="{{ asset($reply->author->profile_image_url) }}" class="w-full h-full object-cover"
+                                                    alt="{{ $reply->author->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
+                                            </a>
+                                        </div>
+                                        <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
+                                            <div>
+                                                <div>
+                                                    <a href="{{ $reply->author?->author_url }}"
+                                                        class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $reply->author->display_name }}</strong></a>
+                                                    <div class="post-content whitespace-pre-line break-all md:break-words">{!! $reply->content !!}</div>
+                                                </div>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <small class="text-gray-300"><x-time-display :time="$reply->created_at" /></small>
+                                                <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $reply->id]) }}"
+                                                    class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                                                    Reply
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="mb-3">
+                                @endforeach
                             </div>
                         </div>
+                        <div>
+
+                        </div>
+
                         <hr class="mb-3">
+                    @endif
                     @empty
                         <p>No posts on this profile yet.</p>
                     @endforelse

@@ -72,15 +72,14 @@ class PostController extends Controller
 
     $validated = $request->validate([
         'content' => ['required', 'string'],
+        'profile_user_id' => 'required|exists:posts,profile_user_id',
+        'parent_id' => 'nullable|exists:posts,id'
     ]);
 
     try {
         $validated['content'] = trim($validated['content']);
-        Post::create([
-            'user_id' => Auth::id(),
-            'profile_user_id' => $user->id,
-            'content' => $validated['content'],
-        ]);
+                Auth::user()->posts()->create($validated);
+
         return back()->with('success', 'Post created successfully!');
     } catch (\Exception $e) {
         Log::error('Post creation failed', [
