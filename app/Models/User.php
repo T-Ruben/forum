@@ -41,6 +41,7 @@ class User extends Authenticatable
             'email' => 'deleted+' . $this->id . '@email.com',
             'role' => 'Former Member',
             'profile_image' => null,
+            'date_of_birth' => null,
             'password' => bcrypt(str()->random(40)),
         ]);
     }
@@ -154,7 +155,7 @@ class User extends Authenticatable
         : asset('images/default-avatar.png');
     }
 
-    public function getAuthorUrlAttribute()
+    public function getUserUrlAttribute()
     {
         return $this->trashed() ? '' : route('users.show', $this);
     }

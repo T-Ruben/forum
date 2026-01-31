@@ -23,14 +23,11 @@ class UserController extends Controller
                 ->findOrFail($request->reply_to);
         }
 
-        $posts = $user->profilePosts()
-            ->whereNull('parent_id')
-            ->with(['user', 'parent.user', 'replies' => function ($query) {
-                $query->with(['user', 'replies.replies', 'replies.user'])
-                    ->orderBy('created_at', 'asc');
-            }])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+$posts = $user->profilePosts()
+    ->whereNull('parent_id')
+    ->with(['user', 'recursiveReplies', 'parent']) // Just load the top level + the recursion
+    ->orderBy('created_at', 'desc')
+    ->paginate(10);
 
         return view('users.show', [
             'user' => $user,

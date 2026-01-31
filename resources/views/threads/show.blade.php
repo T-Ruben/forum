@@ -41,7 +41,7 @@
                         <div class="mb-4 p-3 border rounded text-sm border-gray-600 text-black">
                             <p class="flex justify-between border-b">
                                 <span>Replying to <a href="#post-{{ $replyTo->id }}"
-                                    class="hover:underline font-semibold duration-200">{{ $replyTo->author->display_name }}</a></span>
+                                    class="hover:underline font-semibold duration-200">{{ $replyTo->user->display_name }}</a></span>
                                 <a href="{{ route('threads.show', [$thread->id, $thread->slug, 'page' => request('page')]) }}"
                                     class="formReload hover:text-red-500/75 duration-200">@include('icons.cancel')</a>
                             </p>

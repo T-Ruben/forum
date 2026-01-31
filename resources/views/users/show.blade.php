@@ -74,7 +74,7 @@
                         <div class="mb-4 p-3 border rounded text-sm border-gray-600 text-black">
                             <p class="flex justify-between border-b">
                                 <span>Replying to <a href="#post-{{ $replyTo->id }}"
-                                    class="hover:underline font-semibold duration-200">{{ $replyTo->author->display_name }}</a></span>
+                                    class="hover:underline font-semibold duration-200">{{ $replyTo->user->display_name }}</a></span>
                                 <a href="{{ route('users.show', ['user' => $user->id,  'page' => request('page')]) }}"
                                     class="formReload hover:text-red-500/75 duration-200">@include('icons.cancel')</a>
                             </p>
@@ -150,16 +150,16 @@
                 @if (!$post->parent)
                     <div class="flex shrink-0 gap-3">
                         <div class="w-20 h-20 flex shrink-0 border-1">
-                            <a href="{{ $post->author?->author_url }}">
-                                <img src="{{ asset($post->author->profile_image_url) }}" class="w-full h-full object-cover"
-                                    alt="{{ $post->author?->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
+                            <a href="{{ $post->user?->user_url }}">
+                                <img src="{{ asset($post->user->profile_image_url) }}" class="w-full h-full object-cover"
+                                    alt="{{ $post->user?->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
                             </a>
                         </div>
                         <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
                             <div id="">
                                 <div>
-                                    <a href="{{ $post->author?->author_url }}"
-                                        class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $post->author->display_name }}</strong></a>
+                                    <a href="{{ $post->user?->user_url }}"
+                                        class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $post->user->display_name }}</strong></a>
                                     <div class="post-content whitespace-pre-line break-all md:break-words pb-10">{!! $post->content !!}</div>
                                 </div>
                                 <div class="flex justify-between">
@@ -170,7 +170,7 @@
                                     </a>
                                 </div>
                             </div>
-                            @foreach ($post->replies as $reply)
+                            @foreach ($post->recursiveReplies as $reply)
                                 @include('components.reply', ['reply' => $reply, 'depth' => 0])
                             @endforeach
                         </div>

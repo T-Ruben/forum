@@ -32,10 +32,10 @@
                     <li class="text-lg ml-2 flex items-center">
                         <div class="flex items-center w-2/3 min-w-0">
                             <div class="my-2 ml-1 mr-2 border shadow-xs shadow-black text-black flex shrink-0">
-                                <a href="{{ route('users.show', $thread->author) }}">
-                                <img src="{{ $thread->author->profile_image_url }}"
+                                <a href="{{ route('users.show', $thread->user) }}">
+                                <img src="{{ $thread->user->profile_image_url }}"
                                     class="w-12 h-12 object-cover"
-                                    alt="{{ $thread->author->display_name ?? 'Deleted Member' }}'s profile image">
+                                    alt="{{ $thread->user->display_name ?? 'Deleted Member' }}'s profile image">
                                 </a>
                             </div>
                             <div class="min-w-0 flex flex-col w-full truncate">
@@ -45,8 +45,8 @@
                                     </x-link>
                                 </div>
                                 <span class="flex">
-                                    <x-link :active="false" href="{{ route('users.show', $thread->author) }}" title="Thread starter">
-                                            <span class="mr-1 text-gray-200">{{ $thread->author->display_name }}, </span>
+                                    <x-link :active="false" href="{{ route('users.show', $thread->user) }}" title="Thread starter">
+                                            <span class="mr-1 text-gray-200">{{ $thread->user->display_name }}, </span>
                                     </x-link>
                                     <x-link :active="false" href="{{ route('threads.show', [$thread->id, $thread->slug]) }}">
                                         <span class="text-gray-300/75">{{ $thread->created_at->format('M d, Y') }}</span>
@@ -56,9 +56,9 @@
                         </div>
                         <div class="flex items-center justify-center w-1/6 text-sm">Replies: {{ $thread->posts_count ?? '0' }}</div>
                         <div class="flex-2 text-center justify-center items-start w-1/6 text-sm">
-                            @if ($thread->latestPost?->author)
-                                <a href="{{ route('users.show', $thread->latestPost->author) }}">
-                                    <span class="block hover:underline">{{ $thread->latestPost->author->display_name }}</span>
+                            @if ($thread->latestPost?->user)
+                                <a href="{{ route('users.show', $thread->latestPost->user) }}">
+                                    <span class="block hover:underline">{{ $thread->latestPost->user->display_name }}</span>
                                 </a>
 
                                 <x-time-display :time="$thread->latestPost?->created_at" />

@@ -62,7 +62,7 @@ Took from second section: bg-gray-500/75
                                         </span>
                                         <span class="block">
                                             <span class="text-gray-200">
-                                                <x-user-link :user="$forum->latestThread?->latestPost?->author" />
+                                                <x-user-link :user="$forum->latestThread?->latestPost?->user" />
                                             </span>
                                             {{-- <span class="post-time" data-time="{{ $forum->latestThread?->latestPost->updated_at->toIso8601String() }}">
                                                 {{ $forum->latestThread?->latestPost?->created_at->diffForHumans() ?? '' }}
@@ -136,8 +136,8 @@ Took from second section: bg-gray-500/75
                             @foreach ($forumPosts as $post)
                                 <li class="mb-2 flex">
                                     <div class="w-16 h-16 mr-2 flex shrink-0 border">
-                                        <a href="{{ $post->author?->author_url }}">
-                                            <img src="{{ asset($post->author->profile_image_url) }}"
+                                        <a href="{{ $post->user?->user_url }}">
+                                            <img src="{{ asset($post->user->profile_image_url) }}"
                                             class="object-cover w-full h-full" alt="" data-pin-nopin="true">
                                         </a>
                                     </div>
@@ -148,14 +148,14 @@ Took from second section: bg-gray-500/75
                                                 <span title="{{ $post->thread->title }}">{{ $post->thread->title }}</span>
                                             </a>
                                         </h3>
-                                        <p class="truncate">Latest: <a href="{{ $post->author?->author_url }}"
+                                        <p class="truncate">Latest: <a href="{{ $post->user?->user_url }}"
                                             class="hover:underline duration-200">
-                                                <span title="{{ $post->author->display_name }}">{{ $post->author->display_name }}</span>
+                                                <span title="{{ $post->user->display_name }}">{{ $post->user->display_name }}</span>
                                             </a>,
                                             <x-time-display :time="$post->updated_at"/>
                                         </p>
                                         <p><a href="{{ route('forums.show', $post->thread->forum->slug) }}"
-                                            class="hover:underline duration-200">
+                                            class="hover:underline duration-200 text-sm">
                                             <span title="{{ $post->thread->forum->title }}">{{ $post->thread->forum->title }}</span></a></p>
                                         <hr/>
                                     </div>
@@ -178,21 +178,21 @@ Took from second section: bg-gray-500/75
                             @foreach ($profilePosts as $post)
                                 <li class="mb-2 flex">
                                     <div class="w-16 h-16 mr-2 flex shrink-0 border">
-                                        <a href="{{ $post->author?->author_url }}">
-                                            <img src="{{ asset($post->author->profile_image_url) }}"
+                                        <a href="{{ $post->user?->user_url }}">
+                                            <img src="{{ asset($post->user->profile_image_url) }}"
                                             class="object-cover w-full h-full" alt="" data-pin-nopin="true">
                                         </a>
                                     </div>
                                     <div class="w-full overflow-hidden">
                                         <div class="font-semibold flex">
-                                            <a href="{{ $post->author?->author_url }}"
-                                                class="hover:underline duration-200">
-                                                <h3 class="truncate" title="{{ $post->author->display_name }}">{{ $post->author->display_name }}</h3>
+                                            <a href="{{ $post->user?->user_url }}"
+                                                class="hover:underline duration-200 w-1/2">
+                                                <h3 class="truncate" title="{{ $post->user->display_name }}">{{ $post->user->display_name }}</h3>
                                             </a>
 
-                                            @if ($post->profile_user_id !== $post->author->id)
+                                            @if ($post->profile_user_id !== $post->user->id)
                                                 @include('icons.arrow-right')
-                                                <a href="{{ $post->profileOwner?->author_url }}"
+                                                <a href="{{ $post->profileOwner?->user_url }}"
                                                     class="hover:underline duration-200">
                                                     <span class="" title="{{ $post->profileOwner->display_name }}">{{ $post->profileOwner->display_name }}</span></a>
 
@@ -203,7 +203,7 @@ Took from second section: bg-gray-500/75
                                             {{ trim($post->content) }}
                                         </div>
 
-                                        <x-time-display :time="$post->updated_at"/>
+                                        <x-time-display :time="$post->updated_at" class="text-sm"/>
 
                                         <hr/>
                                     </div>

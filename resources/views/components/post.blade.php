@@ -7,32 +7,32 @@
         text-left flex flex-col items-center justify-center min-w-42 max-w-42
         max-sm:min-w-full max-sm:flex-row max-sm:pl-2 max-sm:max-h-32 max-sm:py-2 max-sm:items-start">
         <div class="w-32 h-32 max-sm:min-w-26  max-sm:min-h-26 max-sm:max-h-26 max-sm:max-w-26 overflow-hidden border shadow-xs shadow-black text-black">
-            <a href="{{ $post->author?->author_url }}">
-            <img src="{{ $post->author->profile_image_url }}"
+            <a href="{{ $post->user?->user_url }}">
+            <img src="{{ $post->user->profile_image_url }}"
                 class="w-32 h-32 object-cover"
-                alt="{{ $post->author->display_name ?? 'Deleted Member' }}'s profile image"
+                alt="{{ $post->user->display_name ?? 'Deleted Member' }}'s profile image"
                 data-pin-nopin="true">
             </a>
         </div>
         <div class="flex flex-col w-full px-2">
             <div>
                 <div class="pt-2 font-bold">
-                    <a class="hover:underline" href="{{ $post->author?->author_url }}">
-                    {{ $post->author->display_name }}
+                    <a class="hover:underline" href="{{ $post->user?->user_url }}">
+                    {{ $post->user->display_name }}
                     </a>
                 </div>
                 <div class="text-sm">
-                    {{ $post->author->role }}
+                    {{ $post->user->role }}
                 </div>
             </div>
             <hr class="border-gray-500 max-sm:hidden my-2">
             <div class="max-sm:hidden">
                 <div class="flex justify-between">
-                    <p class="text-sm"><span class="text-gray-950/75">Joined: </span></p><p class="text-sm">{{ $post->author->created_at?->format('M d, Y') }}</p>
+                    <p class="text-sm"><span class="text-gray-950/75">Joined: </span></p><p class="text-sm">{{ $post->user->created_at?->format('M d, Y') }}</p>
 
                 </div>
                 <div class="flex justify-between">
-                    <p class="text-sm"><span class="text-gray-950/75">Messages: </span></p><p class="text-sm">{{ optional($post->author)->posts_count ?? 0 }}</p>
+                    <p class="text-sm"><span class="text-gray-950/75">Messages: </span></p><p class="text-sm">{{ optional($post->user)->posts_count ?? 0 }}</p>
                 </div>
                 <div class="flex justify-between">
                     <p class="text-sm"><span class="text-gray-950/75">Following: </span></p><p class="text-sm">{{ $post->user->following->count() }}</p>
@@ -79,7 +79,7 @@
         <div class="flex align-bottom">
             <div class="w-full">
             <span class="text-sm text-gray-700/75">
-                <x-user-link :user="$post->author" />
+                <x-user-link :user="$post->user" />
             </span>
             <span class="text-sm text-gray-700/75">
                 <x-time-display :time="$post->updated_at" />

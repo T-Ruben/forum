@@ -1,16 +1,16 @@
 <div class="flex shrink-0 gap-3 border-b-1 rounded-b-md bg-gray-300/25 px-1 pt-1 {{ $depth > 0 ? 'ml-10' : '' }}"
     id="">
     <div class="w-16 h-16 flex shrink-0 border-1">
-        <a href="{{ $reply->author?->author_url }}">
-            <img src="{{ asset($reply->author->profile_image_url) }}" class="w-full h-full object-cover"
-                alt="{{ $reply->author?->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
+        <a href="{{ $reply->user?->user_url }}">
+            <img src="{{ asset($reply->user->profile_image_url) }}" class="w-full h-full object-cover"
+                alt="{{ $reply->user?->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
         </a>
     </div>
     <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
         <div>
             <div>
-                <a href="{{ $reply->author?->author_url }}"
-                    class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $reply->author?->display_name }}</strong></a>
+                <a href="{{ $reply->user?->user_url }}"
+                    class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $reply->user?->display_name }}</strong></a>
                 <div class="post-content whitespace-pre-line break-all md:break-words">{!! $reply->content !!}</div>
             </div>
         </div>
@@ -25,9 +25,9 @@
 </div>
 
 
-@if ($reply->replies->count() > 0)
+@if ($reply->recursiveReplies->count() > 0)
     <div class="nested-replies">
-        @foreach ($reply->replies as $subReply)
+        @foreach ($reply->recursiveReplies as $subReply)
             @include('components.reply', ['reply' => $subReply, 'depth' => $depth + 1])
         @endforeach
     </div>
