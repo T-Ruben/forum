@@ -80,7 +80,8 @@ class PostController extends Controller
         $validated['content'] = trim($validated['content']);
                 Auth::user()->posts()->create($validated);
 
-        return back()->with('success', 'Post created successfully!');
+        return back()
+            ->with('success', 'Post created successfully!');
     } catch (\Exception $e) {
         Log::error('Post creation failed', [
             'user_id' => Auth::id(),

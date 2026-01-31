@@ -61,7 +61,7 @@ class Post extends Model
 
     public function getAuthorAttribute()
     {
-        if ($this->user) {
+        if ($this->user && $this->relationLoaded('user')) {
             return $this->user;
         }
 

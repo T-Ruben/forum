@@ -62,126 +62,136 @@
         </section>
 
 
-            <section class="w-full">
-                <div class="mb-10">
-                    <p class="text-xl">{{ $user->display_name }}</p>
-                    <p class="text-sm"><span>{{ $user->profile_summary }}</span></p>
-                    <hr>
-                </div>
+        <section class="w-full">
+            <div class="mb-10">
+                <p class="text-xl">{{ $user->display_name }}</p>
+                <p class="text-sm"><span>{{ $user->profile_summary }}</span></p>
+                <hr>
+            </div>
 
-                <div class="mb-3 flex gap-3">
-                            <div class="w-20 h-20 flex shrink-0 border-1">
-                                @auth
-                                <a href="{{ route('users.show', auth()->user()) }}">
-                                    <img src="{{ asset(auth()->user()?->profile_image_url) }}" class="w-full h-full object-cover"
-                                        alt="{{ auth()->user()->name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
-                                </a>
-                                @endauth
-                                @guest
-                                    <a href="{{ route('login')}}">
-                                    <img src="{{ asset('images/default-avatar.png') }}" class="w-full h-full object-cover"
-                                        alt="Guest's profile image" data-pin-nopin="true">
-                                    </a>
-                                @endguest
-                            </div>
-                    <form action="{{ route('user.posts.store', $user) }}" method="POST" class="formReload w-full" id="postForm">
-                        @csrf
-                        <input type="hidden" name="parent_id" value="{{ $replyTo?->id ?? null }}">
-                        <input type="hidden" name="profile_user_id" value="{{ $user->id }}">
+                <div class="">
+                    @if ($replyTo)
+                        <div class="mb-4 p-3 border rounded text-sm border-gray-600 text-black">
+                            <p class="flex justify-between border-b">
+                                <span>Replying to <a href="#post-{{ $replyTo->id }}"
+                                    class="hover:underline font-semibold duration-200">{{ $replyTo->author->display_name }}</a></span>
+                                <a href="{{ route('users.show', ['user' => $user->id,  'page' => request('page')]) }}"
+                                    class="formReload hover:text-red-500/75 duration-200">@include('icons.cancel')</a>
+                            </p>
 
-                        <textarea
-                            id="content"
-                            name="content"
-                            rows="6"
-                            class="w-full p-2 bg-gray-200 text-black resize-none overflow-hidden border border-gray-600
-                            outline-none"
-                            placeholder="Write your post...">{{ old('content') }}</textarea>
+                            <div class="relative w-full">
+                                <input type="checkbox" id="" class="peer hidden">
 
-                        <div class="my-auto block absolute">
-                            @error('content')
-                                <p class="text-red-500">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <button type="submit"
-                            class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 cursor-pointer duration-200 ml-auto block border rounded-md p-1">
-                            Post Reply
-                        </button>
-
-                    </form>
-                </div>
-
-                <div class="bg-gray-300/60 text-black p-2 w-full max-w-full overflow-x-hidden">
-                    @forelse ($posts as $post)
-                    @if (!$post->parent)
-                        <div class="flex shrink-0 gap-3">
-                            <div class="w-20 h-20 flex shrink-0 border-1">
-                                <a href="{{ $post->author?->author_url }}">
-                                    <img src="{{ asset($post->author->profile_image_url) }}" class="w-full h-full object-cover"
-                                        alt="{{ $post->author->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
-                                </a>
-                            </div>
-                            <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
-                                <div>
-                                    <div>
-                                        <a href="{{ $post->author?->author_url }}"
-                                            class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $post->author->display_name }}</strong></a>
-                                        <div class="post-content whitespace-pre-line break-all md:break-words pb-10">{!! $post->content !!}</div>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <small class="text-gray-300"><x-time-display :time="$post->created_at" /></small>
-                                        <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $post->id]) }}"
-                                            class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
-                                            Reply
-                                        </a>
-                                    </div>
+                                <div class=" whitespace-pre-line line-clamp-5 peer-checked:line-clamp-none break-words overflow-hidden">
+                                    <span class="">{{ $replyTo->content }}</span>
                                 </div>
-                                @foreach ($post->replies as $reply)
-                                    <div class="flex shrink-0 gap-3 bg-gray-300/50 px-1 pt-1">
-                                        <div class="w-16 h-16 flex shrink-0 border-1">
-                                            <a href="{{ $reply->author?->author_url }}">
-                                                <img src="{{ asset($reply->author->profile_image_url) }}" class="w-full h-full object-cover"
-                                                    alt="{{ $reply->author->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
-                                            </a>
-                                        </div>
-                                        <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
-                                            <div>
-                                                <div>
-                                                    <a href="{{ $reply->author?->author_url }}"
-                                                        class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $reply->author->display_name }}</strong></a>
-                                                    <div class="post-content whitespace-pre-line break-all md:break-words">{!! $reply->content !!}</div>
-                                                </div>
-                                            </div>
-                                            <div class="flex justify-between">
-                                                <small class="text-gray-300"><x-time-display :time="$reply->created_at" /></small>
-                                                <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $reply->id]) }}"
-                                                    class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
-                                                    Reply
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr class="mb-3">
-                                @endforeach
+
+                                @if (strlen($replyTo->content) > 300)
+                                <label for=""
+                                    class="select-none cursor-pointer text-blue-500 hover:underline mt-2 block peer-checked:hidden">
+                                    Read more...
+                                </label>
+
+                                <label for=""
+                                    class="select-none cursor-pointer text-blue-500 hover:underline mt-2 hidden peer-checked:block">
+                                    Show less
+                                </label>
+                                @endif
                             </div>
                         </div>
-                        <div>
-
-                        </div>
-
-                        <hr class="mb-3">
                     @endif
-                    @empty
-                        <p>No posts on this profile yet.</p>
-                    @endforelse
                 </div>
 
-                <div class="mt-3">
-                    {{ $posts->links() }}
+            <div class="mb-3 flex gap-3">
+                <div class="w-20 h-20 flex shrink-0 border-1">
+                    @auth
+                    <a href="{{ route('users.show', auth()->user()) }}">
+                        <img src="{{ asset(auth()->user()?->profile_image_url) }}" class="w-full h-full object-cover"
+                            alt="{{ auth()->user()->name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
+                    </a>
+                    @endauth
+                    @guest
+                        <a href="{{ route('login')}}">
+                        <img src="{{ asset('images/default-avatar.png') }}" class="w-full h-full object-cover"
+                            alt="Guest's profile image" data-pin-nopin="true">
+                        </a>
+                    @endguest
                 </div>
 
+                <form action="{{ route('user.posts.store', $user) }}" method="POST" class="formReload w-full" id="postForm">
+                    @csrf
+                    <input type="hidden" name="parent_id" value="{{ $replyTo?->id ?? null }}">
+                    <input type="hidden" name="profile_user_id" value="{{ $user->id }}">
 
-            </section>
+                    <textarea
+                        id="content"
+                        name="content"
+                        rows="6"
+                        class="w-full p-2 bg-gray-200 text-black resize-none overflow-hidden border border-gray-600
+                        outline-none"
+                        placeholder="Write your post...">{{ old('content') }}</textarea>
+
+                    <div class="my-auto block absolute">
+                        @error('content')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <button type="submit"
+                        class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 cursor-pointer duration-200 ml-auto block border rounded-md p-1">
+                        Post Reply
+                    </button>
+
+                </form>
+            </div>
+
+            <div class="bg-gray-300/60 text-black p-2 w-full max-w-full overflow-x-hidden">
+                @forelse ($posts as $post)
+                @if (!$post->parent)
+                    <div class="flex shrink-0 gap-3">
+                        <div class="w-20 h-20 flex shrink-0 border-1">
+                            <a href="{{ $post->author?->author_url }}">
+                                <img src="{{ asset($post->author->profile_image_url) }}" class="w-full h-full object-cover"
+                                    alt="{{ $post->author?->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
+                            </a>
+                        </div>
+                        <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
+                            <div id="">
+                                <div>
+                                    <a href="{{ $post->author?->author_url }}"
+                                        class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $post->author->display_name }}</strong></a>
+                                    <div class="post-content whitespace-pre-line break-all md:break-words pb-10">{!! $post->content !!}</div>
+                                </div>
+                                <div class="flex justify-between">
+                                    <small class="text-gray-300"><x-time-display :time="$post->created_at" /></small>
+                                    <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $post->id, 'page' => request('page')]) }}"
+                                        class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                                        Reply
+                                    </a>
+                                </div>
+                            </div>
+                            @foreach ($post->replies as $reply)
+                                @include('components.reply', ['reply' => $reply, 'depth' => 0])
+                            @endforeach
+                        </div>
+                    </div>
+                    <div>
+
+                    </div>
+
+                    <hr class="mb-3">
+                @endif
+                @empty
+                    <p>No posts on this profile yet.</p>
+                @endforelse
+            </div>
+
+            <div class="mt-3">
+                {{ $posts->links() }}
+            </div>
+
+
+        </section>
 
         </div>
 

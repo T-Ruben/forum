@@ -26,11 +26,11 @@ class UserController extends Controller
         $posts = $user->profilePosts()
             ->whereNull('parent_id')
             ->with(['user', 'parent.user', 'replies' => function ($query) {
-                $query->with('user')
+                $query->with(['user', 'replies.replies', 'replies.user'])
                     ->orderBy('created_at', 'asc');
             }])
             ->orderBy('created_at', 'desc')
-            ->paginate(15);
+            ->paginate(10);
 
         return view('users.show', [
             'user' => $user,
