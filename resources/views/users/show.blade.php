@@ -163,10 +163,16 @@
                                 </div>
                                 <div class="flex justify-between">
                                     <small class="text-gray-300"><x-time-display :time="$post->created_at" /></small>
-                                    <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $post->id, 'page' => request('page')]) }}"
-                                        class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
-                                        Reply
-                                    </a>
+
+                                    <div class="flex gap-5">
+                                        <x-actions.delete-button :action="route('post.destroy', $post)" :model="$post" />
+
+                                        <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $post->id, 'page' => request('page')]) }}"
+                                            class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                                            Reply
+                                        </a>
+                                    </div>
+
                                 </div>
                             </div>
 

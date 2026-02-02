@@ -14,12 +14,15 @@
                 <div class="post-content whitespace-pre-line break-all md:break-words">{!! $reply->content !!}</div>
             </div>
         </div>
-        <div class="flex justify-between">
+        <div class="flex justify-between text-md">
             <small class="text-gray-300"><x-time-display :time="$reply->created_at" /></small>
-            <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $reply->parent_id, 'page' => request('page')]) }}"
-                class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
-                Reply
-            </a>
+            <div class="flex gap-5">
+                <x-actions.delete-button :action="route('post.destroy', $post)" :model="$post" />
+                <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $reply->parent_id, 'page' => request('page')]) }}"
+                    class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                    Reply
+                </a>
+            </div>
         </div>
     </div>
 </div>

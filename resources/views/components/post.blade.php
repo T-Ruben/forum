@@ -85,7 +85,9 @@
                 <x-time-display :time="$post->updated_at" />
             </span>
             </div>
-            <div class="">
+            <div class="flex gap-5">
+                <x-actions.delete-button :action="route('post.destroy', $post)" :model="$post" />
+
                 <a href="{{ route('threads.show', ['thread' => $thread->id, 'reply_to' => $post->id, $thread->slug, 'page' => request('page')]) }}#post-{{ $post->parent_id }}"
                     class="replyReload cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
                     Reply

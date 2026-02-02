@@ -41,6 +41,10 @@ Route::delete('/threads/{thread}', [ThreadController::class, 'destroy'])
 Route::post('/posts', [PostController::class, 'store'])
     ->middleware(['auth', 'throttle:make-post'])
     ->name('posts.store');
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('post.destroy');
+
 Route::post('/members/{user}/posts', [PostController::class, 'storeProfile'])
     ->middleware(['auth', 'throttle:make-post'])
     ->name('user.posts.store');

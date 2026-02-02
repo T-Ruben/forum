@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 
 class AvatarController extends Controller
 {
-    public function update(Request $request)
+    public function update(Request $request, User $user)
     {
+        Gate::authorize('edit-user', $user);
+
         $request->validate([
             'avatar' => 'required|image|mimes:png,jpg,jpeg|max:2048',
         ]);

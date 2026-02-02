@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -100,5 +101,12 @@ class PostController extends Controller
                 ->withErrors(['content' => 'Something went wrong. Please try again later.'])
                 ->withInput();
         }
+    }
+
+    public function destroy(Post $post) {
+        Gate::authorize('delete', $post);
+
+        $post->delete();
+        return back();
     }
 }
