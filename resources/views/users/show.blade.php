@@ -29,10 +29,9 @@
             </div>
 
             @can('follow-user', $user)
-                @if (auth()->user()->following()->where('id', $user->id)->exists())
-                    <form action="{{ route('users.follow', $user->id) }}" method="POST">
+                @if (auth()->user()->following->contains($user->id))
+                    <form action="{{ route('users.unfollow', $user->id) }}" method="POST">
                         @csrf
-                        @method('DELETE')
                             <x-forms.form-button class="w-full mb-5 dark:bg-blue-950/65"> Unfollow </x-forms.form-button>
                     </form>
                     @else
@@ -62,14 +61,14 @@
         </section>
 
 
-        <section class="w-full">
+        <section class="w-full min-h-full break-words overflow-hidden">
             <div class="mb-10">
                 <p class="text-xl">{{ $user->display_name }}</p>
                 <p class="text-sm"><span>{{ $user->profile_summary }}</span></p>
                 <hr>
             </div>
 
-                <div class="">
+                <div class="post-content break-words">
                     @if ($replyTo)
                         <div class="mb-4 p-3 border rounded text-sm border-gray-600 text-black">
                             <p class="flex justify-between border-b">
@@ -80,19 +79,19 @@
                             </p>
 
                             <div class="relative w-full">
-                                <input type="checkbox" id="" class="peer hidden">
+                                <input type="checkbox" id="load-more-{{ $replyTo->id }}" class="peer hidden">
 
                                 <div class=" whitespace-pre-line line-clamp-5 peer-checked:line-clamp-none break-words overflow-hidden">
                                     <span class="">{{ $replyTo->content }}</span>
                                 </div>
 
                                 @if (strlen($replyTo->content) > 300)
-                                <label for=""
+                                <label for="load-more-{{ $replyTo->id }}"
                                     class="select-none cursor-pointer text-blue-500 hover:underline mt-2 block peer-checked:hidden">
                                     Read more...
                                 </label>
 
-                                <label for=""
+                                <label for="load-more-{{ $replyTo->id }}"
                                     class="select-none cursor-pointer text-blue-500 hover:underline mt-2 hidden peer-checked:block">
                                     Show less
                                 </label>
@@ -170,9 +169,29 @@
                                     </a>
                                 </div>
                             </div>
-                            @foreach ($post->recursiveReplies as $reply)
-                                @include('components.reply', ['reply' => $reply, 'depth' => 0])
-                            @endforeach
+
+                            <div>
+                                <input type="checkbox" id="load-replies-{{ $post->id }}" class="peer hidden">
+
+                                @foreach ($post->replies as $reply)
+                                <div class="{{ $loop->index >= 3 ? 'hidden peer-checked:block' : '' }}">
+                                    @include('components.reply', ['reply' => $reply])
+                                </div>
+                                @endforeach
+
+                                @if ($post->replies->count() > 3)
+                                    <label for="load-replies-{{ $post->id }}" class="select-none cursor-pointer text-blue-500 hover:underline block peer-checked:hidden">
+                                        Show more...
+                                    </label>
+
+                                    <label for="load-replies-{{ $post->id }}" class="select-none cursor-pointer text-blue-500 hover:underline hidden peer-checked:block">
+                                        Show less...
+                                    </label>
+                                @endif
+                            </div>
+
+
+
                         </div>
                     </div>
                     <div>

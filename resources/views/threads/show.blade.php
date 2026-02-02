@@ -47,19 +47,19 @@
                             </p>
 
                             <div class="relative w-full">
-                                <input type="checkbox" id="$post-{{ $post->id }}" class="peer hidden">
+                                <input type="checkbox" id="$post-{{ $post->id }}+{{ $post->user_id }}" class="peer hidden">
 
                                 <div class=" whitespace-pre-line line-clamp-5 peer-checked:line-clamp-none break-words overflow-hidden">
                                     <span class="">{{ $replyTo->content }}</span>
                                 </div>
 
                                 @if (strlen($replyTo->content) > 300)
-                                <label for="$post-{{ $post->id }}"
+                                <label for="$post-{{ $post->id }}+{{ $post->user_id }}"
                                     class="select-none cursor-pointer text-blue-500 hover:underline mt-2 block peer-checked:hidden">
                                     Read more...
                                 </label>
 
-                                <label for="$post-{{ $post->id }}"
+                                <label for="$post-{{ $post->id }}+{{ $post->user_id }}"
                                     class="select-none cursor-pointer text-blue-500 hover:underline mt-2 hidden peer-checked:block">
                                     Show less
                                 </label>

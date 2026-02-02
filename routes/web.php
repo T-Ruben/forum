@@ -72,10 +72,10 @@ Route::post('/logout', [SessionController::class, 'destroy'])
 // User
 Route::get('/members/{user}', [UserController::class, 'show'])
     ->name('users.show');
-Route::post('/members/{user}', [UserController::class, 'follow'])
+Route::post('/members/{user}/follow', [UserController::class, 'follow'])
     ->name('users.follow')
     ->middleware(['auth', 'throttle:20,1']);
-Route::delete('/members/{user}', [UserController::class, 'unfollow'])
+Route::post('/members/{user}/unfollow', [UserController::class, 'unfollow'])
     ->name('users.unfollow')
     ->middleware(['auth', 'throttle:20,1']);
 Route::delete('/members/{user}', [UserController::class, 'destroy'])

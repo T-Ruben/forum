@@ -43,6 +43,7 @@ class Post extends Model
     {
         return $this->hasMany(Post::class, 'parent_id');
     }
+
     public function recursiveReplies() {
         return $this->replies()->with(['user', 'recursiveReplies']);
     }
