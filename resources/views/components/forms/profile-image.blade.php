@@ -16,7 +16,7 @@
         </div>
 
         <div class="w-fit">
-            <form action="{{ route('avatar.update') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('avatar.update', $user) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <fieldset class="p-2 rounded-sm border mb-2">

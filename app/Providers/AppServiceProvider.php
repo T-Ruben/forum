@@ -29,10 +29,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::preventLazyLoading();
 
-        Gate::define('edit-user', function (User $user, $profileUser) {
-            return $user->id === $profileUser->id;
-        });
-
 
         RateLimiter::for('make-post', function(HttpRequest $request) {
             return Limit::perSecond(1, 5)->by($request->user()->id)

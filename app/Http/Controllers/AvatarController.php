@@ -14,7 +14,7 @@ class AvatarController extends Controller
 {
     public function update(Request $request, User $user)
     {
-        Gate::authorize('edit-user', $user);
+        Gate::authorize('update', $user);
 
         $request->validate([
             'avatar' => 'required|image|mimes:png,jpg,jpeg|max:2048',

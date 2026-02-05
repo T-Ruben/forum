@@ -45,6 +45,13 @@ Route::delete('/posts/{post}', [PostController::class, 'destroy'])
     ->middleware('auth')
     ->name('post.destroy');
 
+Route::put('profile/posts/{post}', [PostController::class, 'update'])
+    ->middleware('auth')
+    ->name('profile.post.update');
+Route::put('thread/posts/{post}', [PostController::class, 'update'])
+    ->middleware('auth')
+    ->name('thread.post.update');
+
 Route::post('/members/{user}/posts', [PostController::class, 'storeProfile'])
     ->middleware(['auth', 'throttle:make-post'])
     ->name('user.posts.store');
@@ -88,7 +95,7 @@ Route::delete('/members/{user}', [UserController::class, 'destroy'])
 
 // User Avatar
 Route::middleware('auth')->group(function () {
-    Route::put('/avatar', [AvatarController::class, 'update'])
+    Route::put('/avatar/{user}', [AvatarController::class, 'update'])
         ->middleware('throttle:avatar-update')
         ->name('avatar.update');
 

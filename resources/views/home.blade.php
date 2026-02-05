@@ -83,17 +83,17 @@ Took from second section: bg-gray-500/75
 
             <section class="p-2 w-3/12 rounded-t-md h-auto max-lg:hidden">
                 <div class="flex w-full mb-4">
-                    <div class="w-fit h-fit mr-2 border-2 border-double p-0.5">
+                    <div class="mr-2 border-2 border-double p-0.5 w-32 h-32">
                         @auth
-                            <a href="{{ route('users.show', auth()->user()->id) }}">
-                                <img src="{{ asset(auth()->user()->profile_image_url) }}" class="w-32 h-32 object-cover"
+                            <a href="{{ route('users.show', auth()->user()->id) }}" class="w-full h-full">
+                                <img src="{{ asset(auth()->user()->profile_image_url) }}" class="w-full h-full object-cover"
                                     alt="{{ auth()->user()->name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
                             </a>
                         @endauth
 
                         @guest
-                            <a href="#">
-                                <img src="{{ asset('images/default-avatar.png') }}" class="w-32 h-32 object-cover"
+                            <a href="#" class="w-full h-full">
+                                <img src="{{ asset('images/default-avatar.png') }}" class="w-full h-full object-cover"
                                     alt="Guest's profile image" data-pin-nopin="true">
                             </a>
                         @endguest
@@ -136,7 +136,7 @@ Took from second section: bg-gray-500/75
                             @foreach ($forumPosts as $post)
                                 <li class="mb-2 flex">
                                     <div class="w-16 h-16 mr-2 flex shrink-0 border">
-                                        <a href="{{ $post->user?->user_url }}">
+                                        <a href="{{ $post->user?->user_url }}" class="w-full h-full">
                                             <img src="{{ asset($post->user->profile_image_url) }}"
                                             class="object-cover w-full h-full" alt="" data-pin-nopin="true">
                                         </a>
@@ -178,7 +178,7 @@ Took from second section: bg-gray-500/75
                             @foreach ($profilePosts as $post)
                                 <li class="mb-2 flex">
                                     <div class="w-16 h-16 mr-2 flex shrink-0 border">
-                                        <a href="{{ $post->user?->user_url }}">
+                                        <a href="{{ $post->user?->user_url }}" class="w-full h-full">
                                             <img src="{{ asset($post->user->profile_image_url) }}"
                                             class="object-cover w-full h-full" alt="" data-pin-nopin="true">
                                         </a>
@@ -193,7 +193,7 @@ Took from second section: bg-gray-500/75
                                             @if ($post->profile_user_id !== $post->user->id)
                                                 @include('icons.arrow-right')
                                                 <a href="{{ $post->profileOwner?->user_url }}"
-                                                    class="hover:underline duration-200">
+                                                    class="hover:underline duration-200 truncate">
                                                     <span class="" title="{{ $post->profileOwner->display_name }}">{{ $post->profileOwner->display_name }}</span></a>
 
                                             @endif

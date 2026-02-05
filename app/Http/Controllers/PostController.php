@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -101,6 +102,42 @@ class PostController extends Controller
                 ->withErrors(['content' => 'Something went wrong. Please try again later.'])
                 ->withInput();
         }
+    }
+    public function update(Post $post, Request $request) {
+    Gate::authorize('update', $post);
+
+    $content = $request->input('content');
+    $plain = trim(strip_tags($content));
+    $isProfile = $request->routeIs('profile.post.update');
+
+    $minLength = $isProfile ? 1 : 3;
+    $maxLength = $isProfile ? 1000 : 5000;
+
+    if(strlen($plain) < $minLength) {
+        return back()->withErrors(['content' => "Must have at least $minLength character."]);
+    }
+
+    if(strlen($plain) > $maxLength) {
+        return back()
+        ->withInput()
+        ->withErrors(['content' => "Must have less than $maxLength characters."]);
+    }
+
+    $validated = $request->validate([
+        'content' => ['required', 'string', "min:$minLength", "max:$maxLength"],
+    ]);
+
+    try {
+        $post->update(['content' => trim($validated['content'])]);
+        return back()
+            ->with('success', 'Post updated successfully!');
+    } catch(\Exception $e) {
+        Log::error('Editing failed: ', ['error', $e->getMessage()]);
+        return back()
+            ->withErrors(['error' => 'Something went wrong while editing. Please try again.'])
+            ->withInput();
+    };
+
     }
 
     public function destroy(Post $post) {

@@ -7,9 +7,9 @@
         text-left flex flex-col items-center justify-center min-w-42 max-w-42
         max-sm:min-w-full max-sm:flex-row max-sm:pl-2 max-sm:max-h-32 max-sm:py-2 max-sm:items-start">
         <div class="w-32 h-32 max-sm:min-w-26  max-sm:min-h-26 max-sm:max-h-26 max-sm:max-w-26 overflow-hidden border shadow-xs shadow-black text-black">
-            <a href="{{ $post->user?->user_url }}">
+            <a href="{{ $post->user?->user_url }}" class="w-full h-full">
             <img src="{{ $post->user->profile_image_url }}"
-                class="w-32 h-32 object-cover"
+                class="w-full h-full object-cover"
                 alt="{{ $post->user->display_name ?? 'Deleted Member' }}'s profile image"
                 data-pin-nopin="true">
             </a>
@@ -87,6 +87,14 @@
             </div>
             <div class="flex gap-5">
                 <x-actions.delete-button :action="route('post.destroy', $post)" :model="$post" />
+
+                @can('update', $post)
+                    <a href="{{ route('threads.show', ['thread' => $thread->id, $thread->slug, 'edit_post' => $post->id, 'page' => request('page')]) }}#postForm"
+                        class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                        Edit
+                    </a>
+                @endcan
+
 
                 <a href="{{ route('threads.show', ['thread' => $thread->id, 'reply_to' => $post->id, $thread->slug, 'page' => request('page')]) }}#post-{{ $post->parent_id }}"
                     class="replyReload cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">

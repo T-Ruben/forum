@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Forum;
 use App\Models\Post;
 use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Mews\Purifier\Facades\Purifier;
 
@@ -16,12 +18,19 @@ class ThreadController extends Controller
     public function show(Thread $thread, Request $request)
     {
         $replyTo = null;
+        $editPost = null;
 
-        if($request->filled('reply_to'))
-            {
-                $replyTo = Post::where('thread_id', $thread->id)
-                    ->findOrFail($request->reply_to);
-            }
+        if($request->filled('edit_post')) {
+            $editPost = Post::where('thread_id', $thread->id)
+                ->findOrFail($request->edit_post);
+
+            Gate::authorize('update', $editPost);
+        }
+            elseif($request->filled('reply_to'))
+        {
+            $replyTo = Post::where('thread_id', $thread->id)
+                ->findOrFail($request->reply_to);
+        }
 
         $thread->load(['latestPost.user']);
 
@@ -36,7 +45,8 @@ class ThreadController extends Controller
         return view('threads.show', [
             'thread' => $thread,
             'posts' => $posts,
-            'replyTo' => $replyTo
+            'replyTo' => $replyTo,
+            'editPost' => $editPost
         ]);
     }
 
@@ -91,6 +101,26 @@ class ThreadController extends Controller
                 ->withInput();
         }
     }
+
+    //     public function update(Post $post, Request $request, Thread $thread, User $user) {
+    //     // Gate::authorize('update', $editUser);
+
+    //     $validated = $request->validate([
+    //         'content' => ['required', 'string', 'min:3', 'max:5000'],
+    //     ]);
+
+    //     try {
+    //         $post->update([$validated['content']]);
+    //         return back()
+    //             ->with('success', 'Post updated successfully!');
+    //     } catch(\Exception $e) {
+    //         Log::error('Editing failed: ', ['error', $e->getMessage()]);
+    //         return back()
+    //             ->withErrors(['error' => 'Something went wrong while editing. Please try again.'])
+    //             ->withInput();
+    //     };
+
+    // }
 
     public function destroy(Thread $thread) {
         $thread->delete($thread->id);

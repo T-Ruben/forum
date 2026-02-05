@@ -19,15 +19,15 @@
             <div class="w-32 h-32 overflow-hidden border shadow-xs shadow-black m-2 text-black max-sm:hidden">
                 @foreach ($posts as $post)
                     @auth
-                        <a href="{{ route('users.show', auth()->user()->id) }}">
-                            <img src="{{ asset(auth()->user()->profile_image_url) }}" class="w-32 h-32 object-cover"
+                        <a href="{{ route('users.show', auth()->user()->id) }}" class="w-full h-full">
+                            <img src="{{ asset(auth()->user()->profile_image_url) }}" class="w-full h-full object-cover"
                                 alt="{{ auth()->user()->name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
                         </a>
                     @endauth
 
                     @guest
                         <a href="#">
-                            <img src="{{ asset('images/default-avatar.png') }}" class="w-32 h-32 object-cover"
+                            <img src="{{ asset('images/default-avatar.png') }}" class="w-full h-full object-cover"
                                 alt="Guest's profile image" data-pin-nopin="true">
                         </a>
                     @endguest
@@ -69,9 +69,16 @@
                     @endif
                 </div>
 
+                @php
+                    $isEdit = isset($editPost);
+                    $action = $isEdit ? route('thread.post.update', $post) : route('posts.store');
+                @endphp
 
-                <form action="{{ route('posts.store') }}" method="POST" class="formReload h-full" id="postForm">
+                <form action="{{ $action }}" method="POST" class="formReload h-full" id="postForm">
                     @csrf
+                    @if ($isEdit)
+                        @method('PUT')
+                    @endif
 
                 <input type="hidden" name="thread_id" value="{{ $thread->id }}">
                 <input type="hidden" name='parent_id' value="{{ $replyTo?->id ?? null  }}">
@@ -84,7 +91,7 @@
                         rows="6"
                         class="w-full p-2 bg-gray-200 text-black resize-none overflow-hidden border border-gray-600
                         outline-none"
-                        placeholder="Write your post...">{{ old('content') }}</textarea>
+                        placeholder="Write your post...">{{ old('content', $isEdit ? $editPost->content : '') }}</textarea>
 
                     <div class="my-auto block">
                         @error('content')
@@ -92,9 +99,15 @@
                         @enderror
                     </div>
 
+                    @if($isEdit)
+                        <a href="{{ route('threads.show', ['thread' => $thread->id, $thread->slug, 'page' => request('page')]) }}"
+                        class="text-gray-500 mr-4">
+                            Cancel Edit
+                        </a>
+                    @endif
                     <button type="submit"
                         class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 cursor-pointer duration-200 ml-auto block border rounded-md p-1">
-                        Post Reply
+                        {{ $isEdit ? 'Save Changes' : 'Post Reply' }}
                     </button>
 
                 </form>

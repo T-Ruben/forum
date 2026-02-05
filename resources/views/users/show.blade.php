@@ -6,7 +6,7 @@
     <x-main>
 
         @push('modals')
-            @can('edit-user', $user)
+            @can('update', $user)
                 <x-forms.profile-image :user="$user" />
             @endcan
         @endpush
@@ -16,7 +16,7 @@
         <section class="w-[192px]">
             <div
                 class="w-[192px] p-0.5 border"
-                @can('edit-user', $user)
+                @can('update', $user)
                     id="avatarChange"
                 @endcan>
                 <img
@@ -104,23 +104,32 @@
             <div class="mb-3 flex gap-3">
                 <div class="w-20 h-20 flex shrink-0 border-1">
                     @auth
-                    <a href="{{ route('users.show', auth()->user()) }}">
+                    <a href="{{ route('users.show', auth()->user()) }}" class="w-full h-full">
                         <img src="{{ asset(auth()->user()?->profile_image_url) }}" class="w-full h-full object-cover"
                             alt="{{ auth()->user()->name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
                     </a>
                     @endauth
                     @guest
                         <a href="{{ route('login')}}">
-                        <img src="{{ asset('images/default-avatar.png') }}" class="w-full h-full object-cover"
+                        <img src="{{ asset('images/default-avatar.png') }}" class="w-20 h-20 object-cover"
                             alt="Guest's profile image" data-pin-nopin="true">
                         </a>
                     @endguest
                 </div>
 
-                <form action="{{ route('user.posts.store', $user) }}" method="POST" class="formReload w-full" id="postForm">
+                @php
+                    $isEdit = isset($editPost);
+                    $action = $isEdit ? route('profile.post.update', $posts->first()) : route('user.posts.store', $user);
+                @endphp
+
+                <form action="{{ $action }}" method="POST" class="formReload w-full" id="postForm">
                     @csrf
                     <input type="hidden" name="parent_id" value="{{ $replyTo?->id ?? null }}">
                     <input type="hidden" name="profile_user_id" value="{{ $user->id }}">
+
+                    @if ($isEdit)
+                        @method('PUT')
+                    @endif
 
                     <textarea
                         id="content"
@@ -128,13 +137,22 @@
                         rows="6"
                         class="w-full p-2 bg-gray-200 text-black resize-none overflow-hidden border border-gray-600
                         outline-none"
-                        placeholder="Write your post...">{{ old('content') }}</textarea>
+                        placeholder="Write your post...">{{ old('content', $isEdit ? $editPost->content : '') }}</textarea>
+                    <div>
 
-                    <div class="my-auto block absolute">
+                    </div>
+                    <div class="my-auto flex-2 justify-center">
                         @error('content')
                             <p class="text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
+
+                    @if($isEdit)
+                        <a href="{{ route('users.show', [$user, 'page' => request('page')]) }}"
+                        class="text-gray-500 mr-4">
+                            Cancel Edit
+                        </a>
+                    @endif
 
                     <button type="submit"
                         class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 cursor-pointer duration-200 ml-auto block border rounded-md p-1">
@@ -149,7 +167,7 @@
                 @if (!$post->parent)
                     <div class="flex shrink-0 gap-3">
                         <div class="w-20 h-20 flex shrink-0 border-1">
-                            <a href="{{ $post->user?->user_url }}">
+                            <a href="{{ $post->user?->user_url }}" class="w-full h-full">
                                 <img src="{{ asset($post->user->profile_image_url) }}" class="w-full h-full object-cover"
                                     alt="{{ $post->user?->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
                             </a>
@@ -166,6 +184,13 @@
 
                                     <div class="flex gap-5">
                                         <x-actions.delete-button :action="route('post.destroy', $post)" :model="$post" />
+
+                                        @can('update', $post)
+                                            <a href="{{ route('users.show', ['user' => $user->id, 'edit_post' => $post->id, 'page' => request('page')]) }}"
+                                                class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                                                Edit
+                                            </a>
+                                        @endcan
 
                                         <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $post->id, 'page' => request('page')]) }}"
                                             class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
