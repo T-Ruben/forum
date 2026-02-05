@@ -71,7 +71,7 @@
 
                 @php
                     $isEdit = isset($editPost);
-                    $action = $isEdit ? route('thread.post.update', $post) : route('posts.store');
+                    $action = $isEdit ? route('thread.post.update', $editPost) : route('posts.store');
                 @endphp
 
                 <form action="{{ $action }}" method="POST" class="formReload h-full" id="postForm">

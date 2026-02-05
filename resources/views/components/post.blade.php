@@ -86,10 +86,10 @@
             </span>
             </div>
             <div class="flex gap-5">
-                <x-actions.delete-button :action="route('post.destroy', $post)" :model="$post" />
+                <x-actions.delete-button :action="route('threads.post.destroy', $post)" :model="$post" />
 
                 @can('update', $post)
-                    <a href="{{ route('threads.show', ['thread' => $thread->id, $thread->slug, 'edit_post' => $post->id, 'page' => request('page')]) }}#postForm"
+                    <a href="{{ route('threads.show', ['thread' => $thread->id, $thread->slug, 'edit_post' => $post, 'page' => request('page')]) }}#postForm"
                         class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
                         Edit
                     </a>

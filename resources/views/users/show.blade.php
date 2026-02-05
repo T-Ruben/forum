@@ -119,7 +119,7 @@
 
                 @php
                     $isEdit = isset($editPost);
-                    $action = $isEdit ? route('profile.post.update', $posts->first()) : route('user.posts.store', $user);
+                    $action = $isEdit ? route('profile.post.update', $editPost) : route('user.posts.store', $user);
                 @endphp
 
                 <form action="{{ $action }}" method="POST" class="formReload w-full" id="postForm">
@@ -173,7 +173,7 @@
                             </a>
                         </div>
                         <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
-                            <div id="">
+                            <div id="post-{{ $post->id }}">
                                 <div>
                                     <a href="{{ $post->user?->user_url }}"
                                         class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $post->user->display_name }}</strong></a>
@@ -183,7 +183,7 @@
                                     <small class="text-gray-300"><x-time-display :time="$post->created_at" /></small>
 
                                     <div class="flex gap-5">
-                                        <x-actions.delete-button :action="route('post.destroy', $post)" :model="$post" />
+                                        <x-actions.delete-button :action="route('profile.post.destroy', $post)" :model="$post" />
 
                                         @can('update', $post)
                                             <a href="{{ route('users.show', ['user' => $user->id, 'edit_post' => $post->id, 'page' => request('page')]) }}"

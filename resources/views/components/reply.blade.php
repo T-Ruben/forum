@@ -1,5 +1,5 @@
 <div class="flex shrink-0 gap-3 border-b-1 rounded-b-md bg-gray-300/25 px-1 pt-1"
-    id="">
+    id="post-{{ $reply->id }}">
     <div class="w-16 h-16 flex shrink-0 border-1">
         <a href="{{ $reply->user?->user_url }}" class="w-full h-full">
             <img src="{{ asset($reply->user->profile_image_url) }}" class="w-full h-full object-cover"
@@ -15,9 +15,17 @@
             </div>
         </div>
         <div class="flex justify-between text-md">
-            <small class="text-gray-300"><x-time-display :time="$reply->created_at" /></small>
+            <small class="text-gray-300"><x-time-display :time="$reply->updated_at" /></small>
             <div class="flex gap-5">
-                <x-actions.delete-button :action="route('post.destroy', $post)" :model="$post" />
+                <x-actions.delete-button :action="route('profile.post.destroy', $post)" :model="$reply" />
+
+                @can('update', $reply)
+                    <a href="{{ route('users.show', ['user' => $user->id, 'edit_post' => $reply, 'page' => request('page')]) }}"
+                        class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                        Edit
+                    </a>
+                @endcan
+
                 <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $reply->parent_id, 'page' => request('page')]) }}"
                     class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
                     Reply

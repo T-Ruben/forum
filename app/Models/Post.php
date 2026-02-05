@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+
 
 class Post extends Model
 {
@@ -53,6 +56,18 @@ class Post extends Model
         {
             $count = self::where('thread_id', $this->thread_id)
                 ->where('created_at', '<', $this->created_at)
+                ->count();
+            return (int) ceil(($count + 1) / $perPage);
+
+            }
+    public function getPageNumberProfile($perPage = 10)
+        {
+            $count = self::whereNull('parent_id')
+                ->where('user_id', $this->user_id)
+                ->where(function ($query){
+                    $query->where('created_at', '>', $this->created_at)
+                    ->where('id', '>', $this->id);
+                })
                 ->count();
             return (int) ceil(($count + 1) / $perPage);
         }

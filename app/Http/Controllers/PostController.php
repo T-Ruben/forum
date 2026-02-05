@@ -109,8 +109,14 @@ class PostController extends Controller
     $content = $request->input('content');
     $plain = trim(strip_tags($content));
     $isProfile = $request->routeIs('profile.post.update');
+    $owner = $post->profile_user_id;
+    $targetPost = $post->parent_id ? $post->parent : $post;
+    $page = $post->getPageNumber();
+    $pageProfile = $targetPost->getPageNumberProfile();
+    $thread = $post->thread_id;
+    $thread_slug = $post->thread?->slug;
 
-    $minLength = $isProfile ? 1 : 3;
+    $minLength = $isProfile ? 1 : 1;
     $maxLength = $isProfile ? 1000 : 5000;
 
     if(strlen($plain) < $minLength) {
@@ -129,8 +135,8 @@ class PostController extends Controller
 
     try {
         $post->update(['content' => trim($validated['content'])]);
-        return back()
-            ->with('success', 'Post updated successfully!');
+        return $isProfile ? redirect()->route('users.show', ['user' => $owner, 'page' => $pageProfile]) :
+            redirect()->route('threads.show', ['thread' => $thread, 'slug' => $thread_slug, 'page' => $page]);
     } catch(\Exception $e) {
         Log::error('Editing failed: ', ['error', $e->getMessage()]);
         return back()
@@ -140,10 +146,18 @@ class PostController extends Controller
 
     }
 
-    public function destroy(Post $post) {
+    public function destroy(Post $post, Request $request) {
         Gate::authorize('delete', $post);
 
+        $isProfile = $request->routeIs('profile.post.destroy');
+        $owner = $post->profile_user_id;
+        $page = $post->getPageNumber();
+        $thread = $post->thread_id;
+        $thread_slug = $post->thread?->slug;
+
+
         $post->delete();
-        return back();
+        return $isProfile ? redirect()->route('users.show', ['user' => $owner, 'page' => $page]) :
+                redirect()->route('threads.show', ['thread' => $thread, 'slug' => $thread_slug, 'page' => $page]);
     }
 }
