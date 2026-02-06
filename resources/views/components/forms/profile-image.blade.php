@@ -56,7 +56,7 @@
     </div>
 </div>
 
-<form action="{{ route('avatar.destroy') }}" method="POST" id="avatar-delete" class="hidden">
+<form action="{{ route('avatar.destroy', $user) }}" method="POST" id="avatar-delete" class="hidden">
     @csrf
     @method('DELETE')
 </form>

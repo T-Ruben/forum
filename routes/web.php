@@ -87,6 +87,9 @@ Route::post('/logout', [SessionController::class, 'destroy'])
 // User
 Route::get('/members/{user}', [UserController::class, 'show'])
     ->name('users.show');
+Route::get('/index/members', [UserController::class, 'index'])
+    ->name('members.index');
+
 Route::post('/members/{user}/follow', [UserController::class, 'follow'])
     ->name('users.follow')
     ->middleware(['auth', 'throttle:20,1']);
@@ -103,7 +106,7 @@ Route::middleware('auth')->group(function () {
         ->middleware('throttle:avatar-update')
         ->name('avatar.update');
 
-    Route::delete('/avatar', [AvatarController::class, 'destroy'])
+    Route::delete('/avatar/{user}', [AvatarController::class, 'destroy'])
         ->name('avatar.destroy');
 });
 

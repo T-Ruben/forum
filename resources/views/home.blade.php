@@ -68,7 +68,7 @@ Took from second section: bg-gray-500/75
                                                 {{ $forum->latestThread?->latestPost?->created_at->diffForHumans() ?? '' }}
                                                 at {{ $forum->latestThread?->latestPost?->created_at->format('H:i A') }}
                                             </span> --}}
-                                                <x-time-display :time="$forum?->latestThread?->latestPost?->updated_at"/>
+                                                <x-time-display :time="$forum?->latestThread?->latestPost?->updated_at" />
                                         </span>
                                     </div>
                                 </li>

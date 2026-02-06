@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\UserRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,6 +18,10 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, SoftDeletes;
+
+    protected $casts = [
+        'role' => UserRoles::class,
+    ];
 
     protected static function booted()
     {
@@ -39,7 +45,7 @@ class User extends Authenticatable
         $this->update([
             'name' => 'Deleted Member',
             'email' => 'deleted+' . $this->id . '@email.com',
-            'role' => 'Former Member',
+            'role' => 'former_member',
             'profile_image' => null,
             'date_of_birth' => null,
             'password' => bcrypt(str()->random(40)),
@@ -125,7 +131,7 @@ class User extends Authenticatable
         $age = Carbon::parse($this->date_of_birth)->age;
 
         $parts = array_filter([
-            $this->role,
+            $this->role->label(),
             $age,
             $this->gender,
         ]);

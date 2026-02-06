@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\UserRoles;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -30,7 +31,7 @@ class PostPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role === UserRoles::Member;
     }
 
     /**
@@ -46,6 +47,11 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
+        if($user->id === $post->profile_user_id)
+            {
+                return true;
+            }
+
         return $user->id === $post->user_id;
     }
 

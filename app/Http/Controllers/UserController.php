@@ -16,7 +16,7 @@ use function Laravel\Prompts\error;
 
 class UserController extends Controller
 {
-    public function show(User $user, Request $request, Post $post) {
+    public function show(User $user, Request $request) {
         $replyTo = null;
         $editPost = null;
 
@@ -46,6 +46,13 @@ class UserController extends Controller
             ]);
     }
 
+    public function index(User $user) {
+        $users = $user->with(['followers', 'following', 'posts'])
+            ->paginate(25);
+
+        return view('users.index', ['users' => $users]);
+    }
+
     public function follow(User $user) {
         $auth = Auth::user();
 
@@ -63,9 +70,16 @@ class UserController extends Controller
         return back();
     }
 
-    public function destroy()
+    public function destroy(User $user)
     {
-        Auth::user()->delete(Auth::user()->id);
+        Gate::authorize('delete', $user);
+
+        if(Auth::id() === $user->id) {
+            Auth::logout();
+        }
+
+        $user->delete();
+
         return redirect('/');
     }
 

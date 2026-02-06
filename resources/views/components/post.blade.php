@@ -21,8 +21,8 @@
                     {{ $post->user->display_name }}
                     </a>
                 </div>
-                <div class="text-sm">
-                    {{ $post->user->role }}
+                <div class="text-sm text">
+                    {{ $post->user->role->label() }}
                 </div>
             </div>
             <hr class="border-gray-500 max-sm:hidden my-2">
@@ -82,7 +82,7 @@
                 <x-user-link :user="$post->user" />
             </span>
             <span class="text-sm text-gray-700/75">
-                <x-time-display :time="$post->updated_at" />
+                <x-time-display :time="$post->updated_at" :createdAt="$post->created_at" :updatedAt="$post->updated_at"/>
             </span>
             </div>
             <div class="flex gap-5">

@@ -14,6 +14,8 @@ use Illuminate\Support\Str;
 class PostController extends Controller
 {
     public function store(Request $request) {
+    Gate::authorize('create', Post::class);
+
     $content = $request->input('content');
     $plain = trim(strip_tags($content));
 
@@ -59,6 +61,8 @@ class PostController extends Controller
     }
 
     public function storeProfile(Request $request, User $user) {
+    Gate::authorize('create', Post::class);
+
     $content = $request->input('content');
     $plain = trim(strip_tags($content));
 
@@ -74,7 +78,7 @@ class PostController extends Controller
 
     $validated = $request->validate([
         'content' => ['required', 'string'],
-        'profile_user_id' => 'required|exists:posts,profile_user_id',
+        'profile_user_id' => 'required|exists:users,id',
         'parent_id' => 'nullable|exists:posts,id'
     ]);
 
@@ -150,14 +154,16 @@ class PostController extends Controller
         Gate::authorize('delete', $post);
 
         $isProfile = $request->routeIs('profile.post.destroy');
-        $owner = $post->profile_user_id;
-        $page = $post->getPageNumber();
-        $thread = $post->thread_id;
-        $thread_slug = $post->thread?->slug;
+    $owner = $post->profile_user_id;
+    $targetPost = $post->parent_id ? $post->parent : $post;
+    $page = $post->getPageNumber();
+    $pageProfile = $targetPost->getPageNumberProfile();
+    $thread = $post->thread_id;
+    $thread_slug = $post->thread?->slug;
 
 
         $post->delete();
-        return $isProfile ? redirect()->route('users.show', ['user' => $owner, 'page' => $page]) :
+        return $isProfile ? redirect()->route('users.show', ['user' => $owner, 'page' => $pageProfile]) :
                 redirect()->route('threads.show', ['thread' => $thread, 'slug' => $thread_slug, 'page' => $page]);
     }
 }

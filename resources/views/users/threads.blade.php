@@ -7,7 +7,7 @@
         </div>
         <ul class="">
             @foreach ($threads as $thread)
-                <li class="text-lg mb-2">
+                <li class="text-lg mb-2 truncate">
                     <a href="{{ route('threads.show', [$thread->id, $thread->slug]) }}" class="hover:underline duration-200">
                         {{ $thread->title }}
                     </a>

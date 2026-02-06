@@ -15,9 +15,9 @@
             </div>
         </div>
         <div class="flex justify-between text-md">
-            <small class="text-gray-300"><x-time-display :time="$reply->updated_at" /></small>
+            <small class="text-gray-300"><x-time-display :time="$reply->updated_at" :createdAt="$post->created_at" :updatedAt="$post->updated_at"/></small>
             <div class="flex gap-5">
-                <x-actions.delete-button :action="route('profile.post.destroy', $post)" :model="$reply" />
+                <x-actions.delete-button :action="route('profile.post.destroy', $reply)" :model="$reply" />
 
                 @can('update', $reply)
                     <a href="{{ route('users.show', ['user' => $user->id, 'edit_post' => $reply, 'page' => request('page')]) }}"

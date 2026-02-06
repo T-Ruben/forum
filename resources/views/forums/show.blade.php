@@ -61,7 +61,7 @@
                                     <span class="block hover:underline">{{ $thread->latestPost->user->display_name }}</span>
                                 </a>
 
-                                <x-time-display :time="$thread->latestPost?->created_at" />
+                                <x-time-display :time="$thread->latestPost?->updated_at" />
 
                             @else
                                 <span class="block">No Activity</span>

@@ -180,7 +180,7 @@
                                     <div class="post-content whitespace-pre-line break-all md:break-words pb-10">{!! $post->content !!}</div>
                                 </div>
                                 <div class="flex justify-between">
-                                    <small class="text-gray-300"><x-time-display :time="$post->created_at" /></small>
+                                    <small class="text-gray-300"><x-time-display :time="$post->updated_at" :createdAt="$post->created_at" :updatedAt="$post->updated_at" /></small>
 
                                     <div class="flex gap-5">
                                         <x-actions.delete-button :action="route('profile.post.destroy', $post)" :model="$post" />

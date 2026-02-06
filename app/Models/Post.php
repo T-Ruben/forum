@@ -12,13 +12,15 @@ class Post extends Model
 {
     /** @use HasFactory<\Database\Factories\PostFactory> */
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'content',
         'thread_id',
         'user_id',
         'parent_id',
-        'profile_user_id'
+        'profile_user_id',
+        'deleted_at'
     ];
 
     public function thread()

@@ -32,11 +32,11 @@ return new class extends Migration
 
             $table->foreignId('parent_id')
                 ->nullable()
-                ->constrained('posts')
-                ->cascadeOnDelete();
+                ->constrained('posts');
 
             $table->text('content');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

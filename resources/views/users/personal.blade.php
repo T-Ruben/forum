@@ -4,7 +4,11 @@
     <form action="{{ route('users.destroy', [$user, $user->id]) }}" method="POST">
         @csrf
         @method('DELETE')
-        <x-forms.form-button onclick="return confirm('Are you sure?')">Delete Account</x-forms.form-button>
+
+        @can('delete', $user)
+            <x-forms.form-button onclick="return confirm('Are you sure?')">Delete Account</x-forms.form-button>
+        @endcan
+
     </form>
 
 

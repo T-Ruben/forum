@@ -2,6 +2,8 @@
 
 namespace App\Policies;
 
+use App\Enums\UserRoles;
+use App\Models\Forum;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -29,7 +31,7 @@ class ThreadPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role === UserRoles::Member;
     }
 
     /**

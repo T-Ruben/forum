@@ -55,6 +55,7 @@ class ThreadController extends Controller
     }
 
     public function store(Request $request, Forum $forum){
+        Gate::authorize('create', Thread::class);
         $content = $request->input('content');
 
         $plain = trim(strip_tags($content));
@@ -91,7 +92,7 @@ class ThreadController extends Controller
 
         DB::commit();
 
-        return back()
+        return redirect()->route('threads.show', [$thread, $thread->slug])
         ->with('success', 'Thread created successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -101,26 +102,6 @@ class ThreadController extends Controller
                 ->withInput();
         }
     }
-
-    //     public function update(Post $post, Request $request, Thread $thread, User $user) {
-    //     // Gate::authorize('update', $editUser);
-
-    //     $validated = $request->validate([
-    //         'content' => ['required', 'string', 'min:3', 'max:5000'],
-    //     ]);
-
-    //     try {
-    //         $post->update([$validated['content']]);
-    //         return back()
-    //             ->with('success', 'Post updated successfully!');
-    //     } catch(\Exception $e) {
-    //         Log::error('Editing failed: ', ['error', $e->getMessage()]);
-    //         return back()
-    //             ->withErrors(['error' => 'Something went wrong while editing. Please try again.'])
-    //             ->withInput();
-    //     };
-
-    // }
 
     public function destroy(Thread $thread) {
         $thread->delete($thread->id);

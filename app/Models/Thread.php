@@ -63,7 +63,7 @@ class Thread extends Model
             'id' => $this->user_id,
             'name'          => 'Deleted Member ' . $this->user_id,
             'profile_image' => null,
-            'role'          => 'Former Member',
+            'role'          => 'former_member',
             'email'         => null,
         ]);
     }
