@@ -58,8 +58,55 @@
                         <span>{{ $user->posts->count() }}</li>
                 </ul>
             </div>
-        </section>
 
+{{-- FOLLOWING --}}
+            <div class="border-0.5 m-2 p-2 ring-1 ring-white">
+                <div>
+                    <a href="{{ route('members.following', $user) }}" class="hover:underline text-lg">Following:</a>
+                </div>
+                <hr>
+                <div class="w-full flex flex-wrap gap-2">
+                    @forelse ($following as $followingUsers)
+                    <div class="w-18 h-18 my-1 shrink-0 border-1">
+                        <a href="{{ route('users.show', $followingUsers) }}" class="block">
+                            <img src="{{ asset($followingUsers->profile_image_url) }}"
+                                alt="{{ $followingUsers->display_name }}"
+                                title="{{ $followingUsers->display_name }}"
+                                class="w-18 h-18 object-cover ring-indigo-700 ring"
+                                data-pin-nopin="true">
+                        </a>
+                    </div>
+                    @empty
+                    <p class="text-sm">Not following anyone currently.</p>
+                    @endforelse
+                </div>
+            </div>
+{{-- FOLLOWERS --}}
+            <div class="border-0.5 m-2 p-2 ring-1 ring-white">
+                <div>
+                    <a href="{{ route('members.followers', $user) }}" class="hover:underline text-lg">Followers:</a>
+                </div>
+                <hr>
+                <div class="w-full flex flex-wrap gap-2">
+                    @forelse ($followers as $followerUsers)
+                    <div class="w-18 h-18 my-1 shrink-0 border-1">
+                        <a href="{{ route('users.show', $followerUsers) }}" class="block">
+                            <img src="{{ asset($followerUsers->profile_image_url) }}"
+                                alt="{{ $followerUsers->display_name }}"
+                                title="{{ $followerUsers->display_name }}"
+                                class="w-18 h-18 object-cover ring-indigo-700 ring"
+                                data-pin-nopin="true">
+                        </a>
+                    </div>
+                    @empty
+                    <p class="text-sm">Not followed by anyone currently.</p>
+                    @endforelse
+                </div>
+            </div>
+
+
+
+        </section>
 
         <section class="w-full min-h-full break-words overflow-hidden">
             <div class="mb-10">

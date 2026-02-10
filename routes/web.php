@@ -85,10 +85,16 @@ Route::post('/logout', [SessionController::class, 'destroy'])
 
 
 // User
+
+Route::get('/members', [UserController::class, 'index'])
+    ->name('members.index');
+Route::get('/members/following/{user}', [UserController::class, 'following'])
+    ->name('members.following');
+Route::get('/members/followers/{user}', [UserController::class, 'followers'])
+    ->name('members.followers');
+
 Route::get('/members/{user}', [UserController::class, 'show'])
     ->name('users.show');
-Route::get('/index/members', [UserController::class, 'index'])
-    ->name('members.index');
 
 Route::post('/members/{user}/follow', [UserController::class, 'follow'])
     ->name('users.follow')

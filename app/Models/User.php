@@ -87,6 +87,8 @@ class User extends Authenticatable
         )->withTimestamps();
     }
 
+
+
     public function profilePosts() {
         return $this->hasMany(Post::class, 'profile_user_id');
     }

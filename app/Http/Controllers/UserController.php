@@ -31,6 +31,16 @@ class UserController extends Controller
                 ->findOrFail($request->reply_to);
         }
 
+        $following = $user->following()
+            ->with(['followers', 'following', 'posts'])
+            ->limit(4)
+            ->get();
+
+        $followers = $user->followers()
+            ->with(['followers', 'following', 'posts'])
+            ->limit(4)
+            ->get();
+
         $posts = $user->profilePosts()
             ->whereNull('parent_id')
             ->with(['user', 'recursiveReplies', 'parent', 'replies', 'replies.user'])
@@ -42,7 +52,9 @@ class UserController extends Controller
             'user' => $user,
             'posts' => $posts,
             'replyTo' => $replyTo,
-            'editPost' => $editPost
+            'editPost' => $editPost,
+            'following' => $following,
+            'followers' => $followers
             ]);
     }
 
@@ -51,6 +63,22 @@ class UserController extends Controller
             ->paginate(25);
 
         return view('users.index', ['users' => $users]);
+    }
+
+    public function following(User $user) {
+        $following = $user->following()
+            ->with(['followers', 'following', 'posts'])
+            ->paginate(25);
+
+        return view('users.following', ['following' => $following, 'user' => $user]);
+    }
+
+    public function followers(User $user) {
+        $followers = $user->followers()
+            ->with(['followers', 'following', 'posts'])
+            ->paginate(25);
+
+        return view('users.followers', ['followers' => $followers, 'user' => $user]);
     }
 
     public function follow(User $user) {
