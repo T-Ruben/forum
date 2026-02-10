@@ -4,6 +4,7 @@ use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ThreadController;
@@ -82,10 +83,12 @@ Route::post('/logout', [SessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout.destroy');
 
+// Search
+Route::get('/search', [SearchController::class, 'results'])
+    ->name('search');
 
 
 // User
-
 Route::get('/members', [UserController::class, 'index'])
     ->name('members.index');
 Route::get('/members/following/{user}', [UserController::class, 'following'])

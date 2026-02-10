@@ -29,7 +29,23 @@
 
     </div>
     {{-- SEARCH BAR HERE --}}
-    <div class="flex bg-slate-950 p-2 mb-2 rounded-b-xl">
-        test
+    <div class="flex justify-center bg-slate-950 p-2 mb-2 rounded-b-xl">
+
+        <form action="{{ route('search') }}" method="GET" class="w-full flex gap-2">
+            @csrf
+
+            <input type="text"
+            name="searchBar"
+            id="searchBar"
+            class="border-1 w-full bg-white rounded text-black text-lg pl-2"
+            placeholder="Search">
+
+            <button type="submit"
+                class="text-lg rounded dark:bg-blue-900 border border-fray-400 p-1
+                        hover:dark:bg-blue-900/80 duration-200 cursor-pointer">
+                        Search
+            </button>
+        </form>
+
     </div>
 </header>
