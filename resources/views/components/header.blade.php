@@ -32,11 +32,10 @@
     <div class="flex justify-center bg-slate-950 p-2 mb-2 rounded-b-xl">
 
         <form action="{{ route('search') }}" method="GET" class="w-full flex gap-2">
-            @csrf
 
             <input type="text"
-            name="searchBar"
-            id="searchBar"
+            name="query"
+            id="query"
             class="border-1 w-full bg-white rounded text-black text-lg pl-2"
             placeholder="Search">
 

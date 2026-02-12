@@ -9,12 +9,13 @@ class SearchController extends Controller
 {
     public function results(Request $request)
     {
-        $input = $request->input('searchBar');
+        $query = $request->query('query');
 
-        $threads = Thread::where('title', 'LIKE', `%{$input}%`)
-            ->limit(5)
-            ->get();
+        $threads = Thread::where('title', 'LIKE', "%{$query}%")
+            ->with('user', 'forum')
+            ->orderByDesc('created_at')
+            ->paginate(25);
 
-        return view('search.results', compact($threads));
+        return view('search.results', ['threads' => $threads, 'query' => $query]);
     }
 }

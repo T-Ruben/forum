@@ -14,3 +14,14 @@
 .simple-pagination nav p {
         display: none;
     }
+
+.mark {
+    background: rgba(255, 230, 0, 0.4);
+    border-bottom: 2px solid orange;
+    color: black;
+}
+.highlight {
+    background: rgba(255, 230, 0, 0.8);
+    color: black;
+    border-radius: 2px;
+}
