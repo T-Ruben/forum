@@ -1,34 +1,35 @@
 <x-layout>
     <x-header />
     <x-main>
-        <span class="mb-2">{{ $threads->links() }}</span>
+        <span class="mb-2">{{ $results->links() }}</span>
         <section>
             <p class="text-2xl">Search results for query: <span class="font-bold text-gray-200">{{ $query }}</span></p>
             <ul class="">
-                @if($threads->count() >= 1)
-                    @foreach ($threads as $thread)
+                    @foreach ($results as $result)
                         <li class="border p-1 my-1">
-                            <a href="{{ route('threads.show', [$thread, $thread->slug]) }}" class="search-results hover:underline text-lg">
-                                {{ $thread->title }}
-                            </a>
-                            <div class="flex justify-between">
-                                <p class="text-gray-300 text-sm">Thread by: <a href="{{ $thread->user?->user_url }}"
-                                        class="hover:underline">
-                                    {{ $thread->user->display_name }},
-                                </a>
-                                Created at: <x-time-display :time="$thread->created_at" />,
-                                In forum: {{ $thread->forum->title }}
-                                </p>
-                                <span class="text-gray-400">
-                                    Thread
-                                </span>
-                            </div>
+                            @switch($result['type'])
+                                @case('thread')
+                                    @include('search.partials.thread', ['thread' => $result['model']])
+                                    @break
+
+                                @case('post_thread')
+                                    @include('search.partials.post-thread', ['post' => $result['model']])
+                                @break
+
+                                @case('post_profile')
+                                    @include('search.partials.post-profile', ['post' => $result['model']])
+                                @break
+
+                                @case('post_reply')
+                                    @include('search.partials.post-reply', ['post' => $result['model']])
+                                @break
+
+                            @endswitch
                         </li>
                     @endforeach
-                @endif
             </ul>
         </section>
-        <span class="my-2">{{ $threads->links() }}</span>
+        <span class="my-2">{{ $results->links() }}</span>
     </x-main>
     <x-footer/>
 </x-layout>
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
     const searchTerm = urlParams.get('query');
 
+
     if(searchTerm) {
         const instance = new Mark(document.querySelectorAll(".search-results"));
 
@@ -47,9 +49,11 @@ document.addEventListener("DOMContentLoaded", function() {
             "element": "mark",
             "className": "highlight",
             "accuracy": "partially",
-            "separateWordSearch": true
-        })
+            "separateWordSearch": true,
+            "acrossElements": true,
+            "diacritics": true,
+        });
     }
-})
+});
 
 </script>

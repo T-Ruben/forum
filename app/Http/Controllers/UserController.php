@@ -60,7 +60,7 @@ class UserController extends Controller
 
     public function index(User $user) {
         $users = $user->with(['followers', 'following', 'posts'])
-            ->paginate(25);
+            ->paginate(24);
 
         return view('users.index', ['users' => $users]);
     }
