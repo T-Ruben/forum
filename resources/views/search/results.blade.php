@@ -6,7 +6,7 @@
             <p class="text-2xl">Search results for query: <span class="font-bold text-gray-200">{{ $query }}</span></p>
             <ul class="">
                     @foreach ($results as $result)
-                        <li class="border p-1 my-1">
+                        <li class="border p-1 my-1 w-full">
                             @switch($result['type'])
                                 @case('thread')
                                     @include('search.partials.thread', ['thread' => $result['model']])
