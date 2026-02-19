@@ -12,7 +12,7 @@ class SearchController extends Controller
 {
     public function results(Request $request)
     {
-        $query = trim($request->query('query'));
+        $query = trim($request->query('query') ?? '');
         $threadOnly = $request->boolean('threadOnly');
 
         if ($threadOnly) {
@@ -85,7 +85,10 @@ class SearchController extends Controller
         ]);
         }
 
-        $results = $results->sortByDesc('created_at')->values();
+        $results = $results
+            ->whereNull('deleted_at')
+            ->sortByDesc('created_at')
+            ->values();
 
         $page = request()->get('page', 1);
         $perPage = 25;

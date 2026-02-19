@@ -46,7 +46,8 @@ class Post extends Model
 
     public function replies()
     {
-        return $this->hasMany(Post::class, 'parent_id');
+        return $this->hasMany(Post::class, 'parent_id')
+            ->withTrashed();
     }
 
     public function recursiveReplies() {
@@ -64,16 +65,36 @@ class Post extends Model
             }
     public function getPageNumberProfile($perPage = 10)
         {
+            $target = $this->parent_id
+                ? self::find($this->parent_id)
+                : $this;
+
             $count = self::whereNull('parent_id')
-                ->where('user_id', $this->user_id)
-                ->where(function ($query){
-                    $query->where('created_at', '>', $this->created_at)
-                    ->where('id', '>', $this->id);
+                ->where('profile_user_id', $target->profile_user_id)
+                ->where(function ($query) use ($target){
+                    $query->where('created_at', '>', $target->created_at)
+                    ->orWhere(function ($query) use ($target) {
+                        $query->where('created_at', $target->created_at)
+                            ->where('id', '>', $target->id);
+                    });
                 })
+                ->withTrashed()
                 ->count();
+
+
+                $result = (int) ceil(($count + 1) / $perPage);
+                debug("For this id: " . $this->id . " This count " .  $count . "This result: " . $result);
+
             return (int) ceil(($count + 1) / $perPage);
         }
 
+        public function getDisplayContentAttribute() {
+            if($this->trashed()) {
+                return 'This post has been deleted.';
+            }
+
+            return $this->content;
+        }
 
 
 

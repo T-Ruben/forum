@@ -45,6 +45,7 @@ class UserController extends Controller
             ->whereNull('parent_id')
             ->with(['user', 'recursiveReplies', 'parent', 'replies', 'replies.user'])
             ->withCount('replies')
+            ->withTrashed()
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
