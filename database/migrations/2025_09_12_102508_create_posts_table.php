@@ -32,7 +32,8 @@ return new class extends Migration
 
             $table->foreignId('parent_id')
                 ->nullable()
-                ->constrained('posts');
+                ->constrained('posts')
+                ->cascadeOnDelete();
 
             $table->text('content');
             $table->timestamps();

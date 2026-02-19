@@ -185,17 +185,16 @@ Took from second section: bg-gray-500/75
                                     </div>
                                     <div class="w-full overflow-hidden">
                                         <div class="font-semibold flex">
-                                            <a href="{{ $post->user?->user_url }}"
-                                                class="hover:underline duration-200 w-1/2">
+                                            <a href="{{ route('users.show', [$post->profile_user_id, 'page' => $post->getPageNumberProfile()]) }}#post-{{ $post->parent_id ?? $post->id }}"
+                                                class="hover:underline duration-200 w-fit max-w-1/2">
                                                 <h3 class="truncate" title="{{ $post->user->display_name }}">{{ $post->user->display_name }}</h3>
                                             </a>
 
                                             @if ($post->profile_user_id !== $post->user->id)
                                                 @include('icons.arrow-right')
-                                                <a href="{{ $post->profileOwner?->user_url }}"
+                                                <a href="{{ route('users.show', [$post->profile_user_id, 'page' => $post->getPageNumberProfile()]) }}#post-{{ $post->parent_id ?? $post->id }}"
                                                     class="hover:underline duration-200 truncate">
                                                     <span class="" title="{{ $post->profileOwner->display_name }}">{{ $post->profileOwner->display_name }}</span></a>
-
                                             @endif
 
                                         </div>

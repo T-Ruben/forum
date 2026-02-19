@@ -165,6 +165,6 @@ class User extends Authenticatable
 
     public function getUserUrlAttribute()
     {
-        return $this->trashed() ? '' : route('users.show', $this);
+        return $this->trashed() ? null : route('users.show', $this);
     }
 }

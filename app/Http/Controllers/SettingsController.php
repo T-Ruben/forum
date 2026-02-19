@@ -18,6 +18,7 @@ class SettingsController extends Controller
 
     public function threads(Thread $threads) {
         $userThreads = Auth::user()->threads()
+            ->with('posts')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

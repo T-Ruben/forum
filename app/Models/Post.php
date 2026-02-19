@@ -78,25 +78,10 @@ class Post extends Model
                             ->where('id', '>', $target->id);
                     });
                 })
-                ->withTrashed()
                 ->count();
-
-
-                $result = (int) ceil(($count + 1) / $perPage);
-                debug("For this id: " . $this->id . " This count " .  $count . "This result: " . $result);
 
             return (int) ceil(($count + 1) / $perPage);
         }
-
-        public function getDisplayContentAttribute() {
-            if($this->trashed()) {
-                return 'This post has been deleted.';
-            }
-
-            return $this->content;
-        }
-
-
 
 
 }

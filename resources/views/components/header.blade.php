@@ -53,14 +53,6 @@
             </div>
         </form>
 
-
-
-
     </div>
-    {{-- <div>
-        <div class="bg-gray-100 text-black p-2 w-fit">
-            <input type="checkbox" name="searchCheck" id="searchCheck">
-            <label for="searchCheck" class="">Search thread titles only</label>
-        </div>
-    </div> --}}
+
 </header>
