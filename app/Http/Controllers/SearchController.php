@@ -55,7 +55,7 @@ class SearchController extends Controller
             ->get();
 
         $posts = Post::where('content', 'LIKE', "%{$query}%")
-            ->with(['user', 'thread', 'profileOwner', 'replies'])
+            ->with(['user', 'parent' , 'thread', 'profileOwner', 'replies'])
             ->get();
 
         $results = collect();

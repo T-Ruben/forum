@@ -32,13 +32,13 @@ class ForumController extends Controller
             ]);
         }])->get();
 
-        $forumPosts = Post::with(['user', 'thread.forum',])
+        $forumPosts = Post::with(['user', 'thread.forum', 'parent'])
         ->whereNotNull('thread_id')
         ->latest()
         ->take(5)
         ->get();
 
-        $profilePosts = Post::with(['user', 'profileOwner'])
+        $profilePosts = Post::with(['user', 'profileOwner', 'parent'])
         ->whereNull('thread_id')
         ->latest()
         ->take(5)

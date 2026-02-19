@@ -63,25 +63,33 @@ class Post extends Model
             return (int) ceil(($count + 1) / $perPage);
 
             }
-    public function getPageNumberProfile($perPage = 10)
-        {
-            $target = $this->parent_id
-                ? self::find($this->parent_id)
-                : $this;
 
-            $count = self::whereNull('parent_id')
-                ->where('profile_user_id', $target->profile_user_id)
-                ->where(function ($query) use ($target){
-                    $query->where('created_at', '>', $target->created_at)
+    protected static array $profilePageCache = [];
+
+    public function getPageNumberProfile(): int
+    {
+        $target = $this->parent_id ? $this->parent : $this;
+
+            $cacheKey = $target->id;
+
+            if (isset(self::$profilePageCache[$cacheKey])) {
+                return self::$profilePageCache[$cacheKey];
+            }
+
+        $count = self::whereNull('parent_id')
+            ->where('profile_user_id', $target->profile_user_id)
+            ->where(function ($query) use ($target) {
+                $query->where('created_at', '>', $target->created_at)
                     ->orWhere(function ($query) use ($target) {
                         $query->where('created_at', $target->created_at)
                             ->where('id', '>', $target->id);
                     });
-                })
-                ->count();
+            })
+            ->count();
 
-            return (int) ceil(($count + 1) / $perPage);
-        }
+        return self::$profilePageCache[$cacheKey] = floor($count / 10) + 1;
+    }
+
 
 
 }

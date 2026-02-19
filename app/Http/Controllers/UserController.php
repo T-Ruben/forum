@@ -44,7 +44,7 @@ class UserController extends Controller
 
         $posts = $user->profilePosts()
             ->whereNull('parent_id')
-            ->with(['user', 'recursiveReplies', 'parent', 'replies', 'replies.user'])
+            ->with(['user', 'parent', 'replies', 'replies.user'])
             ->withCount('replies')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
