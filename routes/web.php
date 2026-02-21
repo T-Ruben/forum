@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AvatarController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisteredUserController;
@@ -126,3 +127,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/settings/threads', [SettingsController::class, 'threads'])->name('settings.threads');
 });
 
+// Conversation
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/conversation/create', [ConversationController::class, 'create'])
+        ->name('conversation.create');
+});

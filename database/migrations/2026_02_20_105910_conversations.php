@@ -38,6 +38,10 @@ return new class extends Migration
                 ->nullable()
                 ->constrained()
                 ->nullOnDelete();
+            $table->foreignId('parent_id')
+                ->nullable()
+                ->constrained('messages')
+                ->cascadeOnDelete();
             $table->text('content');
             $table->timestamps();
             $table->softDeletes();

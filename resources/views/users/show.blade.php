@@ -42,10 +42,16 @@
                 @endif
             @endcan
 
-{{-- PRIVATE MESSAGES --}}
-            <div class="flex w-full shrink-0 justify-center">
-                <a href="">Private Message</a>
-            </div>
+{{-- PRIVATE MESSAGE --}}
+            @can('view', $user)
+                <div class="flex w-full shrink-0 justify-center">
+                    <a href="{{ route('conversation.create', ['user' => $user->id]) }}"
+                        class="border rounded p-1 bg-gradient-to-br from-gray-600 to-gray-300 hover:opacity-75 duration-200
+                                mt-2">
+                        Private Message
+                    </a>
+                </div>
+            @endcan
 
             <div class="border-0.5 m-2 p-2 ring-1 ring-white">
                 <ul>
