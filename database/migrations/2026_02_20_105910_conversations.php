@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('conversations', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('slug');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -25,7 +27,7 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->timestamp('deleted_at')->nullable();
+            $table->timestamps();
 
             $table->primary(['conversation_id', 'user_id']);
         });

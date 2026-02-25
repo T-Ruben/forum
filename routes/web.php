@@ -125,11 +125,21 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/settings/personal', [SettingsController::class, 'personal'])->name('settings.personal');
     Route::get('/settings/privacy', [SettingsController::class, 'privacy'])->name('settings.privacy');
     Route::get('/settings/threads', [SettingsController::class, 'threads'])->name('settings.threads');
+    Route::get('/settings/conversations', [SettingsController::class, 'conversations'])->name('settings.conversations');
 });
 
 // Conversation
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/conversation/create', [ConversationController::class, 'create'])
+    Route::get('/conversation/create/{user}', [ConversationController::class, 'create'])
         ->name('conversation.create');
+
+    Route::post('conversation/store/{user}', [ConversationController::class, 'store'])
+        ->middleware('throttle:make-thread')
+        ->name('conversation.store');
+
+    Route::get('/conversation/{conversation}', [ConversationController::class, 'show'])
+        ->name('conversation.show');
+    Route::delete('/conversations/{conversation}/leave', [ConversationController::class, 'leave'])
+        ->name('conversation.leave');
 });

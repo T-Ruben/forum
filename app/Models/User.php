@@ -93,6 +93,16 @@ class User extends Authenticatable
         return $this->hasMany(Post::class, 'profile_user_id');
     }
 
+    public function conversations()
+    {
+        return $this->belongsToMany(Conversation::class)
+            ->withTimestamps();
+    }
+
+    public function messages() {
+        return $this->hasMany(Message::class);
+    }
+
     protected $fillable = [
         'name',
         'email',

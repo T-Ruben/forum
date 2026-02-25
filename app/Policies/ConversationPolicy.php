@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Conversation;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ConversationPolicy
 {
@@ -21,7 +22,7 @@ class ConversationPolicy
      */
     public function view(User $user, Conversation $conversation): bool
     {
-        return false;
+        return $conversation->users()->where('user_id', $user->id)->exists();
     }
 
     /**
@@ -62,5 +63,12 @@ class ConversationPolicy
     public function forceDelete(User $user, Conversation $conversation): bool
     {
         return false;
+    }
+
+    public function leave(User $user, Conversation $conversation)
+    {
+        return $conversation->users()
+            ->where('user_id', $user->id)
+            ->exists();
     }
 }

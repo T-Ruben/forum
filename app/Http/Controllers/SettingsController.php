@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Conversation;
 use App\Models\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,4 +26,12 @@ class SettingsController extends Controller
         return view('users.threads', ['user' => Auth::user(), 'threads' => $userThreads]);
     }
 
+    public function conversations(Conversation $conversation) {
+        $conversations = Auth::user()->conversations()
+            ->with('messages')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('users.conversations', ['user' => Auth::user(), 'conversations' => $conversations]);
+    }
 }

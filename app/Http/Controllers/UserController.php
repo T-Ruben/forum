@@ -61,6 +61,7 @@ class UserController extends Controller
 
     public function index(User $user) {
         $users = $user->with(['followers', 'following', 'posts'])
+            ->orderByDesc('created_at')
             ->paginate(24);
 
         return view('users.index', ['users' => $users]);

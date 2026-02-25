@@ -45,8 +45,13 @@
                             <x-link page="settings_link" :active="request()->routeIs('settings.threads')"
                                 href="{{ route('settings.threads') }}">Created Threads</x-link>
                         </li>
+                        <li>
+                            <x-link page="settings_link" :active="request()->routeIs('settings.conversations')"
+                                href="{{ route('settings.conversations') }}">Conversations</x-link>
+                        </li>
                     </ul>
                 </div>
+
             </div>
             <hr class="border-gray-500 my-2">
             <div>

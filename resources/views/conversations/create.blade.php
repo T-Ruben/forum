@@ -4,17 +4,15 @@
 <x-main>
 
     <div class=' mx-auto h-full w-full  px-10 py-5  flex-2'>
-        <h1 class="text-2xl text-center mb-5">Create Private Thread</h1>
-        <p></p>
+        <h1 class="text-2xl text-center mb-5">Chat with {{ $user->display_name }}</h1>
 
 
-        <form action="" method="POST" class="inline text-center" id="postForm">
+        <form action="{{ route('conversation.store', ['user' => $user->id]) }}" method="POST" class="inline text-center" id="postForm">
             @csrf
-            <x-forms.div>
-                <input class="outline text-black pl-1 ml-1 text-4xl w-[60%] h-12 bg-white rounded-sm" type="text"
-                    id="title" name="title" placeholder="Title" value="{{ old('title') }}" required>
-            </x-forms.div>
-
+                <x-forms.div>
+                    <input class="outline text-black pl-1 ml-1 text-4xl w-[60%] h-12 bg-white rounded-sm" type="text"
+                        id="title" name="title" placeholder="Title" value="{{ old('title') }}" required>
+                </x-forms.div>
                 <x-editor />
 
                 <textarea
@@ -29,7 +27,7 @@
             <x-forms.form-error error="content" />
 
             <div class="flex justify-center w-full">
-                <x-forms.form-button>Create Thread</x-forms.form-button>
+                <x-forms.form-button>Create Private Thread</x-forms.form-button>
             </div>
 
         </form>
