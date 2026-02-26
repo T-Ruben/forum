@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\UserRoles;
 use App\Models\Conversation;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -30,7 +31,7 @@ class ConversationPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role === UserRoles::Member;;
     }
 
     /**

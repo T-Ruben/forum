@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\UserRoles;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -29,7 +30,7 @@ class MessagePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role === UserRoles::Member;;
     }
 
     /**
@@ -37,7 +38,7 @@ class MessagePolicy
      */
     public function update(User $user, Message $message): bool
     {
-        return false;
+        return $user->id === $message->user_id;;
     }
 
     /**
@@ -45,7 +46,7 @@ class MessagePolicy
      */
     public function delete(User $user, Message $message): bool
     {
-        return false;
+        return $user->id == $message->user_id;
     }
 
     /**

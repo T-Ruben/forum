@@ -16,8 +16,9 @@
                                     <span class="truncate">{{ $conversation->title }}</span>
                             </a>
                         </div>
-                        <div>
+                        <div class="flex flex-col">
                             <span class="text-sm">Messages: {{ $conversation->messages->count() }}</span>
+                            <span class="text-sm">Members: {{ $conversation->users->count() }}</span>
                         </div>
                     </div>
                     <form action="{{ route('conversation.leave', $conversation) }}" method="POST" class="mb-2 flex justify-end">

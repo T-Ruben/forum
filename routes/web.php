@@ -3,6 +3,7 @@
 use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SearchController;
@@ -142,4 +143,17 @@ Route::middleware(['auth'])->group(function () {
         ->name('conversation.show');
     Route::delete('/conversations/{conversation}/leave', [ConversationController::class, 'leave'])
         ->name('conversation.leave');
+});
+
+// Messages
+
+Route::middleware(['auth'])->group(function() {
+    Route::put('conversation/message/{message}', [MessageController::class, 'update'])
+    ->name('conversation.message.update');
+    Route::post('/messages', [MessageController::class, 'store'])
+    ->middleware(['throttle:make-post'])
+    ->name('message.store');
+    Route::delete('message/destroy/{message}', [MessageController::class, 'destroy'])
+        ->name('message.destroy');
+
 });

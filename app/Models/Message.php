@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Message extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'content',
         'parent_id',
@@ -27,7 +28,7 @@ class Message extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Post::class, 'parent_id');
+        return $this->belongsTo(Message::class, 'parent_id');
     }
 
     public function replies()
@@ -35,4 +36,14 @@ class Message extends Model
         return $this->hasMany(Message::class, 'parent_id')
             ->withTrashed();
     }
+
+    public function getPageNumber($perPage = 10)
+    {
+        $count = self::where('conversation_id', $this->conversation_id)
+            ->where('created_at', '<', $this->created_at)
+            ->count();
+        return (int) ceil(($count + 1) / $perPage);
+
+    }
+
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Conversation;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,6 +33,8 @@ class ConversationController extends Controller
      */
     public function store(Request $request, User $user)
     {
+        Gate::authorize('create', Conversation::class);
+
         $content = $request->input('content');
 
         $plain = trim(strip_tags($content));
@@ -76,11 +79,25 @@ class ConversationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Conversation $conversation)
+    public function show(Conversation $conversation, Request $request)
     {
         Gate::authorize('view', $conversation);
         $conversation = $conversation->load(['messages']);
 
+        $replyTo = null;
+        $editMessage = null;
+
+        if($request->filled('edit_message')) {
+            $editMessage = Message::where('conversation_id', $conversation->id)
+                ->findOrFail($request->edit_message);
+
+            Gate::authorize('update', $editMessage);
+        }
+            elseif($request->filled('reply_to'))
+        {
+            $replyTo = Message::where('conversation_id', $conversation->id)
+                ->findOrFail($request->reply_to);
+        }
 
         $messages = $conversation->messages()
             ->with(['user.following', 'parent.user', 'user.followers', 'user' => function ($query) {
@@ -91,7 +108,9 @@ class ConversationController extends Controller
 
         return view('conversations.show', [$conversation->id,
                                             'conversation' => $conversation,
-                                            'messages' => $messages]);
+                                            'messages' => $messages,
+                                            'replyTo' => $replyTo,
+                                            'editMessage' => $editMessage]);
     }
 
     /**

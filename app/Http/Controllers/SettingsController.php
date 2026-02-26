@@ -28,7 +28,7 @@ class SettingsController extends Controller
 
     public function conversations(Conversation $conversation) {
         $conversations = Auth::user()->conversations()
-            ->with('messages')
+            ->with(['messages', 'users'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

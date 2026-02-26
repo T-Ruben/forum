@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 
 class Conversation extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'title',
         'slug'

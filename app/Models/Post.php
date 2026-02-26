@@ -62,7 +62,7 @@ class Post extends Model
                 ->count();
             return (int) ceil(($count + 1) / $perPage);
 
-            }
+        }
 
     protected static array $profilePageCache = [];
 

@@ -101,7 +101,7 @@
 
                     @if($isEdit)
                         <a href="{{ route('threads.show', ['thread' => $thread->id, $thread->slug, 'page' => request('page')]) }}"
-                        class="text-gray-500 mr-4">
+                        class="text-red-500 mr-4 border-2 rounded p-0.5 hover:text-red-700/70">
                             Cancel Edit
                         </a>
                     @endif

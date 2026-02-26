@@ -6,7 +6,7 @@
     <div class=" border-l pl-2">
 
         <ul class="">
-            @foreach ($threads as $thread)
+            @forelse ($threads as $thread)
                 <li class="text-lg mb-2 ">
                     <div>
                         <div class="min-w-0 flex gap-1">
@@ -24,11 +24,18 @@
                         @csrf
                         @method('DELETE')
 
-                        <x-forms.form-button onclick="return confirm('Are you sure?')" class="">Delete</x-forms.form-button>
+                        <x-forms.form-button onclick="return confirm('Are you sure? This action cannout be reversed.')"
+                            title="Delete Thread"
+                            alt="Delete thread. This action cannout be reversed.">
+                            Delete
+                        </x-forms.form-button>
                     </form>
+                    <span class="text-sm flex justify-end">This action cannout be reversed.</span>
                     <hr class="mb-2">
                 </li>
-            @endforeach
+                @empty
+                    <p class="text-sm">No created threads currently.</p>
+            @endforelse
         </ul>
 
     </div>

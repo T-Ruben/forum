@@ -48,15 +48,6 @@ class PostController extends Controller
         return back()
             ->withErrors(['content' => 'Something went wrong.'])
             ->withInput();
-        } catch (\Exception $e) {
-            Log::error('Post creation failed', [
-                'user_id' => Auth::id(),
-                'error' => $e->getMessage(),
-            ]);
-
-            return back()
-                ->withErrors(['content' => 'Something went wrong. Please try again later.'])
-                ->withInput();
         }
     }
 
@@ -96,15 +87,6 @@ class PostController extends Controller
         return back()
             ->withErrors(['content' => 'Something went wrong.'])
             ->withInput();
-        } catch (\Exception $e) {
-            Log::error('Post creation failed', [
-                'user_id' => Auth::id(),
-                'error' => $e->getMessage(),
-            ]);
-
-            return back()
-                ->withErrors(['content' => 'Something went wrong. Please try again later.'])
-                ->withInput();
         }
     }
     public function update(Post $post, Request $request) {
