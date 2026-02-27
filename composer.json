@@ -13,6 +13,7 @@
         "intervention/image-laravel": "^1.5",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
+        "livewire/livewire": "^4.2",
         "s9e/text-formatter": "^2.19"
     },
     "require-dev": {

@@ -1,7 +1,7 @@
 
 <header>
     <div class="dark:bg-blue-950 flex py-5 items-center rounded-t-xl">
-        <div class="flex">
+        <div class="flex shrink-0">
             <a href="/" class="mx-10 font-medium text-3xl shrink-0"><h1>Game Updates</h1></a>
             <nav class="flex gap-2 justify-start items-center">
                 <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">Home</x-nav-link>
@@ -19,7 +19,7 @@
             </nav>
 
             @auth
-                <div class="my-auto">
+                <div class="my-auto w-fit">
                     <button type="button" class="relative ml-auto shrink-0 rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
                         <span class="absolute -inset-1.5"></span>
                         <span class="sr-only">View notifications</span>
@@ -53,7 +53,7 @@
                         hover:dark:bg-blue-900/80 duration-200 cursor-pointer">
                         Search
             </button>
-            <div class="w-full opacity-0 peer-focus:opacity-100 hover:opacity-100 select-none">
+            <div class="w-full hidden peer-focus:block select-none">
                 <div class="bg-gray-100 text-black p-2 w-fit absolute border inset-shadow-2xs inset-shadow-black">
                     <input type="checkbox" name="threadOnly" id="threadOnly">
                     <label for="threadOnly" class="">Search thread titles only</label>
