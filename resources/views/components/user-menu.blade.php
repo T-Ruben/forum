@@ -4,7 +4,8 @@
             <a class="" href="{{ route('users.show', auth()->user()->id) }}">
                 <h3 class="flex items-center justify-center text-center cursor-pointer text-lg hover:dark:bg-blue-900/70 w-full h-10 pt-2 m-1 rounded-md">
                 @include('icons.arrow-down')
-                <span>{{ auth()->user()->name }}</span></h3>
+                <span>{{ auth()->user()->name }}</span><img src="{{ Auth::user()->profile_image_url }}" alt=""
+                    class="size-8 ml-2 rounded-full outline -outline-offset-1 outline-white/10" /></h3>
             </a>
         </div>
 

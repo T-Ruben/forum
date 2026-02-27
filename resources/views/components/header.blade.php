@@ -1,8 +1,8 @@
 
 <header>
-    <div class="dark:bg-blue-950 flex justify-between py-5 items-center rounded-t-xl">
+    <div class="dark:bg-blue-950 flex py-5 items-center rounded-t-xl">
         <div class="flex">
-            <a href="/" class="mx-10 font-medium text-3xl"><h1>Game Updates</h1></a>
+            <a href="/" class="mx-10 font-medium text-3xl shrink-0"><h1>Game Updates</h1></a>
             <nav class="flex gap-2 justify-start items-center">
                 <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">Home</x-nav-link>
                 <x-nav-link href="#" :active="request()->routeIs('')">Blogs</x-nav-link>
@@ -10,20 +10,28 @@
             </nav>
         </div>
 
-        <div class="flex mx-10">
+        <div class="flex mr-10 justify-end w-full">
             <nav class="">
-            @guest
-                <x-nav-link href="{{ route('register') }}" :active="request()->routeIs('register')">Register</x-nav-link>
-                <x-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">Login</x-nav-link>
-            @endguest
+                @guest
+                    <x-nav-link href="{{ route('register') }}" :active="request()->routeIs('register')">Register</x-nav-link>
+                    <x-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">Login</x-nav-link>
+                @endguest
+            </nav>
 
             @auth
+                <div class="my-auto">
+                    <button type="button" class="relative ml-auto shrink-0 rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
+                        <span class="absolute -inset-1.5"></span>
+                        <span class="sr-only">View notifications</span>
+                        @include('icons.bell')
+                    </button>
+                </div>
 
                 <x-user-menu />
 
             @endauth
 
-            </nav>
+
         </div>
 
 
@@ -56,3 +64,7 @@
     </div>
 
 </header>
+
+<script>
+    import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+</script>
