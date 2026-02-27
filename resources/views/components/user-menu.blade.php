@@ -1,18 +1,21 @@
-<div class="">
-    <div class="relative group field-sizing-content">
-        <div class="w-full">
-            <a class="" href="{{ route('users.show', auth()->user()->id) }}">
-                <h3 class="flex items-center justify-center text-center cursor-pointer text-lg hover:dark:bg-blue-900/70 w-full h-10 pt-2 m-1 rounded-md">
+<div x-data="{ open: false }" @click.outside="open = false" class="relative">
+    <div class="relative field-sizing-content">
+        <div @click="open = !open" class="w-full select-none">
+                <h3 class="flex items-center text-center cursor-pointer text-lg hover:dark:bg-blue-900/70 w-full h-10 m-1 rounded-md">
                 @include('icons.arrow-down')
                 <span>{{ auth()->user()->name }}</span><img src="{{ Auth::user()->profile_image_url }}" alt=""
-                    class="size-8 ml-2 rounded-full outline -outline-offset-1 outline-white/10" /></h3>
-            </a>
+                    class="size-8 ml-2 rounded-full outline -outline-offset-1 outline-white/10"
+                    data-pin-nopin="true"/></h3>
         </div>
+    </div>
 
-
-        <div class="p-2 absolute w-80 right-0 top-full pointer-events-none opacity-0 bg-gray-600/95 border transform
-                -translate-y-2 transition-all border-gray-400/50 duration-300 group-hover:opacity-100
-                group-hover:pointer-events-auto group-hover:translate-y-0 z-50">
+        <div x-show="open"
+            x-cloak
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 -translate-y-2"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            class="p-2 absolute w-80 right-0 top-full bg-gray-600/95 border transform
+                -translate-y-2 transition-all border-gray-400/50 duration-300">
             <div class="flex">
                 <a href="{{ route('users.show', auth()->user()->id) }}">
                 <img src="{{ asset(auth()->user()->profile_image_url) }}" class="w-32 h-32 object-cover"
@@ -63,7 +66,5 @@
                     </form>
                 </div>
             </div>
-
         </div>
-    </div>
 </div>
