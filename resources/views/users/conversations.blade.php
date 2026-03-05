@@ -10,7 +10,7 @@
                 <li class="text-lg mb-2 ">
                     <div>
                         <div class="min-w-0 flex gap-1">
-                            <span class=" shrink-0">Conversation name: </span>
+                            <span class=" shrink-0">Name: </span>
                             <a href="{{ route('conversation.show', ['conversation' => $conversation]) }}"
                                 class="hover:underline duration-200 font-bold block min-w-0 truncate">
                                     <span class="truncate">{{ $conversation->title }}</span>

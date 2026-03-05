@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\ConversationInvitationController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SearchController;
@@ -11,6 +13,7 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\UserController;
+use App\Models\ConversationInvitation;
 use Illuminate\Support\Facades\Route;
 
 // Homepage
@@ -143,7 +146,18 @@ Route::middleware(['auth'])->group(function () {
         ->name('conversation.show');
     Route::delete('/conversations/{conversation}/leave', [ConversationController::class, 'leave'])
         ->name('conversation.leave');
+
+// Conv Invitation
+
+    Route::post('conversation/{conversation}/invite', [ConversationInvitationController::class, 'store'])
+        ->name('conversation.invite');
 });
+
+
+//Notifications
+
+Route::get('/notifications/{user}', [NotificationController::class, 'index'])
+    ->name('notifications.index');
 
 // Messages
 

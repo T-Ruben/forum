@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Conversation;
+use App\Models\ConversationInvitation;
 use App\Models\Message;
 use App\Models\User;
+use App\Notifications\ConversationInvitationNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -31,7 +33,7 @@ class ConversationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, User $user)
+    public function store(Request $request, User $user, ConversationInvitation $conversationInvitation)
     {
         Gate::authorize('create', Conversation::class);
 
@@ -59,13 +61,25 @@ class ConversationController extends Controller
             'title' => $validated['title'],
         ]);
 
-        $conversation->users()->attach([$user->id, Auth::user()->id]);
+        // $conversation->users()->attach([$user->id, Auth::user()->id]);
+        $conversation->users()->attach([Auth::user()->id]);
+
+        $conversationInvitation->create([
+            'conversation_id' => $conversation->id,
+            'inviter_id' => Auth::user()->id,
+            'invited_user_id' => $user->id,
+        ]);
 
         $conversation->messages()->create([
             'conversation_id' => $conversation->id,
             'user_id' => Auth::user()->id,
             'content' => $validated['content']
         ]);
+
+
+        $invitedUser = $user;
+
+        $invitedUser->notify(new ConversationInvitationNotification($conversation, Auth::user()));
 
         return redirect()->route('conversation.show', $conversation->id);
         } catch (\Exception $e) {

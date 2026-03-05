@@ -1,4 +1,4 @@
-<div x-data="{ open: false }" @click.outside="open = false" class="relative">
+<div x-data="{ open: false }" @click.outside="open = false" class="relative z-10">
     <div class="relative field-sizing-content">
         <div @click="open = !open" class="w-full select-none">
                 <h3 class="flex items-center text-center cursor-pointer text-lg hover:dark:bg-blue-900/70 w-full h-10 m-1 rounded-md">
@@ -23,9 +23,10 @@
                 </a>
 
 
-                <ul class="p-2">
-                    <li><a class="hover:underline" href="{{ route('users.show', auth()->user()->id) }}">{{ auth()->user()->name }}</a></li>
-                    <li><a class="hover:underline" href="{{ route('users.show', auth()->user()->id) }}">View Your Profile</a></li>
+                <ul class="p-2 flex-2 w-full">
+                    <li class="hover:opacity-75"><a class="hover:underline" href="{{ route('users.show', auth()->user()->id) }}">{{ auth()->user()->name }}</a></li>
+                <li class="hover:opacity-75"><a class="hover:underline" href="{{ route('users.show', auth()->user()->id) }}">View Your Profile</a></li>
+                    <li class="hover:opacity-75"><a class="hover:underline flex" href="{{ route('notifications.index', auth()->user()) }}">Notifications</a></li>
                 </ul>
 
             </div>

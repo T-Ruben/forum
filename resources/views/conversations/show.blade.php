@@ -7,7 +7,9 @@
         {{ $conversation->title }}
         {{ $messages->links() }}
     </div>
-    <livewire:livewire.user-search />
+
+    <livewire:livewire.user-search :conversation="$conversation"/>
+
     <aside class="border w-full bg-linear-to-br from-gray-500 to-gray-300 text-black">
         <div class="w-full mb-2 bg-linear-to-tr from-gray-500 to-gray-200">
             <span class="pl-2 text-lg">Members:</span>
