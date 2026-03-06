@@ -151,7 +151,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('conversation/{conversation}/invite', [ConversationInvitationController::class, 'store'])
         ->name('conversation.invite');
-});
+    });
+    Route::post('/conversation-invitation/{invitation}/accept', [ConversationInvitationController::class, 'accept'])
+        ->name('conversation.accept');
+
+    Route::post('/conversation-invitation/{invitation}/reject', [ConversationInvitationController::class, 'reject'])
+        ->name('conversation.reject');
 
 
 //Notifications

@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Conversation;
 use App\Models\ConversationInvitation;
+use App\Models\User;
+use App\Notifications\ConversationInvitationNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class ConversationInvitationController extends Controller
 {
-    public function store(Request $request, Conversation $conversation) {
+    public function store(Request $request, Conversation $conversation, User $user) {
         $request->validate([
             'user_id' => 'required|exists:users,id'
         ]);
@@ -20,11 +22,14 @@ class ConversationInvitationController extends Controller
         }
 
         try {
-        ConversationInvitation::create([
+        $invitation = ConversationInvitation::create([
             'conversation_id' => $conversation->id,
-            'inviter_id' => Auth::user()->id,
-            'invited_user_id' => $request->user_id,
+            'inviter_id' => Auth::id(),
+            'invited_user_id' => $user->id,
+            'status' => 'pending'
         ]);
+
+        $user->notify(new ConversationInvitationNotification($invitation));
 
         return back()->with('success', 'Invitation sent.');
         } catch(\Exception $e) {
@@ -40,11 +45,30 @@ class ConversationInvitationController extends Controller
         }
     }
 
-    public function accept() {
+    public function accept(ConversationInvitation $invitation)
+    {
+        if($invitation->invited_user_id !== Auth::id()) {
+            abort(403);
+        }
 
+        $invitation->conversation->users()->syncWithoutDetaching(Auth::id());
+
+        $invitation->update([
+            'status' => 'accepted'
+        ]);
+
+        return redirect()->route('conversation.show', $invitation->conversation);
     }
 
-    public function reject() {
+    public function reject(ConversationInvitation $invitation) {
+        if($invitation->invited_user_id !== Auth::id()) {
+            abort(403);
+        }
 
+        $invitation->update([
+            'status' => 'rejected'
+        ]);
+
+        return back();
     }
 }

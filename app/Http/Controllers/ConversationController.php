@@ -64,7 +64,7 @@ class ConversationController extends Controller
         // $conversation->users()->attach([$user->id, Auth::user()->id]);
         $conversation->users()->attach([Auth::user()->id]);
 
-        $conversationInvitation->create([
+        $invitation = $conversationInvitation->create([
             'conversation_id' => $conversation->id,
             'inviter_id' => Auth::user()->id,
             'invited_user_id' => $user->id,
@@ -76,10 +76,7 @@ class ConversationController extends Controller
             'content' => $validated['content']
         ]);
 
-
-        $invitedUser = $user;
-
-        $invitedUser->notify(new ConversationInvitationNotification($conversation, Auth::user()));
+        $user->notify(new ConversationInvitationNotification($invitation));
 
         return redirect()->route('conversation.show', $conversation->id);
         } catch (\Exception $e) {

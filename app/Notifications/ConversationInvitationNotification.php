@@ -13,14 +13,16 @@ class ConversationInvitationNotification extends Notification
 
     protected $conversation;
     protected $inviter;
+    protected $invitation;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($conversation, $inviter)
+    public function __construct($invitation)
     {
-        $this->conversation = $conversation;
-        $this->inviter = $inviter;
+        $this->invitation = $invitation;
+        $this->conversation = $invitation->conversation;
+        $this->inviter = $invitation->inviter;
     }
 
     /**
@@ -52,6 +54,7 @@ class ConversationInvitationNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
+            'invitation_id' => $this->invitation->id,
             'conversation_id' => $this->conversation->id,
             'inviter_id' => $this->inviter->id,
         ];

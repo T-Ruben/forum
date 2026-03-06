@@ -6,7 +6,6 @@
     <div class=' mx-auto h-full w-full  px-10 py-5  flex-2'>
         <h1 class="text-2xl text-center mb-5">Chat with {{ $user->display_name }}</h1>
 
-
         <form action="{{ route('conversation.store', ['user' => $user->id]) }}" method="POST" class="inline text-center" id="postForm">
             @csrf
                 <x-forms.div>
