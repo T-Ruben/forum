@@ -13,12 +13,27 @@ use Illuminate\Support\Facades\Log;
 class ConversationInvitationController extends Controller
 {
     public function store(Request $request, Conversation $conversation, User $user) {
-        $request->validate([
-            'user_id' => 'required|exists:users,id'
-        ]);
+        $validated = $request->validate([
+                'user_id' => 'required|exists:users,id'
+            ]);
+
+        $invitedUser = User::findOrFail($validated['user_id']);
+
+        if($invitedUser) {
+            $user = $invitedUser;
+        }
 
         if ($conversation->users()->where('user_id', $request->user_id)->exists()) {
             return back()->withErrors(['search' => 'User already in conversation.']);
+        }
+
+        $hasPendingInvitation = ConversationInvitation::where('conversation_id', $conversation->id)
+            ->where('invited_user_id', $invitedUser->id)
+            ->where('status', 'pending')
+            ->exists();
+
+        if ($hasPendingInvitation) {
+            return back()->withErrors(['search' => 'An invitation has already been sent to this user.']);
         }
 
         try {
