@@ -46,4 +46,21 @@ class NotificationController extends Controller
             'invitations' => $invitations]
             );
     }
+
+    public function markAsRead($notificationId) {
+        $notification = Auth::user()
+            ->notifications()
+            ->findOrFail($notificationId);
+
+        $notification->markAsRead();
+
+        return back();
+    }
+
+    public function markAllAsRead() {
+        Auth::user()->unreadNotifications
+            ->markAsRead();
+
+        return back();
+    }
 }

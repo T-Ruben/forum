@@ -151,18 +151,23 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('conversation/{conversation}/invite', [ConversationInvitationController::class, 'store'])
         ->name('conversation.invite');
-    });
+
     Route::post('/conversation-invitation/{invitation}/accept', [ConversationInvitationController::class, 'accept'])
         ->name('conversation.accept');
 
     Route::post('/conversation-invitation/{invitation}/reject', [ConversationInvitationController::class, 'reject'])
         ->name('conversation.reject');
-
+    });
 
 //Notifications
 
 Route::get('/notifications/{user}', [NotificationController::class, 'index'])
     ->name('notifications.index');
+
+Route::post('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])
+    ->name('notifications.read');
+Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])
+    ->name('notifications.read.all');
 
 // Messages
 

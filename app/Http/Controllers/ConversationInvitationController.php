@@ -37,12 +37,18 @@ class ConversationInvitationController extends Controller
         }
 
         try {
-        $invitation = ConversationInvitation::create([
+        $invitation = ConversationInvitation::updateOrCreate([
             'conversation_id' => $conversation->id,
-            'inviter_id' => Auth::id(),
             'invited_user_id' => $user->id,
+        ],
+        [
+            'inviter_id' => Auth::id(),
             'status' => 'pending'
         ]);
+
+        $user->notifications()
+            ->where('data->invitation_id', $invitation->id)
+            ->delete();
 
         $user->notify(new ConversationInvitationNotification($invitation));
 
@@ -55,14 +61,17 @@ class ConversationInvitationController extends Controller
                 'error' => $e->getMessage(),
             ]);
             return back()
-                ->withErrors(['content' => 'Something went wrong.'])
+                ->withErrors(['search' => 'Something went wrong.'])
                 ->withInput();
         }
     }
 
-    public function accept(ConversationInvitation $invitation)
+    public function accept(ConversationInvitation $invitation, Request $request)
     {
         if($invitation->invited_user_id !== Auth::id()) {
+            abort(403);
+        }
+        if($invitation->status !== 'pending') {
             abort(403);
         }
 
@@ -72,17 +81,34 @@ class ConversationInvitationController extends Controller
             'status' => 'accepted'
         ]);
 
+        if($request->notification_id) {
+            Auth::user()
+                ->notifications()
+                ->where('id', $request->notification_id)
+                ->update(['read_at' => now()]);
+        }
+
         return redirect()->route('conversation.show', $invitation->conversation);
     }
 
-    public function reject(ConversationInvitation $invitation) {
+    public function reject(ConversationInvitation $invitation, Request $request) {
         if($invitation->invited_user_id !== Auth::id()) {
+            abort(403);
+        }
+        if($invitation->status !== 'pending') {
             abort(403);
         }
 
         $invitation->update([
             'status' => 'rejected'
         ]);
+
+        if($request->notification_id) {
+            Auth::user()
+                ->notifications()
+                ->where('id', $request->notification_id)
+                ->update(['read_at' => now()]);
+        }
 
         return back();
     }
