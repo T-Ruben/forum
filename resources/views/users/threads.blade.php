@@ -3,12 +3,26 @@
         <div class="mt-4">
             {{ $threads->links() }}
         </div>
+        <div>
+            <form action="{{ route('settings.threads') }}" method="GET" id="sortForm">
+                <label for="sort">Order by: </label>
+                <select name="sort" onchange="document.getElementById('sortForm').submit()"
+                    class="text-black border rounded bg-gray-200 mb-4 cursor-pointer">
+                    <option value="latest_activity" {{ $currentSort == 'latest_activity' ? 'selected' : '' }} class="cursor-pointer">
+                        Recent Activity</option>
+                    <option value="desc" {{ $currentSort == 'desc' ? 'selected' : '' }} class="cursor-pointer">
+                        Recent Threads</option>
+                    <option value="asc" {{ $currentSort == 'asc' ? 'selected' : '' }} class="cursor-pointer">
+                        Oldest Threads</option>
+                </select>
+            </form>
+        </div>
     <div class=" border-l pl-2">
 
         <ul class="">
             @forelse ($threads as $thread)
                 <li class="text-lg mb-2 ">
-                    <div>
+                    <div class="float-left">
                         <div class="min-w-0 flex gap-1">
                             <span class=" shrink-0">Thread name: </span>
                             <a href="{{ route('threads.show', [$thread->id, $thread->slug]) }}"
@@ -16,8 +30,9 @@
                                     <span class="truncate">{{ $thread->title }}</span>
                             </a>
                         </div>
-                        <div>
+                        <div class="flex-col flex w-fit">
                             <span class="text-sm">Posts: {{ $thread->posts->count() }}</span>
+                            <span class="text-sm">Members: {{ $thread->posts()->distinct('user_id')->count('user_id') }}</span>
                         </div>
                     </div>
                     <form action="{{ route('threads.destroy', $thread->id) }}" method="POST" class="mb-2 flex justify-end">

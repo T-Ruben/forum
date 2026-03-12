@@ -59,12 +59,26 @@ class UserController extends Controller
             ]);
     }
 
-    public function index(User $user) {
-        $users = $user->with(['followers', 'following', 'posts'])
-            ->orderByDesc('created_at')
-            ->paginate(24);
+    public function index(User $user, Request $request) {
+        $sortOrder = $request->query('sort', 'newest');
 
-        return view('users.index', ['users' => $users]);
+        $query = User::query()->with(['followers', 'following', 'posts']);
+
+        match($sortOrder) {
+            'newest' => $query->orderBy('created_at', 'desc'),
+            'oldest' => $query->orderBy('created_at', 'asc'),
+            'name_asc' => $query->orderBy('name', 'asc'),
+            default => $query->orderBy('created_at', 'desc'),
+        };
+
+        $users = $query
+            ->paginate(24)
+            ->withQueryString();
+
+        return view('users.index', [
+            'users' => $users,
+            'currentSort' => $sortOrder
+            ]);
     }
 
     public function following(User $user) {

@@ -50,7 +50,7 @@ class ConversationController extends Controller
         }
 
         $validated = $request->validate([
-            'title' => ['required', 'string', 'min:4', 'max:100'],
+            'title' => ['required', 'string', 'min:2', 'max:100'],
             'content' => ['required', 'string']
         ]);
 

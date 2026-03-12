@@ -80,6 +80,16 @@ class AppServiceProvider extends ServiceProvider
                 });
         });
 
+        RateLimiter::for('conv-invite', function(HttpRequest $request) {
+            return Limit::perSecond(1, 5)->by($request->user()->id)
+                ->response(function($headers) {
+                    $retryAfter = $headers['Retry-After'] ?? 1;
+                    return back()
+                        ->withErrors(['search' => "You must wait {$retryAfter} seconds before trying to invite again."])
+                        ->withInput();
+                });
+        });
+
         Gate::define('follow-user', function (User $user, $profileUser) {
             return $user->id !== $profileUser->id;
         });

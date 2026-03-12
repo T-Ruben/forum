@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Message extends Model
 {
     use SoftDeletes;
+
+    protected $touches = ['conversation'];
+
     protected $fillable = [
         'content',
         'parent_id',

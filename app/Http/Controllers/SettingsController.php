@@ -17,21 +17,52 @@ class SettingsController extends Controller
         return view('users.privacy', ['user' => Auth::user()]);
     }
 
-    public function threads(Thread $threads) {
-        $userThreads = Auth::user()->threads()
-            ->with('posts')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+    public function threads(Request $request) {
+        $sortOrder = $request->query('sort', 'latest_activity');
 
-        return view('users.threads', ['user' => Auth::user(), 'threads' => $userThreads]);
+        $query = Auth::user()->threads()
+            ->with('posts');
+
+        if($sortOrder === 'latest_activity') {
+            $query->orderBy('updated_at', 'desc');
+        } elseif($sortOrder === 'asc') {
+            $query->orderBy('created_at', 'asc');
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $userThreads = $query
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('users.threads', [
+            'user' => Auth::user(),
+            'threads' => $userThreads,
+            'currentSort' => $sortOrder
+            ]);
     }
 
-    public function conversations(Conversation $conversation) {
-        $conversations = Auth::user()->conversations()
-            ->with(['messages', 'users'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+    public function conversations(Request $request) {
+        $sortOrder = $request->query('sort', 'latest_activity');
 
-        return view('users.conversations', ['user' => Auth::user(), 'conversations' => $conversations]);
+        $query = Auth::user()->conversations()->with(['messages', 'users']);
+
+        if($sortOrder === 'latest_activity') {
+            $query->orderBy('updated_at', 'desc');
+        } elseif($sortOrder === 'asc') {
+            $query->orderBy('created_at', 'asc');
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $conversations = $query
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('users.conversations', [
+            'user' => Auth::user(),
+            'conversations' => $conversations,
+            'currentSort' => $sortOrder
+            ]);
     }
 }

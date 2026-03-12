@@ -150,7 +150,8 @@ Route::middleware(['auth'])->group(function () {
 // Conv Invitation
 
     Route::post('conversation/{conversation}/invite', [ConversationInvitationController::class, 'store'])
-        ->name('conversation.invite');
+        ->name('conversation.invite')
+        ->middleware('throttle:conv-invite');
 
     Route::post('/conversation-invitation/{invitation}/accept', [ConversationInvitationController::class, 'accept'])
         ->name('conversation.accept');
@@ -161,13 +162,15 @@ Route::middleware(['auth'])->group(function () {
 
 //Notifications
 
-Route::get('/notifications/{user}', [NotificationController::class, 'index'])
+Route::middleware(['auth'])->group(function() {
+    Route::get('/notifications/{user}', [NotificationController::class, 'index'])
     ->name('notifications.index');
 
-Route::post('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])
-    ->name('notifications.read');
-Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])
-    ->name('notifications.read.all');
+    Route::post('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])
+        ->name('notifications.read');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])
+        ->name('notifications.read.all');
+});
 
 // Messages
 
@@ -181,3 +184,4 @@ Route::middleware(['auth'])->group(function() {
         ->name('message.destroy');
 
 });
+

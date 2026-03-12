@@ -3,12 +3,26 @@
         <div class="mt-4">
             {{ $conversations->links() }}
         </div>
+        <div>
+            <form action="{{ route('settings.conversations') }}" method="GET" id="sortForm">
+                <label for="sort">Order by: </label>
+                <select name="sort" onchange="document.getElementById('sortForm').submit()"
+                    class="text-black border rounded bg-gray-200 mb-4 cursor-pointer">
+                    <option value="latest_activity" {{ $currentSort == 'latest_activity' ? 'selected' : '' }} class="cursor-pointer">
+                        Recent Activity</option>
+                    <option value="desc" {{ $currentSort == 'desc' ? 'selected' : '' }} class="cursor-pointer">
+                        Recent Conversation</option>
+                    <option value="asc" {{ $currentSort == 'asc' ? 'selected' : '' }} class="cursor-pointer">
+                        Oldest Conversation</option>
+                </select>
+            </form>
+        </div>
     <div class=" border-l pl-2">
 
         <ul class="">
             @forelse ($conversations as $conversation)
                 <li class="text-lg mb-2 ">
-                    <div>
+                    <div class="float-left">
                         <div class="min-w-0 flex gap-1">
                             <span class=" shrink-0">Name: </span>
                             <a href="{{ route('conversation.show', ['conversation' => $conversation]) }}"

@@ -14,6 +14,8 @@ class Post extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $touches = ['thread'];
+
     protected $fillable = [
         'content',
         'thread_id',
