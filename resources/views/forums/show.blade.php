@@ -18,60 +18,63 @@
             {{ $threads->links() }}
         </div>
 
-        <ul class="">
-            <li class=" dark:bg-blue-950 text-lg w-full h-auto">
-                <div class="flex justify-between text-center items-center w-full">
-                    <div class="hover:bg-blue-900/50 duration-200 transition-colors py-2 w-2/3">Title</div>
-                    <div class="hover:bg-blue-900/50 duration-200 transition-colors py-2 w-1/6">Replies</div>
-                    <div class="hover:bg-blue-900/50 duration-200 transition-colors py-2 w-1/6">Last Message</div>
-                </div>
-            </li>
+        <table class="table-fixed w-full">
+            <thead class=" dark:bg-blue-950 text-lg w-full h-auto">
+                <tr class="text-center w-full">
+                    <th class="hover:bg-blue-900/50 duration-200 transition-colors py-2 w-2/5">Title</th>
+                    <th class="hover:bg-blue-900/50 duration-200 transition-colors py-2">Created</th>
+                    <th class="hover:bg-blue-900/50 duration-200 transition-colors py-2">Replies</th>
+                    <th class="hover:bg-blue-900/50 duration-200 transition-colors py-2">Activity</th>
+                </tr>
+            </thead>
 
-
+            <tbody wire:loading.class="opacity-50 transition-opacity">
             @foreach ($threads as $thread)
-                    <li class="text-lg ml-2 flex items-center">
-                        <div class="flex items-center w-2/3 min-w-0">
-                            <div class="my-2 ml-1 mr-2 border shadow-xs shadow-black text-black flex shrink-0">
-                                <a href="{{ route('users.show', $thread->user) }}">
-                                <img src="{{ $thread->user->profile_image_url }}"
-                                    class="w-12 h-12 object-cover"
-                                    alt="{{ $thread->user->display_name ?? 'Deleted Member' }}'s profile image">
-                                </a>
-                            </div>
-                            <div class="min-w-0 flex flex-col w-full truncate">
-                                <div class="">
-                                    <x-link :active="true" href="{{ route('threads.show', [$thread->id, $thread->slug]) }}">
-                                        {{ $thread->title }}
-                                    </x-link>
-                                </div>
-                                <span class="flex">
-                                    <x-link :active="false" href="{{ route('users.show', $thread->user) }}" title="Thread starter">
-                                            <span class="mr-1 text-gray-200">{{ $thread->user->display_name }}, </span>
-                                    </x-link>
-                                    <x-link :active="false" href="{{ route('threads.show', [$thread->id, $thread->slug]) }}">
-                                        <span class="text-gray-300/75">{{ $thread->created_at->format('M d, Y') }}</span>
-                                    </x-link>
-                                </span>
-                            </div>
+                <tr class="text-lg ml-2">
+                    <td class="min-w-0 flex">
+                        <div class="my-2 ml-1 mr-2 border shadow-xs shadow-black text-black flex shrink-0">
+                            <a href="{{ route('users.show', $thread->user) }}">
+                            <img src="{{ $thread->user->profile_image_url }}"
+                                class="w-12 h-12 object-cover"
+                                alt="{{ $thread->user->display_name ?? 'Deleted Member' }}'s profile image">
+                            </a>
                         </div>
-                        <div class="flex items-center justify-center w-1/6 text-sm">Replies: {{ $thread->posts_count ?? '0' }}</div>
-                        <div class="flex-2 text-center justify-center items-start w-1/6 text-sm">
-                            @if ($thread->latestPost?->user)
-                                <a href="{{ route('users.show', $thread->latestPost->user) }}">
-                                    <span class="block hover:underline">{{ $thread->latestPost->user->display_name }}</span>
-                                </a>
-
-                                <x-time-display :time="$thread->latestPost?->updated_at" />
-
-                            @else
-                                <span class="block">No Activity</span>
-                            @endif
+                        <div class="min-w-0 flex flex-col w-full truncate">
+                            <div class="">
+                                <x-link :active="true" href="{{ route('threads.show', [$thread->id, $thread->slug]) }}"
+                                    title="{{ $thread->title }}">
+                                    {{ $thread->title }}
+                                </x-link>
+                            </div>
+                            <span class="flex flex-wrap truncate w-full text-sm">
+                                <x-link :active="false" href="{{ route('users.show', $thread->user) }}" title="Thread starter">
+                                        <span class="mr-1 text-gray-200">{{ $thread->user->display_name }}, </span>
+                                </x-link>
+                                <x-link :active="false" href="{{ route('threads.show', [$thread->id, $thread->slug]) }}">
+                                    <span class="text-gray-300/75">{{ $thread->created_at->format('M d, Y') }}</span>
+                                </x-link>
+                            </span>
                         </div>
+                    </td>
+                    <td class="text-center text-sm"><x-time-display :time="$thread->created_at" /></td>
+                    <td class="text-center text-sm">Replies: {{ $thread->posts_count ?? '0' }}</td>
+                    <td class="text-center text-sm">
+                        @if ($thread->latestPost?->user)
+                            <a href="{{ route('users.show', $thread->latestPost->user) }}">
+                                <span class="block hover:underline">{{ $thread->latestPost->user->display_name }}</span>
+                            </a>
 
-                    </li>
-                    <hr class="border-gray-500 my-2">
+                            <x-time-display :time="$thread->latestPost?->updated_at" />
+
+                        @else
+                            <span class="block">No Activity</span>
+                        @endif
+                    </td>
+                </tr>
+
             @endforeach
-        </ul>
+            </tbody>
+        </table>
         <div>
             {{ $threads->links() }}
         </div>
