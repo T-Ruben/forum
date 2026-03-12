@@ -1,19 +1,7 @@
 import './bootstrap';
-
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 
 // Time
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.post-time').forEach(el => {
-        const time = el.dataset.time;
-
-        if (!time) return;
-
-        const date = new Date(time);
-
-            el.textContent = getRelativeTime(date);
-
-});
-
 function getRelativeTime(date) {
     const now = new Date();
     const diffMs = now - date;
@@ -28,7 +16,6 @@ function getRelativeTime(date) {
     });
 
     const isToday = now.toDateString() === date.toDateString();
-
     const yesterday = new Date(now);
     yesterday.setDate(now.getDate() - 1);
     const isYesterday = yesterday.toDateString() === date.toDateString();
@@ -36,14 +23,8 @@ function getRelativeTime(date) {
     if (diffSecs < 10) return 'A moment ago';
     if (diffSecs < 60) return 'A few seconds ago';
     if (diffMins < 60) return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
-    if (isToday) {
-        return `Today at ${timeString}`;
-    };
-
-    if (isYesterday) {
-        return `Yesterday at ${timeString}`;
-    }
-
+    if (isToday) return `Today at ${timeString}`;
+    if (isYesterday) return `Yesterday at ${timeString}`;
     if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
     if (diffDays < 30) return `${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) !== 1 ? 's' : ''} ago`;
 
@@ -51,8 +32,14 @@ function getRelativeTime(date) {
         year: 'numeric',
         month: 'short',
         day: 'numeric'
-     });
+    });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.post-time:not([x-data])').forEach(el => {
+        const time = el.dataset.time;
+        if (time) el.textContent = getRelativeTime(new Date(time));
+    });
 });
 
 // Fixed position reload post

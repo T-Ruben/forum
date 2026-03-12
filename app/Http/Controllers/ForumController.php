@@ -12,15 +12,11 @@ use Illuminate\Http\Request;
 class ForumController extends Controller
 {
         public function show(Forum $forum) {
-        $threads = $forum->threads()
-            ->with(['user', 'posts', 'latestPost', 'latestPost.user'])
-            ->withCount('posts')
-            ->orderByDesc('created_at')
-            ->paginate(20);
+
 
         return view('forums.show', [
             'forum' => $forum,
-            'threads' => $threads
+
         ]);
     }
 

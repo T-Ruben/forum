@@ -37,14 +37,17 @@
 
     </div>
     {{-- SEARCH BAR HERE --}}
-    <div class="flex-2 justify-center bg-slate-950 p-2 rounded-b-xl">
+    <div class="flex-2 justify-center bg-slate-950 p-2 rounded-b-xl" x-data="{ open: false }">
 
-        <form action="{{ route('search') }}" method="GET" class="w-full flex-2 gap-2">
+        <form action="{{ route('search') }}" method="GET" class="w-full flex-2 gap-2" @click.outside="open = false">
 
-            <input type="text"
+            <input
+            @focus="open = true"
+            @input="open = true"
+            type="text"
             name="query"
             id="query"
-            class="border-1 bg-white rounded text-black text-lg pl-2 peer w-1/3"
+            class="border-1 bg-white rounded text-black text-lg pl-2 w-1/3"
             autocomplete="off"
             placeholder="Search">
 
@@ -53,7 +56,13 @@
                         hover:dark:bg-blue-900/80 duration-200 cursor-pointer">
                         Search
             </button>
-            <div class="w-full hidden peer-focus:block select-none">
+            <div
+                x-show="open"
+                x-cloak
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 -translate-y-2"
+                x-transition:enter-end="opacity-100 translate-y-0"
+                class="w-full select-none">
                 <div class="bg-gray-100 text-black p-2 w-fit absolute border inset-shadow-2xs inset-shadow-black">
                     <input type="checkbox" name="threadOnly" id="threadOnly">
                     <label for="threadOnly" class="">Search thread titles only</label>
@@ -65,6 +74,3 @@
 
 </header>
 
-<script>
-    import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-</script>
