@@ -2,7 +2,7 @@ import './bootstrap';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 
 // Time
-function getRelativeTime(date) {
+window.getRelativeTime = function(date) {
     const now = new Date();
     const diffMs = now - date;
     const diffSecs = Math.floor(diffMs / 1000);

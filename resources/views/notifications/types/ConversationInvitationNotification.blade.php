@@ -3,24 +3,27 @@
     $inviter = $inviters[$notification->data['inviter_id']] ?? null;
     $invitation = $invitations[$notification->data['invitation_id']] ?? null;
 @endphp
-<li class="p-1 h-21 border m-1 flex justify-between {{ $notification->read_at == false ? 'bg-gray-300/20' : '' }}">
-    <div class="flex gap-2 h-full">
-        <div>
+<li class="@container">
+<div class="p-1 h-21 border border-0.5 m-1 flex justify-between
+    {{ $notification->read_at == false ? 'bg-gray-300/20' : '' }}
+    @max-sm:h-16 @max-sm:border-0">
+    <div class="flex gap-2 h-full w-1/2 @max-sm:w-full">
+        <div class="shrink-0 hidden @sm:block">
             <a href="{{ route('users.show', $inviter) }}">
                 <img src="{{ $inviter->profile_image_url }}" class="w-18 h-18 object-cover" alt="{{ $inviter->display_name }}">
             </a>
         </div>
-        <div>
+        <div class="min-w-0 @max-sm:select-none @max-sm:cursor-pointer">
             <a href="{{ route('users.show', $inviter) }}"
                 class="hover:underline font-bold">
                 {{ $inviter->display_name }}
             </a>invited you to a conversation.
-            <p>Conversation name: <span class="font-bold">{{ $conversation->title }}</span></p>
-            <p>Members: {{ $conversation->users_count }}</p>
+            <p class="block truncate">Conversation name: <span class="font-bold truncate">{{ $conversation->title }}</span></p>
+            <p class="@sm:inline hidden">Members: {{ $conversation->users_count }}</p>
         </div>
     </div>
 
-    <div class="flex flex-col justify-between">
+    <div class="hidden @sm:flex flex-col justify-between items-end w-1/2">
         <div class="flex justify-end">
             @if (!$notification->read_at)
                 <form action="{{ route('notifications.read', $notification->id) }}" method="POST">
@@ -29,7 +32,7 @@
                 </form>
             @endif
         </div>
-        <div class="flex gap-2">
+        <div class="hidden gap-2 @sm:flex">
             @if($invitation->status === 'pending')
                 <form action="{{ route('conversation.accept', $invitation) }}" method="POST" class="">
                     @csrf
@@ -52,4 +55,7 @@
             @endif
         </div>
     </div>
+</div>
+<hr class="h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50" />
 </li>
+

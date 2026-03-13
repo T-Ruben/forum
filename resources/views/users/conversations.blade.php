@@ -27,7 +27,7 @@
                             <span class=" shrink-0">Name: </span>
                             <a href="{{ route('conversation.show', ['conversation' => $conversation]) }}"
                                 class="hover:underline duration-200 font-bold block min-w-0 truncate">
-                                    <span class="truncate">{{ $conversation->title }}</span>
+                                    <span class="truncate" title="{{ $conversation->title }}">{{ $conversation->title }}</span>
                             </a>
                         </div>
                         <div class="flex flex-col">

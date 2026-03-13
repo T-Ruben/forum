@@ -19,12 +19,15 @@
             </nav>
 
             @auth
-                <div class="my-auto w-fit">
+                <div class="my-auto w-fit relative inline-block">
                     <button type="button" class="relative ml-auto shrink-0 rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
                         <span class="absolute -inset-1.5"></span>
                         <span class="sr-only">View notifications</span>
                         @include('icons.bell')
                     </button>
+                    <div class="absolute right-0 w-80 shadow-lg">
+                        @include('notifications.partials.dropdown')
+                    </div>
                 </div>
 
                 <x-user-menu />

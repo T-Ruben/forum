@@ -104,6 +104,7 @@ class ThreadController extends Controller
     }
 
     public function destroy(Thread $thread) {
+        Gate::authorize('delete', $thread);
         $thread->delete($thread->id);
         return back();
     }

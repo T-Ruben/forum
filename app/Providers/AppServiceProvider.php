@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Services\NotificationService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request as HttpRequest;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,6 +31,15 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::preventLazyLoading();
 
+        View::composer('components.header', function ($view) {
+            if(!Auth::check()) return;
+
+            $service = app(NotificationService::class);
+
+            $data = $service->getNotifications(Auth::user(), 15);
+
+            $view->with($data);
+        });
 
         RateLimiter::for('make-post', function(HttpRequest $request) {
             return Limit::perSecond(1, 5)->by($request->user()->id)

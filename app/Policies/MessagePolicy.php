@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\UserRoles;
+use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -28,9 +29,9 @@ class MessagePolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Conversation $conversation): bool
     {
-        return $user->role === UserRoles::Member;;
+        return $conversation->users()->where('user_id', $user->id)->exists();
     }
 
     /**

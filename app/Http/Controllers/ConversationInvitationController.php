@@ -8,11 +8,13 @@ use App\Models\User;
 use App\Notifications\ConversationInvitationNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 class ConversationInvitationController extends Controller
 {
     public function store(Request $request, Conversation $conversation, User $user) {
+        Gate::authorize('invite', $conversation);
         $validated = $request->validate([
                 'user_id' => 'required|exists:users,id'
             ]);
@@ -68,6 +70,8 @@ class ConversationInvitationController extends Controller
 
     public function accept(ConversationInvitation $invitation, Request $request)
     {
+        Gate::authorize('respond', $invitation);
+
         if($invitation->invited_user_id !== Auth::id()) {
             abort(403);
         }
@@ -92,6 +96,7 @@ class ConversationInvitationController extends Controller
     }
 
     public function reject(ConversationInvitation $invitation, Request $request) {
+        Gate::authorize('respond', $invitation);
         if($invitation->invited_user_id !== Auth::id()) {
             abort(403);
         }

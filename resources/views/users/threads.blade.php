@@ -22,12 +22,12 @@
         <ul class="">
             @forelse ($threads as $thread)
                 <li class="text-lg mb-2 ">
-                    <div class="float-left">
+                    <div class="float-left w-2/3">
                         <div class="min-w-0 flex gap-1">
                             <span class=" shrink-0">Thread name: </span>
                             <a href="{{ route('threads.show', [$thread->id, $thread->slug]) }}"
                                 class="hover:underline duration-200 font-bold block min-w-0 truncate">
-                                    <span class="truncate">{{ $thread->title }}</span>
+                                    <span class="truncate" title="{{ $thread->title }}">{{ $thread->title }}</span>
                             </a>
                         </div>
                         <div class="flex-col flex w-fit">

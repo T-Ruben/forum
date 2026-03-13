@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Enums\UserRoles;
 use App\Models\Conversation;
+use App\Models\ConversationInvitation;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
@@ -72,4 +73,11 @@ class ConversationPolicy
             ->where('user_id', $user->id)
             ->exists();
     }
+
+    public function invite(User $user, Conversation $conversation)
+    {
+        return $conversation->users()->where('user_id', $user->id)->exists();
+    }
+
+
 }
