@@ -85,11 +85,15 @@ class ConversationInvitationController extends Controller
             'status' => 'accepted'
         ]);
 
-        if($request->notification_id) {
-            Auth::user()
+        if($request->filled('notification_id')) {
+            $notification = Auth::user()
                 ->notifications()
                 ->where('id', $request->notification_id)
-                ->update(['read_at' => now()]);
+                ->first();
+
+            if($notification) {
+                $notification->markAsRead();
+            }
         }
 
         return redirect()->route('conversation.show', $invitation->conversation);
@@ -108,11 +112,15 @@ class ConversationInvitationController extends Controller
             'status' => 'rejected'
         ]);
 
-        if($request->notification_id) {
-            Auth::user()
+        if($request->filled('notification_id')) {
+            $notification = Auth::user()
                 ->notifications()
                 ->where('id', $request->notification_id)
-                ->update(['read_at' => now()]);
+                ->first();
+
+            if($notification) {
+                $notification->markAsRead();
+            }
         }
 
         return back();

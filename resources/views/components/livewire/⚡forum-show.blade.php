@@ -70,7 +70,7 @@ new class extends Component
 
         <tbody wire:loading.class="opacity-50 transition-opacity">
         @foreach ($threads as $thread)
-            <tr class="text-lg ml-2">
+            <tr class="text-lg ml-2 border-b-1">
                 <td class="min-w-0 flex">
                     <div class="my-2 ml-1 mr-2 border shadow-xs shadow-black text-black flex shrink-0">
                         <a href="{{ route('users.show', $thread->user) }}">

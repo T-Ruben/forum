@@ -7,6 +7,7 @@ use App\Models\ConversationInvitation;
 use App\Models\User;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
@@ -22,13 +23,14 @@ class NotificationController extends Controller
     {
         $data = $service->getNotifications(Auth::user(), 15);
 
-        return view('notifications.partials.dropdown', $data);
+        return view('notifications.dropdown', $data);
     }
 
-    public function markAsRead($notificationId) {
-        $notification = Auth::user()
-            ->notifications()
-            ->findOrFail($notificationId);
+    public function markAsRead(DatabaseNotification $notification)
+    {
+        if ($notification->notifiable_id !== Auth::id()) {
+            abort(403);
+        }
 
         $notification->markAsRead();
 

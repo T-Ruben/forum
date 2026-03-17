@@ -15,6 +15,7 @@
            @forelse ($notifications as $notification)
             @includeIf('notifications.types.' . class_basename($notification->type), [
                 'notification' => $notification,
+                'variant' => 'page'
             ])
 
             @empty

@@ -11,7 +11,9 @@
 
     <ul class="max-h-80 overflow-y-auto w-80 ">
     @forelse ($notifications as $notification)
-            @include('notifications.types.' . class_basename($notification->type))
+            @include('notifications.types.' . class_basename($notification->type), [
+                'variant' => 'dropdown',
+            ])
 
     @empty
         <p class="text-center py-3 text-sm">
@@ -19,8 +21,9 @@
         </p>
     @endforelse
     </ul>
-
-    <div class="flex justify-center bg-gray-900">
-        <span>View all</span>
-    </div>
+    <a href="{{ route('notifications.index', Auth::user()) }}" class="">
+        <div class="flex justify-center bg-gray-900 hover:dark:text-gray-900 hover:bg-gray-300 duration-200">
+                View all
+        </div>
+    </a>
 </div>

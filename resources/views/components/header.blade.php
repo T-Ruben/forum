@@ -19,14 +19,25 @@
             </nav>
 
             @auth
-                <div class="my-auto w-fit relative inline-block">
-                    <button type="button" class="relative ml-auto shrink-0 rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
+                <div class="my-auto w-fit relative inline-block"
+                    x-data="{ open: false }"
+                    @click.outside="open = false">
+                    <button
+                        @click="open = !open"
+                        type="button"
+                        class="relative ml-auto shrink-0 rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
                         <span class="absolute -inset-1.5"></span>
                         <span class="sr-only">View notifications</span>
                         @include('icons.bell')
                     </button>
-                    <div class="absolute right-0 w-80 shadow-lg">
-                        @include('notifications.partials.dropdown')
+                    <div
+                        x-show="open"
+                        x-cloak
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 -translate-y-2"
+                        x-transition:enter-end="opacity-100 translate-y-0"
+                        class="absolute right-0 w-80 shadow-lg">
+                        @include('notifications.dropdown')
                     </div>
                 </div>
 
