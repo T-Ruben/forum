@@ -183,4 +183,17 @@ class User extends Authenticatable
     {
         return $this->trashed() ? null : route('users.show', $this);
     }
+
+    public function countMessagePostTotal() {
+        if($this->posts() || $this->messages()) {
+            $postsCount = $this->posts()->count();
+            $messageCount = $this->messages()->count();
+
+            return (int) ($postsCount + $messageCount);
+        }
+
+
+
+    }
+
 }

@@ -69,7 +69,7 @@
 
                         </div>
                         <div class="flex justify-between">
-                            <p class="text-sm"><span class="text-gray-950/75">Messages: </span></p><p class="text-sm">{{ optional($message->user)->messages_count ?? 0 }}</p>
+                            <p class="text-sm"><span class="text-gray-950/75">Messages: </span></p><p class="text-sm">{{ optional($message->user)->countMessagePostTotal() ?? 0 }}</p>
                         </div>
                         <div class="flex justify-between">
                             <p class="text-sm"><span class="text-gray-950/75">Following: </span></p><p class="text-sm">{{ $message->user->following->count() }}</p>

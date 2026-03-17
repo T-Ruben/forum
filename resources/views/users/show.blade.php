@@ -66,7 +66,7 @@
                     <li class="flex justify-between text-sm"><span class="text-gray-300/75">Followers: </span>
                         <span>{{ $user->followers->count() }}</li>
                     <li class="flex justify-between text-sm"><span class="text-gray-300/75">Messages: </span>
-                        <span>{{ $user->posts->count() }}</li>
+                        <span>{{ $user->countMessagePostTotal() }}</li>
                 </ul>
             </div>
 

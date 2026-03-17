@@ -115,7 +115,7 @@ Took from second section: bg-gray-500/75
                             </li>
                             <li>
                                 @auth
-                                    <p class="text-sm">Messages: {{ auth()->user()->posts->count() }}</p>
+                                    <p class="text-sm">Messages: {{ Auth::user()->countMessagePostTotal() }}</p>
                                 @endauth
                             </li>
                         </ul>
