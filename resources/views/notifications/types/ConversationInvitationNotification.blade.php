@@ -1,8 +1,8 @@
 @php
-    $conversation = $conversations[$notification->data['conversation_id']] ?? null;
-    $inviter = $inviters[$notification->data['inviter_id']] ?? null;
-    $invitation = $invitations[$notification->data['invitation_id']] ?? null;
+    $type = $notification->data['type'] ?? null;
     $readRoute = route('notifications.read', $notification->id);
+    $inviterId = $notification->data['inviter']['id'];
+    $invitation = $invitations[$notification->data['invitation']['id']] ?? null;
 @endphp
 <li class="@container">
 <div class="p-1 h-fit border border-0.5 m-1 flex justify-between
@@ -26,19 +26,21 @@
         class="flex gap-2 h-full w-1/2 @max-sm:w-full @max-sm:cursor-pointer"
     >
         <div class="shrink-0 hidden @sm:block">
-            <a href="{{ route('users.show', $inviter) }}"
+            <a href="{{ route('users.show', $inviterId) }}"
                 @click.stop>
-                <img src="{{ $inviter->profile_image_url }}" class="w-18 h-18 object-cover" alt="{{ $inviter->display_name }}">
+                <img src="{{ $notification->data['inviter']['avatar'] }}"
+                    class="w-18 h-18 object-cover"
+                    alt="{{ $notification->data['inviter']['name'] }}">
             </a>
         </div>
         <div class="min-w-0 @max-sm:select-none @max-sm:cursor-pointer">
-            <a href="{{ route('users.show', $inviter) }}"
+            <a href="{{ route('users.show', $inviterId) }}"
                 class="hover:underline font-bold"
                 @click.stop>
-                {{ $inviter->display_name }}
+                {{ $notification->data['inviter']['name'] }}
             </a>invited you to a conversation.
-            <p class="block truncate">Conversation name: <span class="font-bold truncate">{{ $conversation->title }}</span></p>
-            <p class="@sm:inline hidden">Members: {{ $conversation->users_count }}</p>
+            <p class="block truncate">Conversation name: <span class="font-bold truncate">{{ $notification->data['conversation']['title'] }}</span></p>
+            <p class="@sm:inline hidden">Members: {{ $notification->data['conversation']['members_count'] }}</p>
             <p class="text-sm">{{ $notification->created_at->diffForHumans() }}</p>
         </div>
     </div>

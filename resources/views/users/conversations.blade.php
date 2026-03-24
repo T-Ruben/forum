@@ -14,6 +14,10 @@
                         Recent Conversation</option>
                     <option value="asc" {{ $currentSort == 'asc' ? 'selected' : '' }} class="cursor-pointer">
                         Oldest Conversation</option>
+                    <option value="most_messages" {{ $currentSort == 'desc' ? 'selected' : '' }} class="cursor-pointer">
+                        Most Messages</option>
+                    <option value="most_members" {{ $currentSort == 'desc' ? 'selected' : '' }} class="cursor-pointer">
+                        Most Members</option>
                 </select>
             </form>
         </div>
@@ -31,8 +35,8 @@
                             </a>
                         </div>
                         <div class="flex flex-col">
-                            <span class="text-sm">Messages: {{ $conversation->messages->count() }}</span>
-                            <span class="text-sm">Members: {{ $conversation->users->count() }}</span>
+                            <span class="text-sm">Messages: {{ $conversation->messages_count }}</span>
+                            <span class="text-sm">Members: {{ $conversation->users_count }}</span>
                         </div>
                     </div>
                     <form action="{{ route('conversation.leave', $conversation) }}" method="POST" class="mb-2 flex justify-end">

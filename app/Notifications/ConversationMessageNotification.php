@@ -7,24 +7,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ConversationInvitationNotification extends Notification
+class ConversationMessageNotification extends Notification
 {
     use Queueable;
 
-    protected $conversation;
-    protected $inviter;
-    protected $invitation;
+    protected $message;
+    protected $sender;
     protected $type;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($invitation, $type = 'conversation_invite')
+    public function __construct($message, $type = 'new_message')
     {
         $this->type = $type;
-        $this->invitation = $invitation;
-        $this->conversation = $invitation->conversation;
-        $this->inviter = $invitation->inviter;
+        $this->message = $message;
+        $this->sender = $message->user;
     }
 
     /**
@@ -34,6 +32,9 @@ class ConversationInvitationNotification extends Notification
      */
     public function via(object $notifiable): array
     {
+        if($this->message->user_id === $notifiable->id) {
+            return [];
+        }
         return ['database'];
     }
 
@@ -53,28 +54,26 @@ class ConversationInvitationNotification extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toDatabase(object $notifiable): array
     {
         return [
             'type' => $this->type,
 
-            'invitation' => [
-                'id' => $this->invitation->id,
+            'sender' => [
+                'id' => $this->sender->id,
+                'name' => $this->sender->display_name,
+                'avatar' => $this->sender->profile_image_url
             ],
 
             'conversation' => [
-                'id' => $this->conversation->id,
-                'title' => $this->conversation->title,
-                'members_count' => $this->conversation->messages()
+                'id' => $this->message->conversation->id,
+                'title' => $this->message->conversation->title,
+                'members_count' => $this->message->conversation->users()
                     ->distinct('user_id')
                     ->count('user_id')
             ],
 
-            'inviter' => [
-                'id' => $this->inviter->id,
-                'name' => $this->inviter->display_name,
-                'avatar' => $this->inviter->profile_image_url
-            ],
+            'message_id' => $this->message->id
         ];
     }
 }

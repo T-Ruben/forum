@@ -21,55 +21,18 @@ class NotificationService
 
         $notifications = $user->notifications()->latest()->paginate($perPage);
 
-        $conversationIds = $notifications
-            ->pluck('data.conversation_id')
-            ->filter()
-            ->unique();
-
-        $inviterIds = $notifications
-            ->pluck('data.inviter_id')
-            ->filter()
-            ->unique();
-
         $invitationIds = $notifications
-            ->pluck('data.invitation_id')
-            ->filter()
-            ->unique();
+        ->pluck('data.invitation.id')
+        ->filter()
+        ->unique();
 
-        $threadIds = $notifications
-            ->pluck('data.thread_id')
-            ->filter()
-            ->unique();
-
-        $senderIds = $notifications
-            ->pluck('data.sender_id')
-            ->filter()
-            ->unique();
-
-        $inviters = User::whereIn('id', $inviterIds)->get()->keyBy('id');
-
-        $conversations = Conversation::withCount('users')
-            ->whereIn('id', $conversationIds)
-            ->get()
-            ->keyBy('id');
-
-        $invitations = ConversationInvitation::with(['conversation.users', 'inviter'])
-            ->whereIn('id', $invitationIds)
-            ->get()
-            ->keyBy('id');
-
-        $threads = Thread::with('posts')
-            ->whereIn('id', $threadIds)
-            ->get()
-            ->keyBy('id');
-
-        $senders = User::whereIn('id', $senderIds)->get()->keyBy('id');
+        $invitations = ConversationInvitation::whereIn('id', $invitationIds)
+        ->get()
+        ->keyBy('id');
 
         return [
             'notifications' => $notifications,
-            'conversations' => $conversations,
-            'inviters' => $inviters,
-            'invitations' => $invitations,
+            'invitations' => $invitations
         ];
     }
 

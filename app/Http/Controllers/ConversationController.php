@@ -76,11 +76,12 @@ class ConversationController extends Controller
             'content' => $validated['content']
         ]);
 
+
         $user->notify(new ConversationInvitationNotification($invitation));
 
         return redirect()->route('conversation.show', $conversation->id);
         } catch (\Exception $e) {
-            Log::error('Thread creation failed', ['error' => $e->getMessage()]);
+            Log::error('Conversation creation failed', ['error' => $e->getMessage()]);
             return back()
                 ->withErrors(['title' => 'Failed to create thread. Please try again.'])
                 ->withInput();

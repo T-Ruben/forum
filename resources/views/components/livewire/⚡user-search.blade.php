@@ -50,6 +50,12 @@ new class extends Component
     <span class="text-red-500 text-sm">{{ $message }}</span>
     @enderror
 
+    @if (session('success'))
+        <div class="text-green-500 text-sm">
+            {{ session('success') }}
+        </div>
+    @endif
+
     @if(count($users) > 0)
         <ul class="absolute z-10 w-full bg-white shadow-lg border text-black">
             @foreach($users as $user)

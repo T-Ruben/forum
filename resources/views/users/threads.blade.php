@@ -14,6 +14,8 @@
                         Recent Threads</option>
                     <option value="asc" {{ $currentSort == 'asc' ? 'selected' : '' }} class="cursor-pointer">
                         Oldest Threads</option>
+                    <option value="most_posts" {{ $currentSort == 'desc' ? 'selected' : '' }} class="cursor-pointer">
+                        Most Posts</option>
                 </select>
             </form>
         </div>
@@ -31,8 +33,7 @@
                             </a>
                         </div>
                         <div class="flex-col flex w-fit">
-                            <span class="text-sm">Posts: {{ $thread->posts->count() }}</span>
-                            <span class="text-sm">Members: {{ $thread->posts()->distinct('user_id')->count('user_id') }}</span>
+                            <span class="text-sm">Posts: {{ $thread->posts_count }}</span>
                         </div>
                     </div>
                     <form action="{{ route('threads.destroy', $thread->id) }}" method="POST" class="mb-2 flex justify-end">

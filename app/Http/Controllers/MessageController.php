@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Conversation;
 use App\Models\Message;
+use App\Notifications\ConversationMessageNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -56,8 +57,25 @@ class MessageController extends Controller
     try {
         $validated['content'] = trim($validated['content']);
 
-        Auth::user()->messages()->create($validated);
-        return back()->with('success', 'Post created successfully!');
+        $message = Auth::user()->messages()->create($validated);
+
+        $receiver = $message->parent?->user;
+        $conversation = $message->conversation;
+
+        $recipients = $conversation->users
+            ->where('id', '!=', Auth::id());
+
+        if ($receiver) {
+            $receiver->notify(new ConversationMessageNotification($message, 'reply'));
+
+            $recipients = $recipients->where('id', '!=', $receiver->id);
+        }
+
+        foreach ($recipients as $user) {
+            $user->notify(new ConversationMessageNotification($message));
+        }
+
+        return back();
     } catch (\Exception $e) {
         Log::error('Message creation failed:',
                     ['user_id' => Auth::user()->id,

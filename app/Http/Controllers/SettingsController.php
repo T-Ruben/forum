@@ -20,18 +20,17 @@ class SettingsController extends Controller
     public function threads(Request $request) {
         $sortOrder = $request->query('sort', 'latest_activity');
 
-        $query = Auth::user()->threads()
-            ->with('posts');
 
-        if($sortOrder === 'latest_activity') {
-            $query->orderBy('updated_at', 'desc');
-        } elseif($sortOrder === 'asc') {
-            $query->orderBy('created_at', 'asc');
-        } else {
-            $query->orderBy('created_at', 'desc');
-        }
+        $query = Auth::user()->threads()->withCount(['posts']);
 
-        $userThreads = $query
+        [$column, $direction] = match ($sortOrder) {
+            'latest_activity' => ['updated_at', 'desc'],
+            'asc', 'oldest'   => ['created_at', 'asc'],
+            'most_posts'   => ['posts_count', 'desc'],
+            default           => ['created_at', 'desc'],
+        };
+
+        $userThreads = $query->orderBy($column, $direction)
             ->paginate(10)
             ->withQueryString();
 
@@ -45,17 +44,17 @@ class SettingsController extends Controller
     public function conversations(Request $request) {
         $sortOrder = $request->query('sort', 'latest_activity');
 
-        $query = Auth::user()->conversations()->with(['messages', 'users']);
+        $query = Auth::user()->conversations()->withCount(['messages', 'users']);
 
-        if($sortOrder === 'latest_activity') {
-            $query->orderBy('updated_at', 'desc');
-        } elseif($sortOrder === 'asc') {
-            $query->orderBy('created_at', 'asc');
-        } else {
-            $query->orderBy('created_at', 'desc');
-        }
+        [$column, $direction] = match ($sortOrder) {
+            'latest_activity' => ['updated_at', 'desc'],
+            'asc', 'oldest'   => ['created_at', 'asc'],
+            'most_messages'   => ['messages_count', 'desc'],
+            'most_members'    => ['users_count', 'desc'],
+            default           => ['created_at', 'desc'],
+        };
 
-        $conversations = $query
+        $conversations = $query->orderBy($column, $direction)
             ->paginate(10)
             ->withQueryString();
 
