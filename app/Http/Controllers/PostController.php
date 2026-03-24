@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Thread;
 use App\Models\User;
+use App\Notifications\ThreadPostNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -13,7 +14,7 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    public function store(Request $request) {
+    public function store(Request $request, Thread $thread) {
     Gate::authorize('create', Post::class);
 
     $content = $request->input('content');
@@ -38,7 +39,24 @@ class PostController extends Controller
     try {
         $validated['content'] = trim($validated['content']);
 
-        Auth::user()->posts()->create($validated);
+        $post = Auth::user()->posts()->create($validated);
+
+        $userOwner = $post->thread->user;
+        $userReply = $post->parent?->user;
+
+
+        if($post->parent) {
+            $userReply->notify(new ThreadPostNotification($post, $type = 'reply'));
+
+            if($post->user_id !== $post->thread->user_id && $post->parent->user_id !== $post->thread->user_id) {
+                $userOwner->notify(new ThreadPostNotification($post));
+            }
+        } elseif($post->user_id !== $post->thread->user_id) {
+            $userOwner->notify(new ThreadPostNotification($post));
+        }
+
+
+
         return back()->with('success', 'Post created successfully!');
     } catch (\Exception $e) {
         Log::error('Post creation failed', [

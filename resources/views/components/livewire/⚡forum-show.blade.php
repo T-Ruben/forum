@@ -79,7 +79,7 @@ new class extends Component
                             alt="{{ $thread->user->display_name ?? 'Deleted Member' }}'s profile image">
                         </a>
                     </div>
-                    <div class="min-w-0 flex flex-col w-full truncate">
+                    <div class="min-w-0 flex flex-col w-full truncate justify-between">
                         <div class="">
                             <x-link :active="true" href="{{ route('threads.show', [$thread->id, $thread->slug]) }}"
                                 title="{{ $thread->title }}">
