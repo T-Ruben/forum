@@ -31,30 +31,26 @@
             </a>
         </div>
         <div class="min-w-0 @max-sm:select-none @max-sm:cursor-pointer">
-            <a href="{{ route('users.show', $senderId) }}"
-                class="hover:underline font-bold"
-                @click.stop>
-                {{ $notification->data['sender']['name'] }}
-            </a>
+            <div class="flex gap-1">
+                <a href="{{ route('users.show', $senderId) }}"
+                    class="hover:underline font-bold"
+                    @click.stop>
+                    {{ $notification->data['sender']['name'] }}
+                </a>
 
-            <a href="{{ route('users.show', [$notification->data['sender']['id']]) }}" class="hover:underline">
-                {{ $type === 'reply' ? 'replied to your post on your profile.' : 'sent a post on your profile.' }}
-            </a>
-
-            {{-- <p class="block truncate">
-                Conversation name:
-                <span class="font-bold truncate hover:underline">
-                    <a href="{{ route('conversation.show', [
-                        $notification->data['conversation']['id'],
-                    ]) }}" @click.stop>
-                        {{ $notification->data['conversation']['title'] }}
+                <p>
+                    {{ $notification->data['action'] }}
+                    <a href="{{ $notification->data['target_url'] }}" class="hover:underline">
+                        {{ $notification->data['location'] }}
                     </a>
-                </span>
-            </p> --}}
+                </p>
+            </div>
 
-            {{-- <p class="@sm:inline hidden">
-                Members: {{ $notification->data['conversation']['members_count'] }}
-            </p> --}}
+            <a href="{{ $notification->data['target_url'] }}" class="hover:underline"></a>
+                <p class="truncate">
+                    {{ $notification->data['sender']['content'] }}
+                </p>
+            </a>
 
             <p class="text-sm">
                 {{ $notification->created_at->diffForHumans() }}

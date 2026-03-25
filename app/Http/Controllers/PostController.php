@@ -94,13 +94,20 @@ class PostController extends Controller
 
     try {
         $validated['content'] = trim($validated['content']);
+        $replyToPost = null;
+
+        if ($request->parent_id) {
+            $replyToPost = Post::findOrFail($request->parent_id);
+
+            $validated['parent_id'] = $replyToPost->parent_id ?? $replyToPost->id;
+        }
 
         $post = Auth::user()->posts()->create($validated);
 
 
         if($post->parent && $post->user_id !== $post->parent->user_id) {
             $post->parent->user->notify(new ProfilePostNotification($post, $type = 'reply'));
-        } elseif($post->user_id !== $post->parent->user_id) {
+        } elseif($post->user_id !== $post->parent?->user_id && $user->id !== $post->user_id) {
             $user->notify(new ProfilePostNotification($post));
         }
 

@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Str;
 
 class ProfilePostNotification extends Notification
 {
@@ -52,6 +53,23 @@ class ProfilePostNotification extends Notification
      */
     public function toDatabase(object $notifiable): array
     {
+        $profileId = (int) $this->post->profile_user_id;
+        $notifiableId = (int) $notifiable->id;
+
+        $action = 'sent a post on';
+        $location = 'your profile';
+
+        if ($this->type === 'reply') {
+            if ($profileId === $notifiableId) {
+                $action = 'replied to a post on';
+                $location = 'your profile';
+            }
+            else {
+                $action = 'replied to your post on';
+                $location = $this->post->profileOwner->display_name . "'s profile";
+            }
+        }
+
         return [
             'type' => $this->type,
 
@@ -59,9 +77,16 @@ class ProfilePostNotification extends Notification
                 'id' => $this->sender->id,
                 'name' => $this->sender->display_name,
                 'avatar' => $this->sender->profile_image_url,
+                'content' => Str::limit($this->post->content, 50, '...')
             ],
 
+            'profile_name' => $this->post->profileOwner->name,
+            'profile_id' => $this->post->profile_user_id,
+            'target_url' => route('notification.jump', $this->post->id),
+
             'post_id' => $this->post->id,
+            'action' => $action,
+            'location' => $location,
 
         ];
     }

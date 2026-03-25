@@ -27,7 +27,7 @@ class SessionController extends Controller
         }
 
         return back()->withErrors([
-            'login' => 'Invalid credentials provided.',
+            'password' => 'The provided credentials do not match our records.',
         ])->onlyInput('login');
 
     }

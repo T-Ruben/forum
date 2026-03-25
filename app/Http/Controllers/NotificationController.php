@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Conversation;
 use App\Models\ConversationInvitation;
+use App\Models\Post;
 use App\Models\User;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
@@ -42,5 +43,18 @@ class NotificationController extends Controller
             ->markAsRead();
 
         return back();
+    }
+
+    public function jump(Post $post) {
+        $page = $post->getPageNumberProfile();
+
+         Auth::user()->unreadNotifications()
+            ->where('data->post_id', $post->id)
+            ->get()
+            ->markAsRead();
+
+        return redirect()->to(
+            route('users.show', ['user' => $post->profile_user_id, 'page' => $page]) . "#post-" . $post->id
+        );
     }
 }
