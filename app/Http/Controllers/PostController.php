@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Thread;
 use App\Models\User;
+use App\Notifications\ProfilePostNotification;
 use App\Notifications\ThreadPostNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -69,7 +70,7 @@ class PostController extends Controller
         }
     }
 
-    public function storeProfile(Request $request, User $user) {
+    public function storeProfile(Request $request, User $user, Post $post) {
     Gate::authorize('create', Post::class);
 
     $content = $request->input('content');
@@ -93,7 +94,15 @@ class PostController extends Controller
 
     try {
         $validated['content'] = trim($validated['content']);
-                Auth::user()->posts()->create($validated);
+
+        $post = Auth::user()->posts()->create($validated);
+
+
+        if($post->parent && $post->user_id !== $post->parent->user_id) {
+            $post->parent->user->notify(new ProfilePostNotification($post, $type = 'reply'));
+        } elseif($post->user_id !== $post->parent->user_id) {
+            $user->notify(new ProfilePostNotification($post));
+        }
 
         return back()
             ->with('success', 'Post created successfully!');

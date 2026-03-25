@@ -26,7 +26,7 @@
                     </a>
                 @endcan
 
-                <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $reply->parent_id, 'page' => request('page')]) }}"
+                <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $reply->id, 'page' => request('page')]) }}"
                     class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
                     Reply
                 </a>
