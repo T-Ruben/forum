@@ -45,6 +45,16 @@ new class extends Component
         placeholder="Search users..."
         class="border-1 bg-white rounded text-black text-lg pl-2 w-full"
     >
+    @if($search)
+        <button
+            wire:click="$set('search', '')"
+            type="button"
+            class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 font-bold text-2xl
+                leading-none hover:cursor-pointer"
+        >
+            &times;
+        </button>
+    @endif
 
     @error('search')
     <span class="text-red-500 text-sm">{{ $message }}</span>

@@ -31,17 +31,16 @@
             </a>
         </div>
         <div class="min-w-0 @max-sm:select-none @max-sm:cursor-pointer">
-            <div class="flex gap-1">
-                <a href="{{ route('users.show', $senderId) }}"
-                    class="hover:underline font-bold"
-                    @click.stop>
-                    {{ $notification->data['sender']['name'] }}
-                </a>
-
+            <div class="">
                 <p>
+                    <a href="{{ route('users.show', $senderId) }}"
+                        class="hover:underline font-bold inline"
+                        @click.stop>
+                        {{ $notification->data['sender']['name'] }}
+                    </a>
                     {{ $notification->data['action'] }}
-                    <a href="{{ $notification->data['target_url'] }}" class="hover:underline">
-                        {{ $notification->data['location'] }}
+                    <a href="{{ $notification->data['target_url'] }}" class="hover:underline inline">
+                        {{ $notification->data['location'] }}.
                     </a>
                 </p>
             </div>

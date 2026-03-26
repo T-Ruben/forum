@@ -30,6 +30,7 @@
                         <span class="sr-only">View notifications</span>
                         @include('icons.bell')
                     </button>
+
                     <div
                         x-show="open"
                         x-cloak

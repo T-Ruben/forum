@@ -21,6 +21,9 @@
                 </select>
             </form>
         </div>
+
+        <p class="mb-2">Only invited members can view or participate in these conversations.</p>
+
     <div class=" border-l pl-2">
 
         <ul class="">
