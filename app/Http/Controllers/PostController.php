@@ -177,7 +177,9 @@ class PostController extends Controller
     $thread = $post->thread_id;
     $thread_slug = $post->thread?->slug;
 
-
+        $post->update([
+            'content' => '[deleted]',
+        ]);
         $post->delete();
         return $isProfile ? redirect()->route('users.show', ['user' => $owner, 'page' => $pageProfile]) :
                 redirect()->route('threads.show', ['thread' => $thread, 'slug' => $thread_slug, 'page' => $page]);

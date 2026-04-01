@@ -61,10 +61,9 @@
     <div class="flex flex-col justify-between items-end w-1/2">
         <div class="flex justify-end">
             @if (!$notification->read_at)
-                <form action="{{ route('notifications.read', $notification->id) }}" method="POST" @click.stop>
-                    @csrf
-                    <button class="cursor-pointer hover:underline">Mark as read</button>
-                </form>
+                    <button class="cursor-pointer hover:underline"
+                        wire:click="markAsRead('{{ $notification->id }}')"
+                        @click.stop>Mark as read</button>
             @endif
         </div>
     </div>

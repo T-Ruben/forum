@@ -43,7 +43,8 @@ class Post extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Post::class, 'parent_id');
+        return $this->belongsTo(Post::class, 'parent_id')
+            ->withTrashed();
     }
 
     public function replies()

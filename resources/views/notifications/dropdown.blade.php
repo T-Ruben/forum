@@ -1,7 +1,13 @@
 <div class="absolute bg-gray-800 z-50 border border-black">
     <div class="flex justify-between p-1 border-b border-gray-400">
-        <div>
+        <div class="flex gap-2">
             <span class="font-bold">Notifications</span>
+            @if ($user->total >= 1)
+                <span class="flex items-center justify-center w-8 h-6 rounded-lg text-xs
+                    font-bold text-white border border-black bg-red-600 text-shadow-lg/25 select-none">
+                    {{ $user->total }}
+                </span>
+            @endif
         </div>
         <form action="{{ route('notifications.read.all') }}" method="POST">
             @csrf

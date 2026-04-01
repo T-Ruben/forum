@@ -224,6 +224,9 @@
                 @forelse ($posts as $post)
                 @if (!$post->parent)
                     <div class="flex shrink-0 gap-3">
+                    @if ($post->trashed())
+                        <p class=" mb-3">[Deleted]</p>
+                    @else
                         <div class="w-20 h-20 flex shrink-0 border-1">
                             <a href="{{ $post->user?->user_url }}" class="w-full h-full">
                                 <img src="{{ asset($post->user->profile_image_url) }}" class="w-full h-full object-cover"
@@ -278,11 +281,10 @@
                                     </label>
                                 @endif
                             </div>
-
-
-
                         </div>
+                    @endif
                     </div>
+
                     <div>
 
                     </div>

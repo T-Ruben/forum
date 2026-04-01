@@ -19,13 +19,20 @@
             </nav>
 
             @auth
-                <div class="my-auto w-fit relative inline-block"
+                <div class="my-auto w-fit relative inline-block cursor-pointer group"
                     x-data="{ open: false }"
+                    @click="open = !open"
                     @click.outside="open = false">
+                    @if (Auth::user()->total >= 1)
+                        <button class="absolute -translate-y-2 -translate-x-1 z-50 w-6 h-6 rounded-lg text-xs
+                            font-bold text-white border border-black bg-red-600 text-shadow-lg/25 cursor-pointer">
+                            {{ Auth::user()->total }}
+                        </button>
+                    @endif
                     <button
-                        @click="open = !open"
                         type="button"
-                        class="relative ml-auto shrink-0 rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
+                        class="relative ml-auto shrink-0 rounded-full p-1 text-gray-400 group-hover:text-white
+                            group-focus:outline-2 group-focus:outline-offset-2 group-focus:outline-indigo-500 cursor-pointer">
                         <span class="absolute -inset-1.5"></span>
                         <span class="sr-only">View notifications</span>
                         @include('icons.bell')

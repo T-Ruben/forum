@@ -90,7 +90,8 @@ class User extends Authenticatable
 
 
     public function profilePosts() {
-        return $this->hasMany(Post::class, 'profile_user_id');
+        return $this->hasMany(Post::class, 'profile_user_id')
+            ->withTrashed();
     }
 
     public function conversations()

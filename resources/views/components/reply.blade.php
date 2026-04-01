@@ -1,5 +1,8 @@
 <div class="flex shrink-0 gap-3 border-b-1 rounded-b-md bg-gray-300/25 px-1 pt-1"
     id="post-{{ $reply->id }}">
+    @if ($reply->trashed())
+        <p class=" my-3">[Deleted]</p>
+    @else
     <div class="w-16 h-16 flex shrink-0 border-1">
         <a href="{{ $reply->user?->user_url }}" class="w-full h-full">
             <img src="{{ asset($reply->user->profile_image_url) }}" class="w-full h-full object-cover"
@@ -33,6 +36,7 @@
             </div>
         </div>
     </div>
+    @endif
 </div>
 
 
