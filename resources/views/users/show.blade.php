@@ -119,11 +119,18 @@
 
         </section>
 
+{{-- SECOND SECTION HERE --}}
+
         <section class="w-full min-h-full break-words overflow-hidden">
-            <div class="mb-10">
+            <div class="mb-6">
                 <p class="text-xl">{{ $user->display_name }}</p>
                 <p class="text-sm"><span>{{ $user->profile_summary }}</span></p>
                 <hr>
+                <div>
+                    <button class=" border-x px-1 mt-1 hover:text-gray-400 duration-200 cursor-pointer text-shadow-lg/40">
+                        Recent Activity
+                    </button>
+                </div>
             </div>
 
                 <div class="post-content break-words">
