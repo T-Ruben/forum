@@ -25,3 +25,7 @@
     color: black;
     border-radius: 2px;
 }
+
+button[wire\:click] {
+    cursor: pointer;
+}

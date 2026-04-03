@@ -113,7 +113,7 @@ new class extends Component
                                 {{ $this->formatCount($filter['count']) }}
                             </span>
                         </li>
-                        @if ($filter['has_hr' ?? false])
+                        @if ($filter['has_hr'] ?? false)
                             <hr class="h-px my-2 border-t-0 bg-transparent bg-gradient-to-r from-transparent via-gray-100 to-transparent" />
                         @endif
                     @endforeach

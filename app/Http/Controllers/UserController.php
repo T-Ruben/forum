@@ -18,19 +18,7 @@ class UserController extends Controller
 {
     public function show(User $user, Request $request) {
 
-        $replyTo = null;
-        $editPost = null;
-
-        if($request->filled('edit_post')) {
-            $editPost = Post::where('profile_user_id', $user->id)
-                ->findOrFail($request->edit_post);
-
-            Gate::authorize('update', $editPost);
-        }
-        elseif($request->filled('reply_to')) {
-            $replyTo = Post::where('profile_user_id', $user->id)
-                ->findOrFail($request->reply_to);
-        }
+    // Quite a bit of refactoring took place here using AI for editing/replying with livewire.
 
         $following = $user->following()
             ->with(['followers', 'following', 'posts'])
@@ -52,8 +40,6 @@ class UserController extends Controller
         return view('users.show', [
             'user' => $user,
             'posts' => $posts,
-            'replyTo' => $replyTo,
-            'editPost' => $editPost,
             'following' => $following,
             'followers' => $followers
             ]);
