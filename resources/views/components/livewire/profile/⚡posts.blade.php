@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Gate;
 use App\Controllers\UserController;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 new class extends Component
 {
@@ -15,6 +16,11 @@ new class extends Component
 
     public $replyTo = null;
     public $editPost = null;
+
+    #[On('reset-page')]
+    public function handleReset() {
+        $this->resetPage();
+    }
 
     protected $queryString = [
         'replyTo' => ['as' => 'reply_to'],

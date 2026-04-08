@@ -5,7 +5,7 @@ use App\Models\User;
 use App\Models\Post;
 use Livewire\WithPagination;
 use Illuminate\Pagination\LengthAwarePaginator;
-
+use Livewire\Attributes\On;
 new class extends Component
 {
     use WithPagination;
@@ -15,6 +15,11 @@ new class extends Component
 
     public function mount($user){
         $this->user = $user;
+    }
+
+    #[On('reset-page')]
+    public function handleReset() {
+        $this->resetPage();
     }
 
     public function getActivitiesProperty(){
@@ -87,7 +92,9 @@ new class extends Component
             $activities->count(),
             $perPage,
             $page,
-            ['path' => request()->url()]
+            [
+                'path' => request()->url(),
+            ]
         );
     }
 
