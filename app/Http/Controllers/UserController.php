@@ -30,16 +30,8 @@ class UserController extends Controller
             ->limit(4)
             ->get();
 
-        $posts = $user->profilePosts()
-            ->whereNull('parent_id')
-            ->with(['user', 'parent', 'replies', 'replies.user'])
-            ->withCount('replies')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-
         return view('users.show', [
             'user' => $user,
-            'posts' => $posts,
             'following' => $following,
             'followers' => $followers
             ]);

@@ -54,6 +54,18 @@ new class extends Component
             ->paginate(10);
     }
 
+    public function render()
+    {
+        return view('components.livewire.profile.⚡posts', [
+            'posts' => $this->user->profilePosts()
+                ->whereNull('parent_id',)
+                ->with(['user', 'parent'])
+                ->withCount('replies')
+                ->latest()
+                ->paginate(10)
+        ]);
+    }
+
 };
 ?>
 
@@ -153,7 +165,7 @@ new class extends Component
             </div>
 
             <div class="bg-gray-300/60 text-black p-2 w-full max-w-full overflow-x-hidden">
-                @forelse ($this->posts as $post)
+                @forelse ($posts as $post)
                 @if (!$post->parent)
                     <div class="flex shrink-0 gap-3">
                     @if ($post->trashed())
@@ -195,15 +207,16 @@ new class extends Component
                             </div>
 
                             <div>
-                                <input type="checkbox" id="load-replies-{{ $post->id }}" class="peer hidden">
 
-                                @foreach ($post->replies as $reply)
-                                <div class="{{ $loop->index >= 3 ? 'hidden peer-checked:block' : '' }}">
-                                    @include('components.reply', ['reply' => $reply])
+
+
+                                <div >
+                                    <livewire:livewire.profile.reply :post="$post" :user="$user" :key="'post-'.$post->id" />
                                 </div>
-                                @endforeach
 
-                                @if ($post->replies->count() > 3)
+
+
+                                {{-- @if ($post->replies->count() > 3)
                                     <label for="load-replies-{{ $post->id }}" class="select-none cursor-pointer text-blue-500 hover:underline block peer-checked:hidden">
                                         Show more...
                                     </label>
@@ -211,7 +224,7 @@ new class extends Component
                                     <label for="load-replies-{{ $post->id }}" class="select-none cursor-pointer text-blue-500 hover:underline hidden peer-checked:block">
                                         Show less...
                                     </label>
-                                @endif
+                                @endif --}}
                             </div>
                         </div>
                     @endif

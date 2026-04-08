@@ -8,7 +8,7 @@
     </div>
     <div class="flex-2 ml-2">
         <div class="flex justify-between w-full truncate">
-            <a href="{{ route('users.show', [$post->profileOwner, 'page' => $post->getPageNumberProfile()]) }}#post-{{ $post->parent_id }}"
+            <a href="{{ route('users.show', [$post->profileOwner, 'page' => $post->getPageNumberProfile(), 'highlight' => $post->id]) }}#post-{{ $post->id }}"
                 class="search-results hover:underline text-lg font-bold truncate">
                 {{ $post->content }}
             </a>

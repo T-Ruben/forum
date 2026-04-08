@@ -52,7 +52,7 @@ class NotificationController extends Controller
             ->markAsRead();
 
         return redirect()->to(
-            route('users.show', ['user' => $post->profile_user_id, 'page' => $page]) . "#post-" . $post->id
+            route('users.show', ['user' => $post->profile_user_id, 'page' => $page, 'highlight' => $post->id]) . "#post-" . $post->id
         );
     }
 }
