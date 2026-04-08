@@ -105,9 +105,11 @@ class PostController extends Controller
         $post = Auth::user()->posts()->create($validated);
 
 
-        if($post->parent && $post->user_id !== $post->parent->user_id) {
-            $post->parent->user->notify(new ProfilePostNotification($post, $type = 'reply'));
-        } elseif($post->user_id !== $post->parent?->user_id && $user->id !== $post->user_id) {
+
+        if($post->parent && $post->user_id !== $replyToPost->user_id) {
+            $replyToPost->user->notify(new ProfilePostNotification($post, $type = 'reply'));
+
+        } elseif($user->id !== $post->user_id && !$post->parent_id) {
             $user->notify(new ProfilePostNotification($post));
         }
 

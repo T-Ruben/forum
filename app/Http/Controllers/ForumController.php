@@ -36,6 +36,7 @@ class ForumController extends Controller
 
         $profilePosts = Post::with(['user', 'profileOwner', 'parent'])
         ->whereNull('thread_id')
+        ->whereNull('parent_id')
         ->latest()
         ->take(5)
         ->get();

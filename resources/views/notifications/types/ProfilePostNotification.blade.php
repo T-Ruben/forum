@@ -44,7 +44,6 @@
                     </a>
                 </p>
             </div>
-
             <a href="{{ $notification->data['target_url'] }}" class="hover:underline"></a>
                 <p class="truncate">
                     {{ $notification->data['sender']['content'] }}

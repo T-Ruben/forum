@@ -14,6 +14,7 @@ new class extends Component
 
     public User $user;
 
+    public $moreLess = null;
     public $replyTo = null;
     public $editPost = null;
 
