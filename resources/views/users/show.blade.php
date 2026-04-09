@@ -62,9 +62,9 @@
                 <div class="border-0.5 m-2 p-2 ring-1 ring-white">
                     <ul>
                         <li class="flex justify-between text-sm"><span class="text-gray-300/75">Following: </span>
-                            <span>{{ $user->following->count() }}</span></li>
+                            <span>{{ $user->following_count }}</span></li>
                         <li class="flex justify-between text-sm"><span class="text-gray-300/75">Followers: </span>
-                            <span>{{ $user->followers->count() }}</li>
+                            <span>{{ $user->followers_count }}</li>
                         <li class="flex justify-between text-sm"><span class="text-gray-300/75">Messages: </span>
                             <span>{{ $user->countMessagePostTotal() }}</li>
                     </ul>

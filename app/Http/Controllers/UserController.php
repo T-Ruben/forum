@@ -20,13 +20,13 @@ class UserController extends Controller
 
     // Quite a bit of refactoring took place here using AI for editing/replying with livewire.
 
+        $user = $user->loadCount(['followers', 'following']);
+
         $following = $user->following()
-            ->with(['followers', 'following', 'posts'])
             ->limit(4)
             ->get();
 
         $followers = $user->followers()
-            ->with(['followers', 'following', 'posts'])
             ->limit(4)
             ->get();
 

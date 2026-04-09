@@ -44,22 +44,12 @@ new class extends Component
         }
     }
 
-    public function getPostsProperty()
-    {
-        return $this->user->profilePosts()
-            ->whereNull('parent_id')
-            ->with(['user', 'parent', 'replies', 'replies.user'])
-            ->withCount('replies')
-            ->latest()
-            ->paginate(10);
-    }
-
     public function render()
     {
         return view('components.livewire.profile.⚡posts', [
             'posts' => $this->user->profilePosts()
-                ->whereNull('parent_id',)
-                ->with(['user', 'parent'])
+                ->whereNull('parent_id')
+                ->with(['user', 'parent', 'replies.user'])
                 ->withCount('replies')
                 ->latest()
                 ->paginate(10)
@@ -72,7 +62,7 @@ new class extends Component
 <div>
     <div class="post-content break-words">
                 @if ($replyTo)
-                    <div class="mb-4 p-3 border rounded text-sm border-gray-600 text-black">
+                    <div class="mb-4 p-3 border rounded text-sm border-gray-600 bg-gray-300/20 text-black">
                         <p class="flex justify-between border-b">
                             <span>Replying to <a href="#post-{{ $replyTo->id }}"
                                 class="hover:underline font-semibold duration-200">{{ $replyTo->user->display_name }}</a></span>
@@ -151,7 +141,7 @@ new class extends Component
 
                     @if($isEdit)
                         <a href="{{ route('users.show', [$user, 'page' => request('page')]) }}"
-                        class="text-gray-500 mr-4">
+                        class="text-red-500 mr-4">
                             Cancel Edit
                         </a>
                     @endif
@@ -207,24 +197,9 @@ new class extends Component
                             </div>
 
                             <div>
-
-
-
                                 <div >
                                     <livewire:livewire.profile.reply :post="$post" :user="$user" :key="'post-'.$post->id" />
                                 </div>
-
-
-
-                                {{-- @if ($post->replies->count() > 3)
-                                    <label for="load-replies-{{ $post->id }}" class="select-none cursor-pointer text-blue-500 hover:underline block peer-checked:hidden">
-                                        Show more...
-                                    </label>
-
-                                    <label for="load-replies-{{ $post->id }}" class="select-none cursor-pointer text-blue-500 hover:underline hidden peer-checked:block">
-                                        Show less...
-                                    </label>
-                                @endif --}}
                             </div>
                         </div>
                     @endif
@@ -242,6 +217,6 @@ new class extends Component
             </div>
 
             <div class="mt-3">
-                {{ $this->posts->links() }}
+                {{ $posts->links() }}
             </div>
 </div>

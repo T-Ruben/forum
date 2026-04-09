@@ -22,7 +22,7 @@ new class extends Component
     }
 
 
-public function checkAndExpand()
+    public function checkAndExpand()
     {
         if (!$this->highlight) return;
 
@@ -31,7 +31,7 @@ public function checkAndExpand()
             return;
         }
 
-        $repliesIds = $this->post->replies()->pluck('id')->toArray();
+        $repliesIds = $this->post->replies->pluck('id')->toArray();
         $index = array_search($this->highlight, $repliesIds);
 
         if ($index !== false) {
@@ -43,12 +43,21 @@ public function checkAndExpand()
     {
         $this->amount += 10;
     }
-    public function render() {
-        return view('components.livewire.profile.⚡reply', [
-            'replies' => $this->post->replies()
+
+    public function render()
+    {
+        if ($this->post->relationLoaded('replies')) {
+            $replies = $this->post->replies
+                ->take($this->amount);
+        } else {
+            $replies = $this->post->replies()
                 ->with('user')
                 ->take($this->amount)
-                ->get()
+                ->get();
+        }
+
+        return view('components.livewire.profile.⚡reply', [
+            'replies' => $replies
         ]);
     }
 

@@ -186,15 +186,10 @@ class User extends Authenticatable
     }
 
     public function countMessagePostTotal() {
-        if($this->posts() || $this->messages()) {
             $postsCount = $this->posts()->count();
             $messageCount = $this->messages()->count();
 
             return (int) ($postsCount + $messageCount);
-        }
-
-
-
     }
 
 }

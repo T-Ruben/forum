@@ -78,7 +78,7 @@ new class extends Component
 
     public function render(NotificationService $notificationService)
     {
-        $data = $notificationService->getNotifications(auth()->user(), 20, $this->type);
+        $data = $notificationService->getNotifications(auth()->user(), 15, $this->type);
 
         return view('components.livewire.⚡notifications-index', [
             'notifications' => $data['notifications'],
