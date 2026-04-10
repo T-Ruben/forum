@@ -17,6 +17,7 @@
                 <textarea
                     id="content"
                     name="content"
+                    maxlength="5000"
                     rows="6"
                     class="w-full p-2 bg-gray-200 text-black resize-none overflow-hidden border border-gray-600
                     outline-none"

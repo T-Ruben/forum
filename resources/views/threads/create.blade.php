@@ -22,6 +22,7 @@
                         id="content"
                         name="content"
                         rows="6"
+                        maxlength="5000"
                         class="w-full p-2 bg-gray-200 text-black resize-none overflow-hidden border border-gray-600
                         outline-none"
                         placeholder="Write your post...">{{ old('content') }}</textarea>

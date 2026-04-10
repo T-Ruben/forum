@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Gate;
 use App\Controllers\UserController;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
+use App\Actions\CreatePostAction;
+use App\Actions\UpdatePostAction;
+use App\Actions\DeletePostAction;
 
 new class extends Component
 {
@@ -17,31 +20,106 @@ new class extends Component
     public $moreLess = null;
     public $replyTo = null;
     public $editPost = null;
+    public $content = null;
 
     #[On('reset-page')]
     public function handleReset() {
         $this->resetPage();
     }
 
-    protected $queryString = [
-        'replyTo' => ['as' => 'reply_to'],
-        'editPost' => ['as' => 'edit_post']
-    ];
+    #[On('post-created')]
+    public function refreshPosts()
+    {
+        $this->resetPage();
+    }
 
     public function mount($user) {
         $this->user = $user;
+    }
 
+    public function setReply($id) {
+        $this->editPost = null;
 
-        if($this->editPost) {
-            $this->editPost = Post::where('profile_user_id', $user->id)
-                ->findOrFail($this->editPost);
+        $this->replyTo = (int) $id;
+    }
 
-            Gate::authorize('update', $this->editPost);
+    public function setEdit($id) {
+        $post = Post::findOrFail($id);
+        $this->replyTo = null;
+
+        Gate::authorize('update', $post);
+
+        $this->editPost = $post->id;
+        $this->content = $post->content;
+    }
+
+    protected function createPost()
+    {
+        Gate::authorize('create', Post::class);
+
+        $this->validate([
+            'content' => 'required|string|min:1|max:1000',
+        ]);
+
+        app(CreatePostAction::class)->execute(
+            auth()->user(),
+            [
+                'content' => $this->content,
+                'profile_user_id' => $this->user->id,
+                'parent_id' => $this->replyTo,
+            ]
+        );
+
+        $this->reset(['content', 'replyTo']);
+
+        $this->dispatch('post-created');
+    }
+
+    protected function updatePost()
+    {
+        $post = Post::findOrFail($this->editPost);
+
+        Gate::authorize('update', $post);
+
+        $this->validate([
+            'content' => 'required|string|min:1|max:1000',
+        ]);
+
+        app(UpdatePostAction::class)->execute(
+            $post,
+            ['content' => $this->content],
+            'profile'
+        );
+
+        $this->reset(['content', 'editPost']);
+
+        $this->dispatch('post-updated');
+    }
+
+    public function submit()
+    {
+        if ($this->editPost) {
+            $this->updatePost();
+        } else {
+            $this->createPost();
         }
-        elseif($this->replyTo) {
-            $this->replyTo = Post::where('profile_user_id', $user->id)
-                ->findOrFail($this->replyTo);
-        }
+    }
+
+    public function delete(Post $post)
+    {
+        Gate::authorize('delete', $post);
+
+        app(DeletePostAction::class)->execute($post);
+    }
+
+    public function getReplyToPostProperty() {
+        if(!$this->replyTo) return null;
+
+        return Post::with('user')->find($this->replyTo);
+    }
+
+    public function cancel() {
+        $this->reset(['content', 'replyTo', 'editPost']);
     }
 
     public function render()
@@ -61,29 +139,29 @@ new class extends Component
 
 <div>
     <div class="post-content break-words">
-                @if ($replyTo)
+                @if ($this->replyToPost)
                     <div class="mb-4 p-3 border rounded text-sm border-gray-600 bg-gray-300/20 text-black">
                         <p class="flex justify-between border-b">
-                            <span>Replying to <a href="#post-{{ $replyTo->id }}"
-                                class="hover:underline font-semibold duration-200">{{ $replyTo->user->display_name }}</a></span>
-                            <a href="{{ route('users.show', ['user' => $user->id,  'page' => request('page')]) }}"
-                                class="formReload hover:text-red-500/75 duration-200">@include('icons.cancel')</a>
+                            <span>Replying to <a href="#post-{{ $this->replyToPost?->id }}"
+                                class="hover:underline font-semibold duration-200">{{ $this->replyToPost?->user->display_name }}</a></span>
+                            <button wire:click="cancel()"
+                                class="formReload hover:text-red-500/75 duration-200">@include('icons.cancel')</button>
                         </p>
 
                         <div class="relative w-full">
-                            <input type="checkbox" id="load-more-{{ $replyTo->id }}" class="peer hidden">
+                            <input type="checkbox" id="load-more-{{ $this->replyToPost?->id }}" class="peer hidden">
 
                             <div class=" whitespace-pre-line line-clamp-5 peer-checked:line-clamp-none break-words overflow-hidden">
-                                <span class="">{{ $replyTo->content }}</span>
+                                <span class="">{{ $this->replyToPost?->content }}</span>
                             </div>
 
-                            @if (strlen($replyTo->content) > 300)
-                            <label for="load-more-{{ $replyTo->id }}"
+                            @if (strlen($this->replyToPost?->content) > 300)
+                            <label for="load-more-{{ $this->replyToPost?->id }}"
                                 class="select-none cursor-pointer text-blue-500 hover:underline mt-2 block peer-checked:hidden">
                                 Read more...
                             </label>
 
-                            <label for="load-more-{{ $replyTo->id }}"
+                            <label for="load-more-{{ $this->replyToPost?->id }}"
                                 class="select-none cursor-pointer text-blue-500 hover:underline mt-2 hidden peer-checked:block">
                                 Show less
                             </label>
@@ -109,58 +187,44 @@ new class extends Component
                     @endguest
                 </div>
 
-                @php
-                    $isEdit = isset($editPost);
-                    $action = $isEdit ? route('profile.post.update', $editPost) : route('user.posts.store', $user);
-                @endphp
-
-                <form action="{{ $action }}" method="POST" class="formReload w-full" id="postForm">
-                    @csrf
-                    <input type="hidden" name="parent_id" value="{{ $replyTo?->id ?? null }}">
-                    <input type="hidden" name="profile_user_id" value="{{ $user->id }}">
-
-                    @if ($isEdit)
-                        @method('PUT')
-                    @endif
+                <form wire:submit.prevent="submit" class="w-full formReload" id="postForm">
 
                     <textarea
                         id="content"
-                        name="content"
+                        wire:model.defer="content"
                         rows="6"
-                        class="w-full p-2 bg-gray-200 text-black resize-none overflow-hidden border border-gray-600
-                        outline-none"
-                        placeholder="Write your post...">{{ old('content', $isEdit ? $editPost->content : '') }}</textarea>
-                    <div>
+                        maxlength="1000"
+                        class="w-full p-2 bg-gray-200 text-black resize-none border border-gray-600 outline-none"
+                        placeholder="Write your post..."
+                    ></textarea>
 
-                    </div>
-                    <div class="my-auto flex-2 justify-center">
-                        @error('content')
-                            <p class="text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    @error('content')
+                        <p class="text-red-500">{{ $message }}</p>
+                    @enderror
 
-                    @if($isEdit)
-                        <a href="{{ route('users.show', [$user, 'page' => request('page')]) }}"
-                        class="text-red-500 mr-4">
+                    <div class="flex justify-between gap-5">
+                        @if ($this->editPost || $this->replyTo)
+                        <div wire:click="cancel()"
+                            class="text-white  bg-red-700 hover:dark:bg-red-900/80 block border rounded-md p-1 select-none cursor-pointer">
                             Cancel Edit
-                        </a>
-                    @endif
-
-                    <button type="submit"
-                        class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 cursor-pointer duration-200 ml-auto block border rounded-md p-1">
-                        Post Reply
-                    </button>
-
+                        </div>
+                        @endif
+                        <button type="submit"
+                            class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 block border rounded-md p-1 select-none cursor-pointer">
+                            Post Reply
+                        </button>
+                    </div>
                 </form>
             </div>
 
             <div class="bg-gray-300/60 text-black p-2 w-full max-w-full overflow-x-hidden">
                 @forelse ($posts as $post)
                 @if (!$post->parent)
-                    <div class="flex shrink-0 gap-3">
                     @if ($post->trashed())
-                        <p class=" mb-3">[Deleted]</p>
+                        <div class=" mb-3 w-full">[Deleted]</div>
                     @else
+                    <div class="flex shrink-0 gap-3" wire:key="post-{{ $post->id }}">
+
                         <div class="w-20 h-20 flex shrink-0 border-1">
                             <a href="{{ $post->user?->user_url }}" class="w-full h-full">
                                 <img src="{{ asset($post->user->profile_image_url) }}" class="w-full h-full object-cover"
@@ -181,16 +245,16 @@ new class extends Component
                                         <x-actions.delete-button :action="route('profile.post.destroy', $post)" :model="$post" />
 
                                         @can('update', $post)
-                                            <a href="{{ route('users.show', ['user' => $user->id, 'edit_post' => $post->id, 'page' => request('page')]) }}"
+                                            <button wire:click="setEdit('{{ $post->id }}')"
                                                 class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
                                                 Edit
-                                            </a>
+                                            </button>
                                         @endcan
 
-                                        <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $post->id, 'page' => request('page')]) }}"
+                                        <button wire:click="setReply('{{ $post->id }}')"
                                             class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
                                             Reply
-                                        </a>
+                                        </button>
                                     </div>
 
                                 </div>
@@ -200,14 +264,40 @@ new class extends Component
                                 <div >
                                     <livewire:livewire.profile.reply :post="$post" :user="$user" :key="'post-'.$post->id" />
                                 </div>
+                                <div>
+                                    @if ($replyTo === $post->id)
+                                        <form wire:submit.prevent="submit" class="w-full formReload" id="postForm">
+                                            <textarea
+                                                id="content"
+                                                wire:model.defer="content"
+                                                rows="6"
+                                                maxlength="1000"
+                                                class="w-full p-2 bg-gray-200 text-black resize-none border border-gray-600 outline-none"
+                                                placeholder="Write your post..."
+                                            ></textarea>
+
+                                            @error('content')
+                                                <p class="text-red-500">{{ $message }}</p>
+                                            @enderror
+
+                                            <div class="flex justify-between gap-5">
+                                                <div wire:click="cancel()"
+                                                    class="text-white bg-red-700 hover:dark:bg-red-900/80 block border rounded-md p-1 select-none cursor-pointer">
+                                                    Cancel
+                                                </div>
+                                                <button type="submit"
+                                                    class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 block border rounded-md p-1 select-none cursor-pointer">
+                                                    Post Reply
+                                                </button>
+                                            </div>
+                                        </form>
+                                    @endif
+                                </div>
                             </div>
                         </div>
+                    </div>
                     @endif
-                    </div>
 
-                    <div>
-
-                    </div>
 
                     <hr class="mb-3">
                 @endif

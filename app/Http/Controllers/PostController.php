@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreatePostAction;
+use App\Actions\DeletePostAction;
+use App\Actions\UpdatePostAction;
 use App\Models\Post;
 use App\Models\Thread;
 use App\Models\User;
@@ -70,120 +73,73 @@ class PostController extends Controller
         }
     }
 
-    public function storeProfile(Request $request, User $user, Post $post) {
-    Gate::authorize('create', Post::class);
+    public function storeProfile(Request $request, User $user, CreatePostAction $action)
+    {
+        Gate::authorize('create', Post::class);
 
-    $content = $request->input('content');
-    $plain = trim(strip_tags($content));
-
-    if(strlen($plain) < 1) {
-        return back()->withErrors(['content' => 'Must have at least one character.']);
-    }
-
-    if(strlen($plain) > 1000) {
-        return back()
-        ->withInput()
-        ->withErrors(['content' => 'Must have less than 1000 characters.']);
-    }
-
-    $validated = $request->validate([
-        'content' => ['required', 'string'],
-        'profile_user_id' => 'required|exists:users,id',
-        'parent_id' => 'nullable|exists:posts,id'
-    ]);
-
-    try {
-        $validated['content'] = trim($validated['content']);
-        $replyToPost = null;
-
-        if ($request->parent_id) {
-            $replyToPost = Post::findOrFail($request->parent_id);
-
-            $validated['parent_id'] = $replyToPost->parent_id ?? $replyToPost->id;
-        }
-
-        $post = Auth::user()->posts()->create($validated);
-
-
-
-        if($post->parent && $post->user_id !== $replyToPost->user_id) {
-            $replyToPost->user->notify(new ProfilePostNotification($post, $type = 'reply'));
-
-        } elseif($user->id !== $post->user_id && !$post->parent_id) {
-            $user->notify(new ProfilePostNotification($post));
-        }
-
-        return back()
-            ->with('success', 'Post created successfully!');
-    } catch (\Exception $e) {
-        Log::error('Post creation failed', [
-            'user_id' => Auth::id(),
-            'error' => $e->getMessage(),
+        $data = $request->validate([
+            'content' => ['required', 'string'],
+            'profile_user_id' => 'required|exists:users,id',
+            'parent_id' => 'nullable|exists:posts,id',
         ]);
-        return back()
-            ->withErrors(['content' => 'Something went wrong.'])
-            ->withInput();
+
+        try {
+            $action->execute($user, $data);
+
+            return back()->with('success', 'Post created successfully!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['content' => $e->getMessage()])
+                ->withInput();
         }
     }
-    public function update(Post $post, Request $request) {
-    Gate::authorize('update', $post);
 
-    $content = $request->input('content');
-    $plain = trim(strip_tags($content));
-    $isProfile = $request->routeIs('profile.post.update');
-    $owner = $post->profile_user_id;
-    $targetPost = $post->parent_id ? $post->parent : $post;
-    $page = $post->getPageNumber();
-    $pageProfile = $targetPost->getPageNumberProfile();
-    $thread = $post->thread_id;
-    $thread_slug = $post->thread?->slug;
+    public function update(Post $post, Request $request, UpdatePostAction $action)
+    {
+        Gate::authorize('update', $post);
 
-    $minLength = $isProfile ? 1 : 1;
-    $maxLength = $isProfile ? 1000 : 5000;
+        $isProfile = $request->routeIs('profile.post.update');
 
-    if(strlen($plain) < $minLength) {
-        return back()->withErrors(['content' => "Must have at least $minLength character."]);
+        $data = $request->validate([
+            'content' => ['required', 'string'],
+        ]);
+
+        try {
+            $action->execute(
+                $post,
+                $data,
+                $isProfile ? 'profile' : 'thread'
+            );
+
+            return $isProfile
+                ? redirect()->route('users.show', ['user' => $post->profile_user_id, 'page' => $post->getPageNumberProfile()])
+                : redirect()->route('threads.show', [
+                    'thread' => $post->thread_id,
+                    'slug' => $post->thread?->slug,
+                    'page' => $post->getPageNumber()
+                ]);
+
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['content' => $e->getMessage()])
+                ->withInput();
+        }
     }
 
-    if(strlen($plain) > $maxLength) {
-        return back()
-        ->withInput()
-        ->withErrors(['content' => "Must have less than $maxLength characters."]);
-    }
-
-    $validated = $request->validate([
-        'content' => ['required', 'string', "min:$minLength", "max:$maxLength"],
-    ]);
-
-    try {
-        $post->update(['content' => trim($validated['content'])]);
-        return $isProfile ? redirect()->route('users.show', ['user' => $owner, 'page' => $pageProfile]) :
-            redirect()->route('threads.show', ['thread' => $thread, 'slug' => $thread_slug, 'page' => $page]);
-    } catch(\Exception $e) {
-        Log::error('Editing failed: ', ['error', $e->getMessage()]);
-        return back()
-            ->withErrors(['error' => 'Something went wrong while editing. Please try again.'])
-            ->withInput();
-    };
-
-    }
-
-    public function destroy(Post $post, Request $request) {
+    public function destroy(Post $post, Request $request, DeletePostAction $action)
+    {
         Gate::authorize('delete', $post);
 
         $isProfile = $request->routeIs('profile.post.destroy');
-    $owner = $post->profile_user_id;
-    $targetPost = $post->parent_id ? $post->parent : $post;
-    $page = $post->getPageNumber();
-    $pageProfile = $targetPost->getPageNumberProfile();
-    $thread = $post->thread_id;
-    $thread_slug = $post->thread?->slug;
 
-        $post->update([
-            'content' => '[deleted]',
-        ]);
-        $post->delete();
-        return $isProfile ? redirect()->route('users.show', ['user' => $owner, 'page' => $pageProfile]) :
-                redirect()->route('threads.show', ['thread' => $thread, 'slug' => $thread_slug, 'page' => $page]);
+        $action->execute($post);
+
+        return $isProfile
+            ? redirect()->route('users.show', ['user' => $post->profile_user_id, 'page' => $post->getPageNumberProfile()])
+            : redirect()->route('threads.show', [
+                'thread' => $post->thread_id,
+                'slug' => $post->thread?->slug,
+                'page' => $post->getPageNumber()
+            ]);
     }
 }
