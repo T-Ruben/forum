@@ -73,6 +73,10 @@ class PostController extends Controller
         }
     }
 
+    // A lot of refactoring took place here for the livewire profile page.
+    // Storeprofile, delete, and update all were changed quite a lot and made cleaner.
+    // App/Actions, with 3 files inside was made as well.
+
     public function storeProfile(Request $request, User $user, CreatePostAction $action)
     {
         Gate::authorize('create', Post::class);

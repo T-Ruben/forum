@@ -56,6 +56,13 @@ document.querySelectorAll('.replyReload').forEach(reply => {
     })
 })
 
+window.addEventListener('scroll-to-form', () => {
+    document.getElementById('postForm')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+    });
+});
+
 
 window.addEventListener('load', function () {
     const scrollPosition = sessionStorage.getItem('scrollPosition');

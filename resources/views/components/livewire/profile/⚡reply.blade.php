@@ -21,6 +21,12 @@ new class extends Component
     #[Url]
     public $highlight = null;
 
+    #[On('reply-created')]
+    public function handleNewReply($parentId)
+    {
+        $this->amount = $this->post->replies()->count();
+    }
+
     public function mount($user, $post) {
         $this->user = $user;
         $this->post = $post;
@@ -30,18 +36,19 @@ new class extends Component
 
         public function setReply($id) {
         $this->editPost = null;
+        $this->content = null;
 
         $this->replyTo = (int) $id;
     }
 
     public function setEdit($id) {
-        $post = Post::findOrFail($id);
+        $reply = Post::findOrFail($id);
         $this->replyTo = null;
 
-        Gate::authorize('update', $post);
+        Gate::authorize('update', $reply);
 
-        $this->editPost = $post->id;
-        $this->content = $post->content;
+        $this->editPost = $reply->id;
+        $this->content = $reply->content;
     }
 
     public function submit()
@@ -128,87 +135,89 @@ new class extends Component
 };
 ?>
 <div>
-@foreach ($replies as $reply)
-<div class="flex shrink-0 gap-3 border-b-1 rounded-b-md bg-gray-300/25 px-1 pt-1 {{ $highlight === $reply->id ?
-    'bg-gray-700/25 border-b border-x border-indigo-700' : '' }}"
-    id="post-{{ $reply->id }}">
-    @if ($reply->trashed())
-        <p class=" my-3">[Deleted]</p>
-    @else
-    <div class="w-16 h-16 flex shrink-0 border-1">
-        <a href="{{ $reply->user?->user_url }}" class="w-full h-full">
-            <img src="{{ asset($reply->user->profile_image_url) }}" class="w-full h-full object-cover"
-                alt="{{ $reply->user?->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
-        </a>
-    </div>
-    <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
-        <div>
+    @foreach ($replies as $reply)
+    <div class="flex shrink-0 gap-3 border-b-1 rounded-b-md bg-gray-300/25 px-1 pt-1 {{ $highlight === $reply->id ?
+        'bg-gray-700/25 border-b border-x border-indigo-700' : '' }}"
+        id="post-{{ $reply->id }}"
+        wire:key="reply-{{ $reply->id }}">
+        @if ($reply->trashed())
+            <p class=" my-3">[Deleted]</p>
+        @else
+        <div class="w-16 h-16 flex shrink-0 border-1">
+            <a href="{{ $reply->user?->user_url }}" class="w-full h-full">
+                <img src="{{ asset($reply->user->profile_image_url) }}" class="w-full h-full object-cover"
+                    alt="{{ $reply->user?->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
+            </a>
+        </div>
+        <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
             <div>
-                <a href="{{ $reply->user?->user_url }}"
-                    class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $reply->user?->display_name }}</strong></a>
-                <div class="post-content whitespace-pre-line break-all md:break-words">{!! $reply->content !!}</div>
+                <div>
+                    <a href="{{ $reply->user?->user_url }}"
+                        class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $reply->user?->display_name }}</strong></a>
+                    <div class="post-content whitespace-pre-line break-all md:break-words">{!! $reply->content !!}</div>
+                </div>
             </div>
-        </div>
-        <div class="flex justify-between text-md">
-            <small class="text-gray-300"><x-time-display :time="$reply->updated_at" :createdAt="$reply->created_at" :updatedAt="$reply->updated_at"/></small>
-            <div class="flex gap-5">
-                <x-actions.delete-button :action="route('profile.post.destroy', $reply)" :model="$reply" />
+            <div class="flex justify-between text-md">
+                <small class="text-gray-300"><x-time-display :time="$reply->updated_at" :createdAt="$reply->created_at" :updatedAt="$reply->updated_at"/></small>
+                <div class="flex gap-5">
+                    <x-actions.delete-button :action="route('profile.post.destroy', $reply)" :model="$reply" />
 
-                @can('update', $reply)
-                    <button wire:click="editPost('{{ $reply->id }}')"
+                    @can('update', $reply)
+                        <button wire:click="setEdit({{ $reply->id }})"
+                            class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                            Edit
+                        </button>
+                    @endcan
+
+                    <button wire:click="setReply({{ $reply->id }})"
                         class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
-                        Edit
+                        Reply
                     </button>
-                @endcan
-
-                <button wire:click="setReply('{{ $reply->id }}')"
-                    class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
-                    Reply
-                </button>
+                </div>
             </div>
+                @if ($replyTo === $reply->id || $editPost === $reply->id)
+                    <form wire:submit.prevent="submit" class="w-full formReload">
+
+                        <textarea
+                            id="content"
+                            wire:model.defer="content"
+                            rows="6"
+                            maxlength="1000"
+                            class="w-full p-2 bg-gray-200 text-black border border-gray-600 outline-none"
+                            placeholder="Write your post..."
+                        ></textarea>
+
+                        @error('content')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+
+                        <div class="flex justify-between gap-5">
+                            <button type="button"
+                                wire:click="cancel()"
+                                class="text-white bg-red-700 hover:dark:bg-red-900/80 block border rounded-md p-1">
+                                Cancel
+                            </button>
+                            <button type="submit"
+                                class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 block border rounded-md p-1" cursor-pointer>
+                                Post Reply
+                            </button>
+                        </div>
+                    </form>
+                @endif
         </div>
-            @if ($replyTo === $reply->id || $editPost === $reply->id)
-                <form wire:submit.prevent="submit" class="w-full formReload" id="postForm">
-
-                    <textarea
-                        id="content"
-                        wire:model.defer="content"
-                        rows="6"
-                        maxlength="1000"
-                        class="w-full p-2 bg-gray-200 text-black resize-none border border-gray-600 outline-none"
-                        placeholder="Write your post..."
-                    ></textarea>
-
-                    @error('content')
-                        <p class="text-red-500">{{ $message }}</p>
-                    @enderror
-
-                    <div class="flex justify-between gap-5">
-                        <button wire:click="cancel()"
-                            class="text-white bg-red-700 hover:dark:bg-red-900/80 block border rounded-md p-1">
-                            Cancel
-                        </button>
-                        <button type="submit"
-                            class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 block border rounded-md p-1">
-                            Post Reply
-                        </button>
-                    </div>
-                </form>
-            @endif
+        @endif
     </div>
-    @endif
-</div>
-@endforeach
+    @endforeach
 
-@if($post->replies_count > $amount)
-    <button
-        wire:click="loadMore"
-        class="text-blue-500 text-xs hover:underline"
-        wire:loading.attr="disabled"
-    >
-        View more replies...
-    </button>
-@endif
+    @if($post->replies->count() > $amount)
+        <button
+            wire:click="loadMore"
+            class="text-blue-500 text-sm hover:underline"
+            wire:loading.attr="disabled"
+        >
+            Load more...
+        </button>
+    @endif
 </div>
 
 {{-- @if ($reply->recursiveReplies->count() > 0)

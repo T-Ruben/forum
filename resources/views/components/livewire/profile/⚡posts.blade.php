@@ -30,7 +30,7 @@ new class extends Component
     #[On('post-created')]
     public function refreshPosts()
     {
-        $this->resetPage();
+        $this->dispatch('$refresh');
     }
 
     public function mount($user) {
@@ -40,6 +40,7 @@ new class extends Component
     public function setReply($id) {
         $this->editPost = null;
 
+        $this->content = null;
         $this->replyTo = (int) $id;
     }
 
@@ -70,9 +71,10 @@ new class extends Component
             ]
         );
 
-        $this->reset(['content', 'replyTo']);
+        $this->reset(['content', 'replyTo', 'editPost']);
 
-        $this->dispatch('post-created');
+        $this->dispatch('reply-created', parentId: $this->replyTo);
+        $this->dispatch('$refresh');
     }
 
     protected function updatePost()
@@ -139,174 +141,148 @@ new class extends Component
 
 <div>
     <div class="post-content break-words">
-                @if ($this->replyToPost)
-                    <div class="mb-4 p-3 border rounded text-sm border-gray-600 bg-gray-300/20 text-black">
-                        <p class="flex justify-between border-b">
-                            <span>Replying to <a href="#post-{{ $this->replyToPost?->id }}"
-                                class="hover:underline font-semibold duration-200">{{ $this->replyToPost?->user->display_name }}</a></span>
-                            <button wire:click="cancel()"
-                                class="formReload hover:text-red-500/75 duration-200">@include('icons.cancel')</button>
-                        </p>
+        @if ($this->replyToPost)
+            <div class="mb-4 p-3 border rounded text-sm border-gray-600 bg-gray-300/20 text-black">
+                <p class="flex justify-between border-b">
+                    <span>Replying to <a href="#post-{{ $this->replyToPost?->id }}"
+                        class="hover:underline font-semibold duration-200">{{ $this->replyToPost?->user->display_name }}</a></span>
+                    <button wire:click="cancel()"
+                        class="formReload hover:text-red-500/75 duration-200">@include('icons.cancel')</button>
+                </p>
 
-                        <div class="relative w-full">
-                            <input type="checkbox" id="load-more-{{ $this->replyToPost?->id }}" class="peer hidden">
+                <div class="relative w-full">
+                    <input type="checkbox" id="load-more-{{ $this->replyToPost?->id }}" class="peer hidden">
 
-                            <div class=" whitespace-pre-line line-clamp-5 peer-checked:line-clamp-none break-words overflow-hidden">
-                                <span class="">{{ $this->replyToPost?->content }}</span>
-                            </div>
-
-                            @if (strlen($this->replyToPost?->content) > 300)
-                            <label for="load-more-{{ $this->replyToPost?->id }}"
-                                class="select-none cursor-pointer text-blue-500 hover:underline mt-2 block peer-checked:hidden">
-                                Read more...
-                            </label>
-
-                            <label for="load-more-{{ $this->replyToPost?->id }}"
-                                class="select-none cursor-pointer text-blue-500 hover:underline mt-2 hidden peer-checked:block">
-                                Show less
-                            </label>
-                            @endif
-                        </div>
+                    <div class=" whitespace-pre-line line-clamp-5 peer-checked:line-clamp-none break-words overflow-hidden">
+                        <span class="">{{ $this->replyToPost?->content }}</span>
                     </div>
-                @endif
-            </div>
 
-            <div class="mb-3 flex gap-3">
-                <div class="w-20 h-20 flex shrink-0 border-1">
-                    @auth
-                    <a href="{{ route('users.show', auth()->user()) }}" class="w-full h-full">
-                        <img src="{{ asset(auth()->user()?->profile_image_url) }}" class="w-full h-full object-cover"
-                            alt="{{ auth()->user()->name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
-                    </a>
-                    @endauth
-                    @guest
-                        <a href="{{ route('login')}}">
-                        <img src="{{ asset('images/default-avatar.png') }}" class="w-20 h-20 object-cover"
-                            alt="Guest's profile image" data-pin-nopin="true">
-                        </a>
-                    @endguest
-                </div>
+                    @if (strlen($this->replyToPost?->content) > 300)
+                    <label for="load-more-{{ $this->replyToPost?->id }}"
+                        class="select-none cursor-pointer text-blue-500 hover:underline mt-2 block peer-checked:hidden">
+                        Read more...
+                    </label>
 
-                <form wire:submit.prevent="submit" class="w-full formReload" id="postForm">
-
-                    <textarea
-                        id="content"
-                        wire:model.defer="content"
-                        rows="6"
-                        maxlength="1000"
-                        class="w-full p-2 bg-gray-200 text-black resize-none border border-gray-600 outline-none"
-                        placeholder="Write your post..."
-                    ></textarea>
-
-                    @error('content')
-                        <p class="text-red-500">{{ $message }}</p>
-                    @enderror
-
-                    <div class="flex justify-between gap-5">
-                        @if ($this->editPost || $this->replyTo)
-                        <div wire:click="cancel()"
-                            class="text-white  bg-red-700 hover:dark:bg-red-900/80 block border rounded-md p-1 select-none cursor-pointer">
-                            Cancel Edit
-                        </div>
-                        @endif
-                        <button type="submit"
-                            class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 block border rounded-md p-1 select-none cursor-pointer">
-                            Post Reply
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="bg-gray-300/60 text-black p-2 w-full max-w-full overflow-x-hidden">
-                @forelse ($posts as $post)
-                @if (!$post->parent)
-                    @if ($post->trashed())
-                        <div class=" mb-3 w-full">[Deleted]</div>
-                    @else
-                    <div class="flex shrink-0 gap-3" wire:key="post-{{ $post->id }}">
-
-                        <div class="w-20 h-20 flex shrink-0 border-1">
-                            <a href="{{ $post->user?->user_url }}" class="w-full h-full">
-                                <img src="{{ asset($post->user->profile_image_url) }}" class="w-full h-full object-cover"
-                                    alt="{{ $post->user?->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
-                            </a>
-                        </div>
-                        <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
-                            <div id="post-{{ $post->id }}">
-                                <div>
-                                    <a href="{{ $post->user?->user_url }}"
-                                        class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $post->user->display_name }}</strong></a>
-                                    <div class="post-content whitespace-pre-line break-all md:break-words pb-10">{!! $post->content !!}</div>
-                                </div>
-                                <div class="flex justify-between">
-                                    <small class="text-gray-300"><x-time-display :time="$post->updated_at" :createdAt="$post->created_at" :updatedAt="$post->updated_at" /></small>
-
-                                    <div class="flex gap-5">
-                                        <x-actions.delete-button :action="route('profile.post.destroy', $post)" :model="$post" />
-
-                                        @can('update', $post)
-                                            <button wire:click="setEdit('{{ $post->id }}')"
-                                                class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
-                                                Edit
-                                            </button>
-                                        @endcan
-
-                                        <button wire:click="setReply('{{ $post->id }}')"
-                                            class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
-                                            Reply
-                                        </button>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div>
-                                <div >
-                                    <livewire:livewire.profile.reply :post="$post" :user="$user" :key="'post-'.$post->id" />
-                                </div>
-                                <div>
-                                    @if ($replyTo === $post->id)
-                                        <form wire:submit.prevent="submit" class="w-full formReload" id="postForm">
-                                            <textarea
-                                                id="content"
-                                                wire:model.defer="content"
-                                                rows="6"
-                                                maxlength="1000"
-                                                class="w-full p-2 bg-gray-200 text-black resize-none border border-gray-600 outline-none"
-                                                placeholder="Write your post..."
-                                            ></textarea>
-
-                                            @error('content')
-                                                <p class="text-red-500">{{ $message }}</p>
-                                            @enderror
-
-                                            <div class="flex justify-between gap-5">
-                                                <div wire:click="cancel()"
-                                                    class="text-white bg-red-700 hover:dark:bg-red-900/80 block border rounded-md p-1 select-none cursor-pointer">
-                                                    Cancel
-                                                </div>
-                                                <button type="submit"
-                                                    class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 block border rounded-md p-1 select-none cursor-pointer">
-                                                    Post Reply
-                                                </button>
-                                            </div>
-                                        </form>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <label for="load-more-{{ $this->replyToPost?->id }}"
+                        class="select-none cursor-pointer text-blue-500 hover:underline mt-2 hidden peer-checked:block">
+                        Show less
+                    </label>
                     @endif
+                </div>
+            </div>
+        @endif
+    </div>
 
+    <div class="mb-3 flex gap-3">
+        <div class="w-20 h-20 flex shrink-0 border-1">
+            @auth
+            <a href="{{ route('users.show', auth()->user()) }}" class="w-full h-full">
+                <img src="{{ asset(auth()->user()?->profile_image_url) }}" class="w-full h-full object-cover"
+                    alt="{{ auth()->user()->name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
+            </a>
+            @endauth
+            @guest
+                <a href="{{ route('login')}}">
+                <img src="{{ asset('images/default-avatar.png') }}" class="w-20 h-20 object-cover"
+                    alt="Guest's profile image" data-pin-nopin="true">
+                </a>
+            @endguest
+        </div>
 
-                    <hr class="mb-3">
+        <form wire:submit.prevent="submit" class="w-full formReload" id="postForm">
+
+            <textarea
+                id="content"
+                wire:model.defer="content"
+                rows="6"
+                maxlength="1000"
+                class="w-full p-2 bg-gray-200 text-black resize-none border border-gray-600 outline-none"
+                placeholder="Write your post..."
+            ></textarea>
+
+            @error('content')
+                <p class="text-red-500">{{ $message }}</p>
+            @enderror
+
+            <div class="flex justify-between gap-5">
+                @if ($this->editPost || $this->replyTo)
+                <button type="button"
+                    wire:click="cancel()"
+                    class="text-white  bg-red-700 hover:dark:bg-red-900/80 block border rounded-md p-1 select-none cursor-pointer">
+                    Cancel Edit
+                </button>
                 @endif
-                @empty
-                    <p>No posts on this profile yet.</p>
-                @endforelse
+                <button type="submit"
+                    class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 block border rounded-md p-1 select-none cursor-pointer">
+                    Post Reply
+                </button>
             </div>
+        </form>
+    </div>
 
-            <div class="mt-3">
-                {{ $posts->links() }}
+    <div class="bg-gray-300/60 text-black p-2 w-full max-w-full overflow-x-hidden">
+        @forelse ($posts as $post)
+        @if (!$post->parent)
+            @if ($post->trashed())
+                <div class=" mb-3 w-full">[Deleted]</div>
+            @else
+            <div class="flex shrink-0 gap-3" wire:key="post-{{ $post->id }}">
+
+                <div class="w-20 h-20 flex shrink-0 border-1">
+                    <a href="{{ $post->user?->user_url }}" class="w-full h-full">
+                        <img src="{{ asset($post->user->profile_image_url) }}" class="w-full h-full object-cover"
+                            alt="{{ $post->user?->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
+                    </a>
+                </div>
+                <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
+                    <div id="post-{{ $post->id }}">
+                        <div>
+                            <a href="{{ $post->user?->user_url }}"
+                                class="hover:text-black/70 duration-200 hover:underline"><strong>{{ $post->user->display_name }}</strong></a>
+                            <div class="post-content whitespace-pre-line break-all md:break-words pb-10">{!! $post->content !!}</div>
+                        </div>
+                        <div class="flex justify-between">
+                            <small class="text-gray-300"><x-time-display :time="$post->updated_at" :createdAt="$post->created_at" :updatedAt="$post->updated_at" /></small>
+
+                            <div class="flex gap-5">
+                                <x-actions.delete-button :action="route('profile.post.destroy', $post)" :model="$post" />
+
+                                @can('update', $post)
+                                    <button wire:click="setEdit({{ $post->id }});
+                                            $dispatch('scroll-to-form');"
+                                        class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                                        Edit
+                                    </button>
+                                @endcan
+
+                                <button wire:click="setReply({{ $post->id }});
+                                        $dispatch('scroll-to-form');"
+                                    class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                                    Reply
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div>
+                        <div >
+                            <livewire:livewire.profile.reply :post="$post" :user="$user" :key="'post-'.$post->id" />
+                        </div>
+                    </div>
+                </div>
             </div>
+            @endif
+
+
+            <hr class="mb-3">
+        @endif
+        @empty
+            <p>No posts on this profile yet.</p>
+        @endforelse
+    </div>
+
+    <div class="mt-3">
+        {{ $posts->links() }}
+    </div>
 </div>
