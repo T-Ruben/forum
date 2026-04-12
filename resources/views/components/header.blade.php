@@ -87,7 +87,7 @@
                 class="w-full select-none">
                 <div class="bg-gray-100 text-black p-2 w-fit absolute border inset-shadow-2xs inset-shadow-black">
                     <input type="checkbox" name="threadOnly" id="threadOnly">
-                    <label for="threadOnly" class="">Search thread titles only</label>
+                    <label for="threadOnly" class="">Search thread titles</label>
                 </div>
             </div>
         </form>
