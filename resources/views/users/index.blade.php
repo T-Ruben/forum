@@ -35,14 +35,14 @@
                                 </a>
                             </span></li>
                             <li>Member since: <span class="text-indigo-200">{{ $user->created_at->diffForHumans() }}</span></li>
-                            <li>Following: <span class="text-indigo-200">{{ $user->following->count() }}</span></li>
-                            <li>Followers: <span class="text-indigo-200">{{ $user->followers->count() }}</span></li>
-                            <li>Messages: <span class="text-indigo-200">{{ $user->posts->count() }}</span></li>
+                            <li>Following: <span class="text-indigo-200">{{ $user->following_count }}</span></li>
+                            <li>Followers: <span class="text-indigo-200">{{ $user->followers_count }}</span></li>
+                            <li>Messages: <span class="text-indigo-200">{{ $user->posts_count }}</span></li>
                         </ol>
                     </li>
                 @endforeach
             </ul>
-        </div>
+        </div>a
         </main>
         <hr class="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50" />
         <span class="my-2 flex justify-end">{{ $users->links() }}</span>

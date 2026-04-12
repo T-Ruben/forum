@@ -21,9 +21,9 @@
                                     </a>
                                 </span></li>
                                 <li>Member since: <span class="text-indigo-200">{{ $followingUsers->created_at->diffForHumans() }}</span></li>
-                                <li>Following: <span class="text-indigo-200">{{ $followingUsers->following->count() }}</span></li>
-                                <li>Followers: <span class="text-indigo-200">{{ $followingUsers->followers->count() }}</span></li>
-                                <li>Messages: <span class="text-indigo-200">{{ $followingUsers->posts->count() }}</span></li>
+                                <li>Following: <span class="text-indigo-200">{{ $followingUsers->following_count }}</span></li>
+                                <li>Followers: <span class="text-indigo-200">{{ $followingUsers->followers_count }}</span></li>
+                                <li>Messages: <span class="text-indigo-200">{{ $followingUsers->posts_count }}</span></li>
                             </ol>
                         </li>
                         @empty

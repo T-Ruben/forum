@@ -113,7 +113,7 @@ class ConversationController extends Controller
 
         $messages = $conversation->messages()
             ->with(['user.following', 'parent.user', 'user.followers', 'user' => function ($query) {
-                $query->withCount('messages');
+                $query->withCount('messages', 'followers', 'following');
             }])
             ->orderBy('created_at', 'asc')
             ->paginate(10);

@@ -40,7 +40,7 @@ class UserController extends Controller
     public function index(User $user, Request $request) {
         $sortOrder = $request->query('sort', 'newest');
 
-        $query = User::query()->with(['followers', 'following', 'posts']);
+        $query = User::query()->with(['followers', 'following', 'posts'])->withCount(['followers', 'following', 'posts']);
 
         match($sortOrder) {
             'newest' => $query->orderBy('created_at', 'desc'),
@@ -62,6 +62,7 @@ class UserController extends Controller
     public function following(User $user) {
         $following = $user->following()
             ->with(['followers', 'following', 'posts'])
+            ->withCount('following', 'followers', 'posts')
             ->paginate(25);
 
         return view('users.following', ['following' => $following, 'user' => $user]);
@@ -70,6 +71,7 @@ class UserController extends Controller
     public function followers(User $user) {
         $followers = $user->followers()
             ->with(['followers', 'following', 'posts'])
+            ->withCount('following', 'followers', 'posts')
             ->paginate(25);
 
         return view('users.followers', ['followers' => $followers, 'user' => $user]);

@@ -37,7 +37,7 @@ class ThreadController extends Controller
 
         $posts = $thread->posts()
             ->with(['user.following', 'parent.user', 'user.followers', 'user' => function ($query) {
-                $query->withCount('posts');
+                $query->withCount('posts', 'following', 'followers');
             }])
             ->orderBy('created_at', 'asc')
             ->paginate(10);
