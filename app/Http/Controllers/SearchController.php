@@ -105,6 +105,5 @@ class SearchController extends Controller
             'results' => $paginated,
             'query' => $query,
         ]);
-
     }
 }
