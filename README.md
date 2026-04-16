@@ -12,6 +12,7 @@ This project was built mainly to develop practical skills in Laravel, backend ar
 - Authorization using policies
 - User following system
 - Direct messaging between users
+- Notifications system
 
 ## Tech stack
 
