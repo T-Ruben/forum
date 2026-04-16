@@ -36,10 +36,6 @@ class NotificationService
             'unreadNotifications as convInvite' => fn ($q) => $q->where('type', ConversationInvitation::class)->limit(100),
         ]);
 
-
-        // IMPORTANT: as i will end up creating far too many vars for different notifs like this, i might need to
-        // try to find another of making this more efficient. If i can't find any, i'll try remaking this with AI.
-
         $query = $user->notifications()->latest();
 
 

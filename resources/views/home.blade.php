@@ -1,8 +1,3 @@
-<!-- Changes:
-Took from first section: bg-gray-500/75
-Took from second section: bg-gray-500/75
--->
-
 
 <x-layout>
 

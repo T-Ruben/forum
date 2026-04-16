@@ -38,12 +38,3 @@
     </div>
     @endif
 </div>
-
-
-{{-- @if ($reply->recursiveReplies->count() > 0)
-    <div class="nested-replies">
-        @foreach ($reply->recursiveReplies as $subReply)
-            @include('components.reply', ['reply' => $subReply, 'depth' => $depth + 1])
-        @endforeach
-    </div>
-@endif --}}
