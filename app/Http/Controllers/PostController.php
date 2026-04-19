@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\CreatePostAction;
 use App\Actions\DeletePostAction;
 use App\Actions\UpdatePostAction;
+use App\Http\Requests\Post\StoreRequest;
 use App\Models\Post;
 use App\Models\Thread;
 use App\Models\User;
@@ -16,34 +17,18 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
+
 class PostController extends Controller
 {
-    public function store(Request $request, Thread $thread) {
+    public function store(StoreRequest $request, Thread $thread) {
     Gate::authorize('create', Post::class);
 
-    $content = $request->input('content');
-    $plain = trim(strip_tags($content));
-
-    if(strlen($plain) < 1) {
-        return back()->withErrors(['content' => 'Must have at least one character.']);
-    }
-
-    if(strlen($plain) > 5000) {
-        return back()
-        ->withInput()
-        ->withErrors(['content' => 'Must have less than 5000 characters.']);
-    }
-
-    $validated = $request->validate([
-        'content' => ['required', 'string'],
-        'thread_id' => 'required|exists:threads,id',
-        'parent_id' => 'nullable|exists:posts,id'
-    ]);
+    $validated = $request->validated();
 
     try {
-        $validated['content'] = trim($validated['content']);
 
         $post = Auth::user()->posts()->create($validated);
+        
 
         $userOwner = $post->thread->user;
         $userReply = $post->parent?->user;
