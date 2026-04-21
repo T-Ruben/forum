@@ -229,7 +229,7 @@
                     placeholder="Write your post...">{{ old('content', $isEdit ? $editMessage->content : '') }}</textarea>
 
                 <div class="my-auto block">
-                    @error('content')
+                    @error('plain_content')
                         <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>

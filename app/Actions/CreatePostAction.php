@@ -24,8 +24,8 @@ public function execute(User $user, array $data): Post
             new ProfilePostNotification($post, 'reply')
         );
     }
-    elseif ($user->id !== $post->user_id && !$post->parent_id) {
-        $user->notify(new ProfilePostNotification($post));
+    elseif ($post->profileOwner->id !== $post->user_id && !$post->parent_id) {
+        $post->profileOwner->notify(new ProfilePostNotification($post));
     }
 
     return $post;

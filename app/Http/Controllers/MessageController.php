@@ -39,13 +39,13 @@ class MessageController extends Controller
         $plain = trim(strip_tags($content));
 
     if(strlen($plain) < 1) {
-        return back()->withErrors(['content' => 'Must have at least one character.']);
+        return back()->withErrors(['plain_content' => 'Must have at least one character.']);
     }
 
     if(strlen($plain) > 5000) {
         return back()
         ->withInput()
-        ->withErrors(['content' => 'Must have less than 5000 characters.']);
+        ->withErrors(['plain_content' => 'Must have less than 5000 characters.']);
     }
 
     $validated = $request->validate([
