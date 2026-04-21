@@ -5,7 +5,7 @@
             <a href="/" class="mx-10 font-medium text-3xl shrink-0"><h1>Game Updates</h1></a>
             <nav class="flex gap-2 justify-start items-center">
                 <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">Home</x-nav-link>
-                <x-nav-link href="#" :active="request()->routeIs('')">Blogs</x-nav-link>
+                {{-- <x-nav-link href="#" :active="request()->routeIs('')">Blogs</x-nav-link> --}}
                 <x-nav-link href="{{ route('members.index') }}" :active="request()->routeIs('members.index')">Members</x-nav-link>
             </nav>
         </div>
