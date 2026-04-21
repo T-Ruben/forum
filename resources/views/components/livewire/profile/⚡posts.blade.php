@@ -10,6 +10,8 @@ use Livewire\Attributes\On;
 use App\Actions\CreatePostAction;
 use App\Actions\UpdatePostAction;
 use App\Actions\DeletePostAction;
+use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\RateLimiter;
 
 new class extends Component
 {
@@ -20,6 +22,8 @@ new class extends Component
     public $moreLess = null;
     public $replyTo = null;
     public $editPost = null;
+
+    #[Validate('required|string|min:1|max:1000')]
     public $content = null;
 
     #[On('reset-page')]
@@ -58,9 +62,17 @@ new class extends Component
     {
         Gate::authorize('create', Post::class);
 
-        $this->validate([
-            'content' => 'required|string|min:1|max:1000',
-        ]);
+        $this->content = trim(strip_tags($this->content));
+
+        $key = 'post-limit' . auth()->id();
+
+        if(RateLimiter::tooManyAttempts($key, $maxAttempts = 1)) {
+            $seconds = RateLimiter::availableIn($key);
+            $this->addError('content', "Please wait {$seconds} seconds before posting again.");
+            return;
+        }
+
+        $this->validate();
 
         app(CreatePostAction::class)->execute(
             auth()->user(),
@@ -70,6 +82,8 @@ new class extends Component
                 'parent_id' => $this->replyTo,
             ]
         );
+
+        RateLimiter::hit($key, $decaySeconds = 3);
 
         $this->reset(['content', 'replyTo', 'editPost']);
 

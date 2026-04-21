@@ -4,6 +4,7 @@ use Livewire\Component;
 use App\Models\Post;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Validate;
 use App\Models\User;
 use App\Actions\CreatePostAction;
 use App\Actions\DeletePostAction;
@@ -16,6 +17,8 @@ new class extends Component
     public $amount = 3;
     public $replyTo = null;
     public $editPost = null;
+
+    #[Validate('required|string|min:1|max:1000')]
     public $content = null;
 
     #[Url]
@@ -53,9 +56,7 @@ new class extends Component
 
     public function submit()
     {
-        $this->validate([
-            'content' => ['required', 'string', 'min:1', 'max:1000'],
-        ]);
+        $this->content = trim(strip_tags($this->content));
 
         if ($this->editPost) {
             $post = Post::findOrFail($this->editPost);
@@ -69,12 +70,21 @@ new class extends Component
                 );
 
         } else {
+            $key = 'post-limit' . auth()->id();
+
+            if(RateLimiter::tooManyAttempts($key, $maxAttempts = 1)) {
+                $seconds = RateLimiter::availableIn($key);
+                $this->addError('content', "Please wait {$seconds} seconds before posting again.");
+                return;
+            }
+
             app(CreatePostAction::class)->execute(auth()->user(), [
                 'content' => $this->content,
                 'profile_user_id' => $this->user->id,
                 'parent_id' => $this->replyTo,
             ]);
 
+            RateLimiter::hit($key, $decaySeconds = 3);
             $this->amount++;
         }
 

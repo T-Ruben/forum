@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
                 ->response(function ($request, $headers) {
                     $retryAfter = $headers['Retry-After'] ?? 5;
                     return back()
-                        ->withErrors(['content' => "You must wait {$retryAfter} seconds before posting again."])
+                        ->withErrors(['plain_content' => "You must wait {$retryAfter} seconds before posting again."])
                         ->withInput();
                 });
         });

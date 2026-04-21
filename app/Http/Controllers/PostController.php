@@ -11,6 +11,7 @@ use App\Models\Thread;
 use App\Models\User;
 use App\Notifications\ProfilePostNotification;
 use App\Notifications\ThreadPostNotification;
+use App\Services\PostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -20,31 +21,13 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    public function store(StoreRequest $request, Thread $thread) {
+    public function store(StoreRequest $request, PostService $service) {
     Gate::authorize('create', Post::class);
 
     $validated = $request->validated();
 
     try {
-
-        $post = Auth::user()->posts()->create($validated);
-        
-
-        $userOwner = $post->thread->user;
-        $userReply = $post->parent?->user;
-
-
-        if($post->parent) {
-            $userReply->notify(new ThreadPostNotification($post, $type = 'reply'));
-
-            if($post->user_id !== $post->thread->user_id && $post->parent->user_id !== $post->thread->user_id) {
-                $userOwner->notify(new ThreadPostNotification($post));
-            }
-        } elseif($post->user_id !== $post->thread->user_id) {
-            $userOwner->notify(new ThreadPostNotification($post));
-        }
-
-
+        $service->store($validated);
 
         return back()->with('success', 'Post created successfully!');
     } catch (\Exception $e) {
@@ -55,27 +38,6 @@ class PostController extends Controller
         return back()
             ->withErrors(['content' => 'Something went wrong.'])
             ->withInput();
-        }
-    }
-
-    public function storeProfile(Request $request, User $user, CreatePostAction $action)
-    {
-        Gate::authorize('create', Post::class);
-
-        $data = $request->validate([
-            'content' => ['required', 'string'],
-            'profile_user_id' => 'required|exists:users,id',
-            'parent_id' => 'nullable|exists:posts,id',
-        ]);
-
-        try {
-            $action->execute($user, $data);
-
-            return back()->with('success', 'Post created successfully!');
-        } catch (\Exception $e) {
-            return back()
-                ->withErrors(['content' => $e->getMessage()])
-                ->withInput();
         }
     }
 

@@ -9,18 +9,6 @@ class CreatePostAction
 {
 public function execute(User $user, array $data): Post
 {
-    $plain = trim(strip_tags($data['content']));
-
-    if (strlen($plain) < 1) {
-        throw new \InvalidArgumentException('Must have at least one character.');
-    }
-
-    if (strlen($plain) > 1000) {
-        throw new \InvalidArgumentException('Must be under 1000 characters.');
-    }
-
-    $data['content'] = trim($data['content']);
-
     $replyToPost = null;
 
     if (!empty($data['parent_id'])) {

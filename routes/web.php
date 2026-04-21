@@ -62,9 +62,9 @@ Route::put('thread/posts/{post}', [PostController::class, 'update'])
     ->middleware('auth')
     ->name('thread.post.update');
 
-Route::post('/members/{user}/posts', [PostController::class, 'storeProfile'])
-    ->middleware(['auth', 'throttle:make-post'])
-    ->name('user.posts.store');
+// Route::post('/members/{user}/posts', [PostController::class, 'storeProfile'])
+//     ->middleware(['auth', 'throttle:make-profile-post'])
+//     ->name('user.posts.store');
 
 
 // Auth routes
