@@ -6,6 +6,7 @@ use App\Actions\CreatePostAction;
 use App\Actions\DeletePostAction;
 use App\Actions\UpdatePostAction;
 use App\Http\Requests\Post\StoreRequest;
+use App\Http\Requests\Post\UpdateRequest;
 use App\Models\Post;
 use App\Models\Thread;
 use App\Models\User;
@@ -41,26 +42,16 @@ class PostController extends Controller
         }
     }
 
-    public function update(Post $post, Request $request, UpdatePostAction $action)
+    public function update(Post $post, UpdateRequest $request)
     {
         Gate::authorize('update', $post);
 
-        $isProfile = $request->routeIs('profile.post.update');
-
-        $data = $request->validate([
-            'content' => ['required', 'string'],
-        ]);
+        $validated = $request->validated();
 
         try {
-            $action->execute(
-                $post,
-                $data,
-                $isProfile ? 'profile' : 'thread'
-            );
+            $post->update(['content' => $validated['content']]);
 
-            return $isProfile
-                ? redirect()->route('users.show', ['user' => $post->profile_user_id, 'page' => $post->getPageNumberProfile()])
-                : redirect()->route('threads.show', [
+            return redirect()->route('threads.show', [
                     'thread' => $post->thread_id,
                     'slug' => $post->thread?->slug,
                     'page' => $post->getPageNumber()
@@ -73,17 +64,17 @@ class PostController extends Controller
         }
     }
 
-    public function destroy(Post $post, Request $request, DeletePostAction $action)
+    public function destroy(Post $post)
     {
         Gate::authorize('delete', $post);
 
-        $isProfile = $request->routeIs('profile.post.destroy');
+        $post->update([
+            'content' => '[deleted]',
+        ]);
 
-        $action->execute($post);
+        $post->delete();
 
-        return $isProfile
-            ? redirect()->route('users.show', ['user' => $post->profile_user_id, 'page' => $post->getPageNumberProfile()])
-            : redirect()->route('threads.show', [
+        return redirect()->route('threads.show', [
                 'thread' => $post->thread_id,
                 'slug' => $post->thread?->slug,
                 'page' => $post->getPageNumber()

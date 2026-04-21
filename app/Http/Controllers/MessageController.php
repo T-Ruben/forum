@@ -126,7 +126,7 @@ class MessageController extends Controller
     }
 
     $validated = $request->validate([
-        'content' => 'required|string'
+        'content' => 'required|string|accepted|max:5000'
     ]);
 
     try {
