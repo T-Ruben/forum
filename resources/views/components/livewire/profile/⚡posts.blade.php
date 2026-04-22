@@ -205,6 +205,7 @@ new class extends Component
 
         <form wire:submit.prevent="submit" class="w-full formReload" id="postForm">
             @csrf
+            </form>
 
             <textarea
                 id="content"
