@@ -38,10 +38,16 @@ class AvatarController extends Controller
                 ]);
 
 
-                $image
+                // $image
+                //     ->scaleDown(512)
+                //     ->encodeByExtension('jpg', 85)
+                //     ->save(storage_path("app/public/avatars/{$filename}"));
+
+                $encoded = $image
                     ->scaleDown(512)
-                    ->encodeByExtension('jpg', 85)
-                    ->save(storage_path("app/public/avatars/{$filename}"));
+                    ->encodeByExtension('jpg', 85);
+
+                Storage::disk('public')->put("avatars/{$filename}", (string) $encoded);
 
                 $user->update([
                     'profile_image' => $filename,

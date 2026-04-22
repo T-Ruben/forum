@@ -14,6 +14,8 @@ class ForumSeeder extends Seeder
     public function run(): void
     {
 
+
+
         $data = [
             'Game Updates' => [
                 'is_admin_only' => true,
