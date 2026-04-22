@@ -39,6 +39,9 @@ class MessagePolicy
      */
     public function update(User $user, Message $message): bool
     {
+        if($user->role === UserRoles::Admin) {
+            return true;
+        }
         return $user->id === $message->user_id;;
     }
 
@@ -47,6 +50,9 @@ class MessagePolicy
      */
     public function delete(User $user, Message $message): bool
     {
+        if($user->role === UserRoles::Admin) {
+            return true;
+        }
         return $user->id == $message->user_id;
     }
 

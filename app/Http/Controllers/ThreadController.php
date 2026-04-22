@@ -55,7 +55,7 @@ class ThreadController extends Controller
     }
 
     public function store(Request $request, Forum $forum){
-        Gate::authorize('create', Thread::class);
+        Gate::authorize('create', [Thread::class, $forum]);
         $content = $request->input('content');
 
         $plain = trim(strip_tags($content));

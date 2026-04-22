@@ -58,6 +58,8 @@ class Post extends Model
     }
 
 
+
+
     public function getPageNumber($perPage = 10)
         {
             $count = self::where('thread_id', $this->thread_id)

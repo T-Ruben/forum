@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('forum_categories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->boolean('is_admin_only')->default(false);
             $table->timestamps();
         });
     }

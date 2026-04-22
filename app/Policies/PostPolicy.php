@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Enums\UserRoles;
 use App\Models\Post;
+use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Gate;
@@ -29,8 +30,16 @@ class PostPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Thread $thread): bool
     {
+        if($user->role === UserRoles::Admin) {
+            return true;
+        }
+
+        if($thread->forum->forumCategory->is_admin_only) {
+            return false;
+        }
+
         return $user->role === UserRoles::Member;
     }
 
@@ -39,6 +48,9 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
+        if($user->role === UserRoles::Admin) {
+            return true;
+        }
         return $user->id === $post->user_id;
     }
 
@@ -47,6 +59,9 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
+        if($user->role === UserRoles::Admin) {
+            return true;
+        }
         if($user->id === $post->profile_user_id)
             {
                 return true;

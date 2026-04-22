@@ -29,8 +29,16 @@ class ThreadPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Forum $forum): bool
     {
+        if($user->role === UserRoles::Admin) {
+            return true;
+        }
+
+        if($forum->forumCategory->is_admin_only) {
+            return false;
+        }
+
         return $user->role === UserRoles::Member;
     }
 
@@ -47,6 +55,9 @@ class ThreadPolicy
      */
     public function delete(User $user, Thread $thread): bool
     {
+        if($user->role === UserRoles::Admin) {
+            return true;
+        }
         return $thread->user_id === $user->id;
     }
 

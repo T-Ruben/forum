@@ -24,6 +24,7 @@ public function run(): void
     UserFollows::factory(15)->create();
 
     $testUser = User::factory()->create([
+        'role' => 'admin',
         'name' => 'Test User',
         'email' => 'test@example.com',
         'date_of_birth' => fake()->dateTimeThisCentury(),
