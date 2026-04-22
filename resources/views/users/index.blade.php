@@ -42,7 +42,7 @@
                     </li>
                 @endforeach
             </ul>
-        </div>a
+        </div>
         </main>
         <hr class="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50" />
         <span class="my-2 flex justify-end">{{ $users->links() }}</span>
