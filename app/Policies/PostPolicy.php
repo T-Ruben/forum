@@ -30,20 +30,7 @@ class PostPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Thread $thread): bool
-    {
-        if($user->role === UserRoles::Admin) {
-            return true;
-        }
-
-        if($thread->forum->forumCategory->is_admin_only) {
-            return false;
-        }
-
-        return $user->role === UserRoles::Member;
-    }
-
-    public function createProfile(User $user): bool
+    public function create(User $user): bool
     {
         if($user->role === UserRoles::Admin) {
             return true;

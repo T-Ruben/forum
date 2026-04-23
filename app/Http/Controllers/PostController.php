@@ -23,8 +23,7 @@ use Illuminate\Support\Str;
 class PostController extends Controller
 {
     public function store(StoreRequest $request, PostService $service) {
-    $thread = Thread::findOrFail($request->thread_id);
-    Gate::authorize('create', [Post::class, $thread]);
+    Gate::authorize('create', Post::class);
 
     $validated = $request->validated();
 
