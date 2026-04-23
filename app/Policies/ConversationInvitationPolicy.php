@@ -66,7 +66,6 @@ class ConversationInvitationPolicy
 
     public function respond(User $user, ConversationInvitation $invitation)
     {
-        debug($user->id);
         return $invitation->invited_user_id === $user->id;
     }
 

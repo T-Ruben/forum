@@ -47,7 +47,7 @@ class AvatarController extends Controller
                     ->scaleDown(512)
                     ->encodeByExtension('jpg', 85);
 
-                Storage::disk('public')->delete('avatars/' . $user->profile_image);
+
                 Storage::disk('public')->put("avatars/{$filename}", (string) $encoded);
 
                 $user->update([

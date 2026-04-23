@@ -32,6 +32,9 @@ class ConversationPolicy
      */
     public function create(User $user): bool
     {
+        if($user->role === UserRoles::Admin) {
+            return true;
+        }
         return $user->role === UserRoles::Member;;
     }
 
