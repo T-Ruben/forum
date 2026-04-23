@@ -28,9 +28,13 @@ class PostController extends Controller
     $validated = $request->validated();
 
     try {
-        $service->store($validated);
+        $post = $service->store($validated);
 
-        return back()->with('success', 'Post created successfully!');
+        return redirect()->route('threads.show', [
+                    'thread' => $post->thread_id,
+                    'slug' => $post->thread?->slug,
+                    'page' => $post->getPageNumber()
+                ]);
     } catch (\Exception $e) {
         Log::error('Post creation failed', [
             'user_id' => Auth::id(),

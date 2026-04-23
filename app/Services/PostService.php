@@ -13,7 +13,7 @@ class PostService
     /**
      * Create a new class instance.
      */
-    public function store($validated): void
+    public function store(array $validated)
     {
         $post = Auth::user()->posts()->create($validated);
 
@@ -29,5 +29,6 @@ class PostService
         } elseif($post->user_id !== $post->thread->user_id) {
             $userOwner->notify(new ThreadPostNotification($post));
         }
+        return $post;
     }
 }
