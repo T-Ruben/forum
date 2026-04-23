@@ -146,7 +146,7 @@ class ConversationController extends Controller
         Gate::authorize('leave', $conversation);
         $conversation->users()->detach(Auth::id());
 
-        return response()->noContent();
+        return back();
     }
 
     /**

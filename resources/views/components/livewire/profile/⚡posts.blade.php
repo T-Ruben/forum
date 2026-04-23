@@ -60,7 +60,7 @@ new class extends Component
 
     protected function createPost()
     {
-        Gate::authorize('create', Post::class);
+        Gate::authorize('createProfile', Post::class);
 
         $this->content = trim(strip_tags($this->content));
 

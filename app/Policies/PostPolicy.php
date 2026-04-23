@@ -43,6 +43,15 @@ class PostPolicy
         return $user->role === UserRoles::Member;
     }
 
+    public function createProfile(User $user): bool
+    {
+        if($user->role === UserRoles::Admin) {
+            return true;
+        }
+
+        return $user->role === UserRoles::Member;
+    }
+
     /**
      * Determine whether the user can update the model.
      */
