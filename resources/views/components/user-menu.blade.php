@@ -1,7 +1,8 @@
 <div x-data="{ open: false }" @click.outside="open = false" class="relative z-10">
     <div class="relative field-sizing-content">
         <div @click="open = !open" class="w-full select-none">
-                <h3 class="flex items-center text-center cursor-pointer text-lg hover:dark:bg-blue-900/70 w-full h-10 m-1 rounded-md">
+                <h3 class="flex items-center text-center cursor-pointer text-lg hover:dark:bg-blue-900/70 w-full h-10 m-1 rounded-md
+                    active:dark:bg-blue-900/70">
                 @include('icons.arrow-down')
                 <span>{{ auth()->user()->name }}</span><img src="{{ Auth::user()->profile_image_url }}" alt=""
                     class="size-8 ml-2 rounded-full outline -outline-offset-1 outline-white/10"

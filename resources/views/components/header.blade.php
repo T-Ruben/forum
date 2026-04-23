@@ -1,17 +1,17 @@
 
-<header>
-    <div class="dark:bg-blue-950 flex py-5 items-center rounded-t-xl">
+<header class="w-full">
+    <div class="dark:bg-blue-950 flex py-5 items-center sm:rounded-t-xl">
         <div class="flex shrink-0">
-            <a href="/" class="mx-10 font-medium text-3xl shrink-0"><h1>Game Updates</h1></a>
-            <nav class="flex gap-2 justify-start items-center">
+            <a href="/" class="mx-10 font-medium shrink-0 max-sm:mx-2"><h1 class="text-xl sm:text-3xl">Game Updates</h1></a>
+            <nav class="hidden gap-2 sm:justify-start sm:items-center sm:flex ">
                 <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">Home</x-nav-link>
                 {{-- <x-nav-link href="#" :active="request()->routeIs('')">Blogs</x-nav-link> --}}
                 <x-nav-link href="{{ route('members.index') }}" :active="request()->routeIs('members.index')">Members</x-nav-link>
             </nav>
         </div>
 
-        <div class="flex mr-10 justify-end w-full">
-            <nav class="">
+        <div class="flex mr-2 justify-end w-full sm:mr-10">
+            <nav class="max-sm:flex max-sm:gap-1">
                 @guest
                     <x-nav-link href="{{ route('register') }}" :active="request()->routeIs('register')">Register</x-nav-link>
                     <x-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">Login</x-nav-link>
@@ -69,7 +69,7 @@
             type="text"
             name="query"
             id="query"
-            class="border-1 bg-white rounded text-black text-lg pl-2 w-1/3"
+            class="border-1 bg-white rounded text-black text-lg pl-2 w-2/3 sm:w-1/3"
             autocomplete="off"
             placeholder="Search">
 

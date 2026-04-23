@@ -1,6 +1,6 @@
-<div class="grid grid-cols-[8rem_1fr] items-center gap-4">
+<div class="sm:grid sm:grid-cols-[8rem_1fr] items-center gap-4">
 
-    <label class="text-right" for="">Date of Birth</label>
+    <label class="text-right text-white font-semibold text-shadow-lg/20" for="">Date of Birth</label>
 
     <div class="flex justify-evenly">
         <select name="day" id="">

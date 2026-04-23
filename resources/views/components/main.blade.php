@@ -1,7 +1,7 @@
-
-<main class="text-gray-300">
+{{-- From main to Section --}}
+<section class="text-gray-300">
     <div class="flex flex-row w-full h-full gap-2">
-        <section class="p-4 flex flex-col justify-start w-full rounded-t-md h-auto">
+        <section class="sm:p-4 flex flex-col justify-start w-full rounded-t-md h-auto">
 
             {{ $slot }}
 
@@ -9,4 +9,4 @@
 
     </div>
 
-</main>
+</section>

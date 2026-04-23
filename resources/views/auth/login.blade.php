@@ -3,7 +3,8 @@
 
     <x-main>
 
-        <div class="bg-gray-500/80 mx-auto border px-10 py-5 rounded-md border-gray-200/25 flex-2 justify-items-center">
+        <div class="bg-gray-500/80 mx-auto border px-2 py-5 my-2 rounded-md border-gray-200/25 flex-2 select-none
+            sm:px-10 sm:justify-items-center">
             <h1 class="text-2xl pb-3">Login</h1>
 
             <form action="{{ route('login.store') }}" method="POST" class="flex-2 justify-items-end">

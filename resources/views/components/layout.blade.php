@@ -28,7 +28,7 @@
 
     @stack('modals')
 
-    <main class="max-w-7xl mx-auto p-4">
+    <main class="max-w-7xl mx-auto sm:p-4">
         {{ $slot }}
 
         @livewireScripts

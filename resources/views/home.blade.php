@@ -3,11 +3,11 @@
 
     <x-header />
 
-    <main>
-        <div class="flex flex-row w-full h-full gap-2">
-            <section class="p-4 flex flex-col justify-start w-9/12 rounded-t-md h-auto max-lg:w-6/6">
 
-                <h1 class="text-2xl py-2">Game Updates Forum</h1>
+        <div class="flex flex-row w-full h-full gap-2">
+            <section class="flex flex-col justify-start w-9/12 rounded-t-md h-auto max-lg:w-6/6 sm:p-4">
+
+                <h1 class="text-2xl py-2 max-sm:ml-1">Game Updates Forum</h1>
 
                 <section>
                     @foreach ($forumsCategory as $category)
@@ -209,7 +209,7 @@
                 </aside>
             </section>
         </div>
-    </main>
+
     {{-- Footer here to be made --}}
     <x-footer>
         Test
