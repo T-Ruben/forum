@@ -11,11 +11,11 @@
         </div>
         <form action="{{ route('notifications.read.all') }}" method="POST">
             @csrf
-            <button class="cursor-pointer hover:underline">Mark all as read</button>
+            <button class="cursor-pointer hover:underline active:underline">Mark all as read</button>
         </form>
     </div>
 
-    <ul class="max-h-80 overflow-y-auto w-80 ">
+    <ul class="max-h-80 overflow-y-auto w-75 sm:w-80 ">
     @forelse ($notifications as $notification)
             @include('notifications.types.' . class_basename($notification->type), [
                 'variant' => 'dropdown',
@@ -28,7 +28,8 @@
     @endforelse
     </ul>
     <a href="{{ route('notifications.index', Auth::user()) }}" class="">
-        <div class="flex justify-center bg-gray-900 hover:dark:text-gray-900 hover:bg-gray-300 duration-200">
+        <div class="flex justify-center bg-gray-900 hover:dark:text-gray-900 active:dark:text-gray-900
+            hover:bg-gray-300 active:bg-gray-300 duration-200">
                 View all
         </div>
     </a>

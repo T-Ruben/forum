@@ -2,7 +2,7 @@
 <header class="w-full">
     <div class="dark:bg-blue-950 flex py-5 items-center sm:rounded-t-xl">
         <div class="flex shrink-0">
-            <a href="/" class="mx-10 font-medium shrink-0 max-sm:mx-2"><h1 class="text-xl sm:text-3xl">Game Updates</h1></a>
+            <a href="/" class="ml-2 font-medium shrink-0 sm:mx-10"><h1 class="text-2xl sm:text-3xl">Game Updates</h1></a>
             <nav class="hidden gap-2 sm:justify-start sm:items-center sm:flex ">
                 <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">Home</x-nav-link>
                 {{-- <x-nav-link href="#" :active="request()->routeIs('')">Blogs</x-nav-link> --}}
@@ -19,12 +19,12 @@
             </nav>
 
             @auth
-                <div class="my-auto w-fit relative inline-block cursor-pointer group"
+                <div class="w-fit relative inline-block cursor-pointer group mr-3"
                     x-data="{ open: false }"
                     @click="open = !open"
                     @click.outside="open = false">
                     @if (Auth::user()->total >= 1)
-                        <button class="absolute -translate-y-2 translate-x-3 z-50 size-6 rounded-lg text-xs
+                        <button class="absolute -translate-y-1 translate-x-1 z-50 size-6 rounded-lg text-xs
                             font-bold text-white border border-black bg-red-600 text-shadow-lg/25 cursor-pointer">
                             {{ Auth::user()->total }}
                         </button>
@@ -33,9 +33,8 @@
                         type="button"
                         class="relative ml-auto shrink-0 rounded-full p-1 text-gray-400 group-hover:text-white
                             group-focus:outline-2 group-focus:outline-offset-2 group-focus:outline-indigo-500 cursor-pointer">
-                        <span class="absolute -inset-1.5"></span>
+                        <span class="absolute -inset-1.5">@include('icons.bell')</span>
                         <span class="sr-only">View notifications</span>
-                        @include('icons.bell')
                     </button>
 
                     <div
@@ -44,7 +43,7 @@
                         x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 -translate-y-2"
                         x-transition:enter-end="opacity-100 translate-y-0"
-                        class="absolute right-0 w-80 shadow-lg">
+                        class="absolute -right-22 top-9 w-70 shadow-lg sm:right-0 sm:top-9">
                         @include('notifications.dropdown')
                     </div>
                 </div>
