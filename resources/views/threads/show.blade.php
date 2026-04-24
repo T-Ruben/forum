@@ -4,7 +4,7 @@
 
     <x-main>
         <div class="text-2xl flex-2 min-w-0 wrap-break-word">
-            {{ $thread->title }}
+            <span class="font-semibold pl-1">{{ $thread->title }}</span>
             {{ $posts->links() }}
         </div>
         <hr class="border-gray-500 my-2">

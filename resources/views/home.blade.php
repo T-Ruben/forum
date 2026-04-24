@@ -211,9 +211,7 @@
         </div>
 
     {{-- Footer here to be made --}}
-    <x-footer>
-        Test
-    </x-footer>
+    <x-footer />
 
 
 </x-layout>

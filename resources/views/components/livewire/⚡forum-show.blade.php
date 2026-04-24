@@ -48,21 +48,21 @@ new class extends Component
     </div>
 
     <table class="table-fixed w-full">
-        <thead class=" dark:bg-blue-950 text-lg w-full h-auto">
+        <thead class=" dark:bg-blue-950 text-md sm:text-lg w-full h-auto">
             <tr class="text-center w-full">
-                <th class="hover:bg-blue-900/50 duration-200 cursor-pointer transition-colors py-2 w-2/5"
+                <th class="hover:bg-blue-900/50 active:bg-blue-900/50 duration-200 cursor-pointer transition-colors py-2 w-2/5"
                     wire:click="setSort('title')">
                     Title @if($sort === 'title') {{ $direction === 'asc' ? '↑' : '↓' }} @endif</th>
 
-                <th class="hover:bg-blue-900/50 duration-200 cursor-pointer transition-colors py-2"
+                <th class="hover:bg-blue-900/50 active:bg-blue-900/50 duration-200 cursor-pointer transition-colors py-2"
                     wire:click="setSort('created_at')">
                     Created @if($sort === 'created_at') {{ $direction === 'asc' ? '↑' : '↓' }} @endif</th>
 
-                <th class="hover:bg-blue-900/50 duration-200 cursor-pointer transition-colors py-2"
+                <th class="hover:bg-blue-900/50 active:bg-blue-900/50 duration-200 cursor-pointer transition-colors py-2 hidden sm:block"
                     wire:click="setSort('replies')">
                     Replies @if($sort === 'replies') {{ $direction === 'asc' ? '↑' : '↓' }} @endif</th>
 
-                <th class="hover:bg-blue-900/50 duration-200 cursor-pointer transition-colors py-2"
+                <th class="hover:bg-blue-900/50 active:bg-blue-900/50 duration-200 cursor-pointer transition-colors py-2"
                     wire:click="setSort('activity')">
                     Activity @if($sort === 'activity') {{ $direction === 'asc' ? '↑' : '↓' }} @endif</th>
             </tr>
@@ -72,7 +72,7 @@ new class extends Component
         @foreach ($threads as $thread)
             <tr class="text-lg ml-2 border-b-1">
                 <td class="min-w-0 flex">
-                    <div class="my-2 ml-1 mr-2 border shadow-xs shadow-black text-black flex shrink-0">
+                    <div class="my-2 w-12 h-12 ml-1 mr-2 border shadow-xs shadow-black text-black flex shrink-0">
                         <a href="{{ route('users.show', $thread->user) }}">
                         <img src="{{ $thread->user->profile_image_url }}"
                             class="w-12 h-12 object-cover"
@@ -97,7 +97,7 @@ new class extends Component
                     </div>
                 </td>
                 <td class="text-center text-sm"><x-time-display :time="$thread->created_at" /></td>
-                <td class="text-center text-sm">Replies: {{ $thread->posts_count ?? '0' }}</td>
+                <td class="text-center text-sm hidden sm:inline">Replies: {{ $thread->posts_count ?? '0' }}</td>
                 <td class="text-center text-sm">
                     @if ($thread->latestPost?->user)
                         <a href="{{ route('users.show', $thread->latestPost->user) }}">
