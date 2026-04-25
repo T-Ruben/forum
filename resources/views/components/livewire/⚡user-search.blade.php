@@ -35,7 +35,7 @@ new class extends Component
 };
 ?>
 
-<div class="relative w-100 mb-2 border-l-1 p-1 flex gap-2">
+<div class="relative w-full sm:w-100 mb-2 border-l-1 p-1 flex gap-2">
     <span class="shrink-0">Invite a friend: </span>
 
     <div class="relative flex-grow">
@@ -67,10 +67,10 @@ new class extends Component
     @endif
 
     @if(count($users) > 0)
-        <ul class="absolute z-10 w-full bg-white shadow-lg border text-black">
+        <ul class="absolute z-10 w-2/3 sm:w-full bg-white shadow-lg border text-black">
             @foreach($users as $user)
                 <li class="p-2 hover:bg-gray-100 cursor-pointer flex justify-between">
-                    <span>{{ $user->name }}</span>
+                    <span class="truncate">{{ $user->name }}</span>
                     <form action="{{ route('conversation.invite', $conversation) }}" method="POST">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ $user->id }}">

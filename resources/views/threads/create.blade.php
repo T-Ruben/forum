@@ -4,10 +4,8 @@
 
     <x-main>
 
-        <div class=' mx-auto h-full w-full  px-10 py-5  flex-2'>
-            <h1 class="text-2xl text-center mb-5">Create Thread</h1>
-            <p></p>
-
+        <div class=' mx-auto h-full w-full px-2 sm:px-10 py-5 flex-2'>
+            <h1 class="text-2xl text-center mb-3">Create Thread</h1>
 
             <form action="{{ route('threads.store', $forum) }}" method="POST" class="inline text-center" id="postForm">
                 @csrf
