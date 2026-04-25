@@ -62,7 +62,7 @@
         </div>
         <hr class="border-gray-500 my-2">
         <div>
-            <div class="hover:bg-gray-400/50 bg-gray-400/50 w-fit p-1 duration-200">
+            <div class="hover:bg-gray-400/50 w-fit p-1 duration-200">
                 <form class="" action="{{ route('logout.destroy') }}" method="POST">
                     @csrf
                     <button type="submit" class="cursor-pointer">Logout</button>
