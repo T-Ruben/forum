@@ -47,7 +47,7 @@
                             Delete
                         </x-forms.form-button>
                     </form>
-                    <span class="text-sm flex justify-end">This action cannout be reversed.</span>
+                    <span class="text-sm flex sm:justify-end">This action cannout be reversed.</span>
                     <hr class="mb-2">
                 </li>
                 @empty

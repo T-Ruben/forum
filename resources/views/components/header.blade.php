@@ -1,6 +1,6 @@
 
 <header class="w-full">
-    <div class="dark:bg-blue-950 flex py-5 items-center sm:rounded-t-xl">
+    <div class=" bg-blue-950 flex py-5 items-center sm:rounded-t-xl">
         <div class="flex shrink-0">
             <a href="/" class="ml-2 font-medium shrink-0 sm:mx-10"><h1 class="text-2xl sm:text-3xl">Game Updates</h1></a>
             <nav class="hidden gap-2 sm:justify-start sm:items-center sm:flex ">
