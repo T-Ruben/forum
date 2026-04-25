@@ -29,7 +29,7 @@ class AvatarController extends Controller
 
                 $image = Image::read($request->file('avatar'));
 
-                $filename = 'avatar_' . Auth::user()->id . '_' . time() . '.jpg';
+                $filename = 'avatar_' . Auth::user()->id . '.jpg';
 
                 Log::info('Avatar upload:', [
                     'mime' => $request->file('avatar')->getMimeType(),

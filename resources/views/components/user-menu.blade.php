@@ -6,7 +6,7 @@
                     :class="{ 'dark:bg-blue-900/70': open }">
                 @include('icons.arrow-down')
                 <span>{{ auth()->user()->name }}</span><img src="{{ Auth::user()->profile_image_url }}" alt=""
-                    class="size-8 ml-2 rounded-full outline -outline-offset-1 outline-white/10 hidden sm:block"
+                    class="size-8 ml-2 rounded-full object-cover outline -outline-offset-1 outline-white/10 hidden sm:block"
                     data-pin-nopin="true"/></h3>
         </div>
     </div>
@@ -62,7 +62,7 @@
         </div>
         <hr class="border-gray-500 my-2">
         <div>
-            <div class="hover:bg-gray-400/50 w-fit p-1 duration-200">
+            <div class="hover:bg-gray-400/50 active:bg-gray-400/50 w-fit p-1 duration-200">
                 <form class="" action="{{ route('logout.destroy') }}" method="POST">
                     @csrf
                     <button type="submit" class="cursor-pointer">Logout</button>

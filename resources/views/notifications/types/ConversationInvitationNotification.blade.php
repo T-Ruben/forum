@@ -39,7 +39,7 @@
                 @click.stop>
                 {{ $notification->data['inviter']['name'] }}
             </a>invited you to a conversation.
-            <p class="block truncate">Conversation name: <span class="font-bold truncate">{{ $notification->data['conversation']['title'] }}</span></p>
+            <p class="">Conversation name: <span class="font-bold block w-40 @sm:w-auto truncate">{{ $notification->data['conversation']['title'] }}</span></p>
             <p class="@sm:inline hidden">Members: {{ $notification->data['conversation']['members_count'] }}</p>
             <p class="text-sm">{{ $notification->created_at->diffForHumans() }}</p>
         </div>

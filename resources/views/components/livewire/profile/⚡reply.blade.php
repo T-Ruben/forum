@@ -153,7 +153,7 @@ new class extends Component
         @if ($reply->trashed())
             <p class=" my-3">[Deleted]</p>
         @else
-        <div class="w-16 h-16 flex shrink-0 border-1">
+        <div class="w-10 sm:w-16 h-10 sm:h-16 flex shrink-0 border-1">
             <a href="{{ $reply->user?->user_url }}" class="w-full h-full">
                 <img src="{{ asset($reply->user->profile_image_url) }}" class="w-full h-full object-cover"
                     alt="{{ $reply->user?->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
@@ -168,8 +168,8 @@ new class extends Component
                 </div>
             </div>
             <div class="flex justify-between text-md">
-                <small class="text-gray-300"><x-time-display :time="$reply->updated_at" :createdAt="$reply->created_at" :updatedAt="$reply->updated_at"/></small>
-                <div class="flex gap-5">
+                <small class="text-gray-300 truncate"><x-time-display :time="$reply->updated_at" :createdAt="$reply->created_at" :updatedAt="$reply->updated_at"/></small>
+                <div class="flex gap-2 sm:gap-5 text-sm">
                     <x-actions.delete-button :action="route('profile.post.destroy', $reply)" :model="$reply" />
 
                     @can('update', $reply)
@@ -204,11 +204,13 @@ new class extends Component
                         <div class="flex justify-between gap-5">
                             <button type="button"
                                 wire:click="cancel()"
-                                class="text-white bg-red-700 hover:dark:bg-red-900/80 block border rounded-md p-1">
+                                class="text-white bg-red-700 hover:dark:bg-red-900/80 active:dark:bg-red-900/80 block
+                                    border rounded-md p-1 cursor-pointer">
                                 Cancel
                             </button>
                             <button type="submit"
-                                class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 block border rounded-md p-1" cursor-pointer>
+                                class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 active:dark:bg-blue-900/80 block
+                                    border rounded-md p-1 cursor-pointer" >
                                 Post Reply
                             </button>
                         </div>
@@ -222,7 +224,7 @@ new class extends Component
     @if($post->replies->count() > $amount)
         <button
             wire:click="loadMore"
-            class="text-blue-500 text-sm hover:underline"
+            class="text-blue-500 text-sm hover:underline active:underline"
             wire:loading.attr="disabled"
         >
             Load more...

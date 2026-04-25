@@ -89,17 +89,16 @@ new class extends Component
 };
 ?>
 <div>
-        {{ $notifications->links() }}
-        <div class="dark:bg-blue-950 flex items-center justify-between pr-2 border-b-2 border-black">
-            <h3 class="text-2xl font-bold p-2 relative ">Notifications</h3>
+        <div class="dark:bg-blue-950 flex items-center justify-between pr-2 border-b-2 border-black mt-1">
+            <h3 class="text-2xl font-bold p-2  ">Notifications</h3>
             <form action="{{ route('notifications.read.all') }}" method="POST">
                 @csrf
                 <button class="cursor-pointer hover:underline">Mark all as read</button>
             </form>
         </div>
 
-        <div class="flex">
-            <aside class="w-1/3 h-fit border-x border-white/50 p-1 m-1">
+        <div class="flex-2 sm:flex">
+            <aside class="w-full sm:w-1/3 h-fit border-x border-white/50 p-1 m-1">
                 <ul class="">
                     @foreach ($this->filters as $filter)
                         <li class="p-1 {{ $filter['has_hr'] === false ? 'border-b border-gray-400/50' : '' }}
@@ -119,7 +118,7 @@ new class extends Component
                     @endforeach
                 </ul>
             </aside>
-            <ul class="h-full w-2/3">
+            <ul class="h-full w-full sm:w-2/3">
                 @forelse ($notifications as $notification)
                     @include('notifications.types.' . class_basename($notification->type), [
                         'notification' => $notification,

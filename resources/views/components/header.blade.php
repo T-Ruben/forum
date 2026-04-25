@@ -24,7 +24,7 @@
                     @click="open = !open"
                     @click.outside="open = false">
                     @if (Auth::user()->total >= 1)
-                        <button class="absolute -translate-y-1 translate-x-1 z-50 size-6 rounded-lg text-xs
+                        <button class="absolute translate-x-1 z-50 size-6 rounded-lg text-xs
                             font-bold text-white border border-black bg-red-600 text-shadow-lg/25 cursor-pointer">
                             {{ Auth::user()->total }}
                         </button>

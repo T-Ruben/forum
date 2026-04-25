@@ -1,4 +1,4 @@
-<footer class="bg-slate-950 mb-16 sm:pb-2 w-full relative bottom-0 rounded-b-md">
+<footer class="bg-slate-950 mb-16 sm:pb-2 w-full relative bottom-0 rounded-b-md mt-2">
     <h3>Copyrights / Contacts</h3>
 </footer>
 

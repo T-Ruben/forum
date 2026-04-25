@@ -11,11 +11,11 @@
             @endcan
         @endpush
 
-        <div class="flex gap-2">
+        <div class="flex-2 sm:flex mt-2 sm:mt-0 sm:gap-2">
 
-            <section class="w-[192px]">
+            <section class="w-full sm:w-[192px]">
                 <div
-                    class="w-[192px] p-0.5 border"
+                    class="w-full sm:w-[192px] p-0.5 border"
                     @can('update', $user)
                         id="avatarChange"
                     @endcan>
@@ -28,16 +28,21 @@
                     >
                 </div>
 
+                <div class="flex flex-col items-center justify-center sm:hidden">
+                    <p class="text-2xl font-bold">{{ $user->display_name }}</p>
+                    <p class="text-sm"><span>{{ $user->profile_summary }}</span></p>
+                </div>
+
                 @can('follow-user', $user)
                     @if (auth()->user()->following->contains($user->id))
                         <form action="{{ route('users.unfollow', $user->id) }}" method="POST">
                             @csrf
-                                <x-forms.form-button class="w-full mb-5 dark:bg-blue-950/65"> Unfollow </x-forms.form-button>
+                                <x-forms.form-button class="w-full mb-1 dark:bg-blue-950/65"> Unfollow </x-forms.form-button>
                         </form>
                         @else
                             <form action="{{ route('users.follow', $user->id) }}" method="POST">
                                 @csrf
-                                    <x-forms.form-button class="w-full mb-5"> Follow </x-forms.form-button>
+                                    <x-forms.form-button class="w-full mb-1"> Follow </x-forms.form-button>
                             </form>
                     @endif
                 @endcan
@@ -121,7 +126,7 @@
 
             {{-- SECOND SECTION HERE --}}
 
-            <section class="w-full min-h-full break-words overflow-hidden">
+            <section class="w-full min-h-fit break-words overflow-hidden">
 
                 <livewire:livewire.profile.show :user="$user" />
 

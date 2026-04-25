@@ -187,8 +187,8 @@ new class extends Component
         @endif
     </div>
 
-    <div class="mb-3 flex gap-3">
-        <div class="w-20 h-20 flex shrink-0 border-1">
+    <div class="mb-3 flex gap-3 px-1">
+        <div class="hidden sm:flex w-20 h-20 shrink-0 border-1">
             @auth
             <a href="{{ route('users.show', auth()->user()) }}" class="w-full h-full">
                 <img src="{{ asset(auth()->user()?->profile_image_url) }}" class="w-full h-full object-cover"
@@ -234,7 +234,7 @@ new class extends Component
         </form>
     </div>
 
-    <div class="bg-gray-300/60 text-black p-2 w-full max-w-full overflow-x-hidden">
+    <div class="bg-gray-300/60 text-black p-1 sm:p-2 w-full max-w-full overflow-x-hidden">
         @forelse ($posts as $post)
         @if (!$post->parent)
             @if ($post->trashed())
@@ -242,12 +242,13 @@ new class extends Component
             @else
             <div class="flex shrink-0 gap-3" wire:key="post-{{ $post->id }}">
 
-                <div class="w-20 h-20 flex shrink-0 border-1">
+                <div class="w-10 sm:w-20 h-10 sm:h-20 flex shrink-0 border-1">
                     <a href="{{ $post->user?->user_url }}" class="w-full h-full">
                         <img src="{{ asset($post->user->profile_image_url) }}" class="w-full h-full object-cover"
                             alt="{{ $post->user?->display_name ?? 'Deleted Member' }}'s profile image" data-pin-nopin="true">
                     </a>
                 </div>
+
                 <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
                     <div id="post-{{ $post->id }}">
                         <div>

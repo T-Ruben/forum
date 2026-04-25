@@ -25,16 +25,18 @@ new class extends Component
 
 
 <div>
-    <div class="mb-6">
-        <p class="text-xl">{{ $user->display_name }}</p>
-        <p class="text-sm"><span>{{ $user->profile_summary }}</span></p>
+    <div class="mb-6 mt-5 sm:mt-0">
+        <div class="hidden sm:block">
+            <p class="text-xl">{{ $user->display_name }}</p>
+            <p class="text-sm"><span>{{ $user->profile_summary }}</span></p>
+        </div>
         <hr>
         <div class="select-none">
-            <button class="border-x px-1 mt-1 hover:text-gray-400 duration-200 cursor-pointer text-shadow-lg/40"
+            <button class="border-x px-1 mt-1 hover:text-gray-400 active:text-gray-400 duration-200 cursor-pointer text-shadow-lg/40"
                 wire:click="setTab('posts')">
                 Posts
             </button>
-            <button class="border-x px-1 mt-1 hover:text-gray-400 duration-200 cursor-pointer text-shadow-lg/40"
+            <button class="border-x px-1 mt-1 hover:text-gray-400 active:text-gray-400 duration-200 cursor-pointer text-shadow-lg/40"
                 wire:click="setTab('activity')">
                 Recent Activity
             </button>

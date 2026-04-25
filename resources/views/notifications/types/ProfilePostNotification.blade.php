@@ -39,7 +39,7 @@
                         {{ $notification->data['sender']['name'] }}
                     </a>
                     {{ $notification->data['action'] }}
-                    <a href="{{ $notification->data['target_url'] }}" class="hover:underline inline">
+                    <a href="{{ $notification->data['target_url'] }}" class="hover:underline inline font-semibold">
                         {{ $notification->data['location'] }}.
                     </a>
                 </p>
