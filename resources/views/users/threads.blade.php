@@ -24,11 +24,11 @@
         <ul class="">
             @forelse ($threads as $thread)
                 <li class="text-lg mb-2 ">
-                    <div class="float-left w-2/3">
-                        <div class="min-w-0 flex gap-1">
-                            <span class=" shrink-0">Thread name: </span>
+                    <div class="sm:float-left w-full pr-5">
+                        <div class="min-w-0 flex-2 sm:flex gap-1">
+                            <span class="block shrink-0">Thread name: </span>
                             <a href="{{ route('threads.show', [$thread->id, $thread->slug]) }}"
-                                class="hover:underline duration-200 font-bold block min-w-0 truncate">
+                                class="hover:underline active:underline duration-200 font-bold block min-w-0 truncate">
                                     <span class="truncate" title="{{ $thread->title }}">{{ $thread->title }}</span>
                             </a>
                         </div>
@@ -36,13 +36,14 @@
                             <span class="text-sm">Posts: {{ $thread->posts_count }}</span>
                         </div>
                     </div>
-                    <form action="{{ route('threads.destroy', $thread->id) }}" method="POST" class="mb-2 flex justify-end">
+                    <form action="{{ route('threads.destroy', $thread->id) }}" method="POST" class="mb-2 flex sm:justify-end">
                         @csrf
                         @method('DELETE')
 
                         <x-forms.form-button onclick="return confirm('Are you sure? This action cannout be reversed.')"
                             title="Delete Thread"
-                            alt="Delete thread. This action cannout be reversed.">
+                            alt="Delete thread. This action cannout be reversed."
+                            :textSize="'text-sm'">
                             Delete
                         </x-forms.form-button>
                     </form>

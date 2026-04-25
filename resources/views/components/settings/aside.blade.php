@@ -2,7 +2,7 @@
 
     <x-header />
     <x-main>
-        <div class="grid grid-cols-[25%_75%] gap-4">
+        <div class="grid grid-cols-[40%_60%] sm:grid-cols-[25%_75%] sm:gap-4 ml-2 sm:ml-0 mt-2 sm:mt-0">
             <aside>
                 <h2 class="text-2xl font-bold mb-2">{{ $title }}</h2>
 
@@ -41,7 +41,7 @@
 
             </aside>
 
-            <section>
+            <section class="pl-2 sm:pl-0">
                 {{ $slot }}
             </section>
         </div>

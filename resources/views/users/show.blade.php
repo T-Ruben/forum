@@ -78,7 +78,8 @@
     {{-- FOLLOWING --}}
                 <div class="border-0.5 m-2 p-2 ring-1 ring-white">
                     <div>
-                        <a href="{{ route('members.following', $user) }}" class="hover:underline text-lg">Following:</a>
+                        <a href="{{ route('members.following', $user) }}" class="hover:underline active:underline
+                            text-lg font-semibold">Following:</a>
                     </div>
                     <hr>
                     <div class="w-full flex flex-wrap gap-2">
@@ -100,7 +101,8 @@
     {{-- FOLLOWERS --}}
                 <div class="border-0.5 m-2 p-2 ring-1 ring-white">
                     <div>
-                        <a href="{{ route('members.followers', $user) }}" class="hover:underline text-lg">Followers:</a>
+                        <a href="{{ route('members.followers', $user) }}" class="hover:underline active:underline
+                            text-lg font-semibold">Followers:</a>
                     </div>
                     <hr>
                     <div class="w-full flex flex-wrap gap-2">
