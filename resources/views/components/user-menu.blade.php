@@ -1,9 +1,9 @@
 <div x-data="{ open: false }" @click.outside="open = false" class="relative z-10">
     <div class="relative field-sizing-content">
         <div @click="open = !open" class="w-full select-none">
-                <h3 class="flex items-center text-center cursor-pointer text-lg hover:dark:bg-blue-900/70 w-full h-10 m-1 rounded-md
-                    active:dark:bg-blue-900/70"
-                    :class="{ 'dark:bg-blue-900/70': open }">
+                <h3 class="flex items-center text-center cursor-pointer text-lg hover:bg-blue-900/70 w-full h-10 m-1 rounded-md
+                    active:bg-blue-900/70"
+                    :class="{ 'bg-blue-900/70': open }">
                 @include('icons.arrow-down')
                 <span>{{ auth()->user()->name }}</span><img src="{{ Auth::user()->profile_image_url }}" alt=""
                     class="size-8 ml-2 rounded-full object-cover outline -outline-offset-1 outline-white/10 hidden sm:block"
@@ -62,7 +62,7 @@
         </div>
         <hr class="border-gray-500 my-2">
         <div>
-            <div class="hover:bg-gray-400/50 active:bg-gray-400/50 w-fit p-1 duration-200">
+            <div class="hover:bg-gray-400/50 bg-gray-400/50 w-fit p-1 duration-200">
                 <form class="" action="{{ route('logout.destroy') }}" method="POST">
                     @csrf
                     <button type="submit" class="cursor-pointer">Logout</button>

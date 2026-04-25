@@ -11,7 +11,7 @@
 
                 <section>
                     @foreach ($forumsCategory as $category)
-                        <div class="dark:bg-blue-950 px-4 py-2">
+                        <div class="bg-blue-950 px-4 py-2">
                             <h2 class="text-xl">{{ $category->title }}</h2>
                         </div>
                         <ul class="">
@@ -121,8 +121,8 @@
 {{-- New Posts Aside --}}
                 <aside class="mb-5">
                     <div class="mb-2">
-                        <ul class="flex gap-2 justify-center h-10 dark:bg-blue-950 text-lg pl-1">
-                            <li class="flex hover:dark:bg-blue-900/75 items-center cursor-pointer px-1">New Posts</li>
+                        <ul class="flex gap-2 justify-center h-10 bg-blue-950 text-lg pl-1">
+                            <li class="flex hover:bg-blue-900/75 items-center cursor-pointer px-1">New Posts</li>
                         </ul>
                     </div>
 
@@ -163,8 +163,8 @@
 {{-- New Profile Posts Aside --}}
                 <aside>
                     <div class="mb-2">
-                        <ul class="flex gap-2 justify-center h-10 dark:bg-blue-950 text-lg pl-1">
-                            <li class="flex hover:dark:bg-blue-900/75 items-center cursor-pointer px-1">New Profile Posts</li>
+                        <ul class="flex gap-2 justify-center h-10 bg-blue-950 text-lg pl-1">
+                            <li class="flex hover:bg-blue-900/75 items-center cursor-pointer px-1">New Profile Posts</li>
                         </ul>
                     </div>
 

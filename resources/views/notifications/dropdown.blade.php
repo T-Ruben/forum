@@ -28,7 +28,7 @@
     @endforelse
     </ul>
     <a href="{{ route('notifications.index', Auth::user()) }}" class="">
-        <div class="flex justify-center bg-gray-900 hover:dark:text-gray-900 active:dark:text-gray-900
+        <div class="flex justify-center bg-gray-900 hover:text-gray-900 active:text-gray-900
             hover:bg-gray-300 active:bg-gray-300 duration-200">
                 View all
         </div>

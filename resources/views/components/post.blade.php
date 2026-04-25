@@ -90,14 +90,14 @@
 
                 @can('update', $post)
                     <a href="{{ route('threads.show', ['thread' => $thread->id, $thread->slug, 'edit_post' => $post, 'page' => request('page')]) }}#postForm"
-                        class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                        class="cursor-pointer text-blue-900 hover:text-blue-900/75 hover:underline duration-200 font-semibold">
                         Edit
                     </a>
                 @endcan
 
 
                 <a href="{{ route('threads.show', ['thread' => $thread->id, 'reply_to' => $post->id, $thread->slug, 'page' => request('page')]) }}#post-{{ $post->parent_id }}"
-                    class="replyReload cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                    class="replyReload cursor-pointer text-blue-900 hover:text-blue-900/75 hover:underline duration-200 font-semibold">
                     Reply
                 </a>
             </div>

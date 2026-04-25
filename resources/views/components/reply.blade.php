@@ -24,13 +24,13 @@
 
                 @can('update', $reply)
                     <a href="{{ route('users.show', ['user' => $user->id, 'edit_post' => $reply, 'page' => request('page')]) }}"
-                        class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                        class="cursor-pointer text-blue-900 hover:text-blue-900/75 hover:underline duration-200 font-semibold">
                         Edit
                     </a>
                 @endcan
 
                 <a href="{{ route('users.show', ['user' => $user->id, 'reply_to' => $reply->id, 'page' => request('page')]) }}"
-                    class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                    class="cursor-pointer text-blue-900 hover:text-blue-900/75 hover:underline duration-200 font-semibold">
                     Reply
                 </a>
             </div>

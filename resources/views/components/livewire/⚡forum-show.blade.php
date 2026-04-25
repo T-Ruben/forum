@@ -48,7 +48,7 @@ new class extends Component
     </div>
 
     <table class="table-fixed w-full">
-        <thead class=" dark:bg-blue-950 text-md sm:text-lg w-full h-auto">
+        <thead class=" bg-blue-950 text-md sm:text-lg w-full h-auto">
             <tr class="text-center w-full">
                 <th class="hover:bg-blue-900/50 active:bg-blue-900/50 duration-200 cursor-pointer transition-colors py-2 w-2/5"
                     wire:click="setSort('title')">

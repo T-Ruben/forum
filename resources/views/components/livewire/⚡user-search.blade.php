@@ -76,8 +76,8 @@ new class extends Component
                         <input type="hidden" name="user_id" value="{{ $user->id }}">
 
                         <button type="submit"
-                            class="text-lg text-white rounded dark:bg-blue-900 border-black border-fray-400 px-1
-                            hover:dark:bg-blue-900/80 duration-200 cursor-pointer">
+                            class="text-lg text-white rounded bg-blue-900 border-black border-fray-400 px-1
+                            hover:bg-blue-900/80 duration-200 cursor-pointer">
                             Invite
                         </button>
                     </form>

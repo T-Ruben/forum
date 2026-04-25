@@ -7,7 +7,7 @@
                 <h2 class="text-2xl font-bold mb-2">{{ $title }}</h2>
 
                 <div>
-                    <h3 class="p-2 relative dark:bg-blue-950">Settings</h3>
+                    <h3 class="p-2 relative bg-blue-950">Settings</h3>
                 </div>
                 <ul class="">
                     <li>

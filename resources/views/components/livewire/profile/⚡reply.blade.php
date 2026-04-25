@@ -174,13 +174,13 @@ new class extends Component
 
                     @can('update', $reply)
                         <button wire:click="setEdit({{ $reply->id }})"
-                            class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                            class="cursor-pointer text-blue-900 hover:text-blue-900/75 hover:underline duration-200 font-semibold">
                             Edit
                         </button>
                     @endcan
 
                     <button wire:click="setReply({{ $reply->id }})"
-                        class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                        class="cursor-pointer text-blue-900 hover:text-blue-900/75 hover:underline duration-200 font-semibold">
                         Reply
                     </button>
                 </div>
@@ -204,12 +204,12 @@ new class extends Component
                         <div class="flex justify-between gap-5">
                             <button type="button"
                                 wire:click="cancel()"
-                                class="text-white bg-red-700 hover:dark:bg-red-900/80 active:dark:bg-red-900/80 block
+                                class="text-white bg-red-700 hover:bg-red-900/80 active:bg-red-900/80 block
                                     border rounded-md p-1 cursor-pointer">
                                 Cancel
                             </button>
                             <button type="submit"
-                                class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 active:dark:bg-blue-900/80 block
+                                class="text-white bg-blue-950 hover:bg-blue-900/80 active:bg-blue-900/80 block
                                     border rounded-md p-1 cursor-pointer" >
                                 Post Reply
                             </button>

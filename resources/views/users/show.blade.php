@@ -37,7 +37,7 @@
                     @if (auth()->user()->following->contains($user->id))
                         <form action="{{ route('users.unfollow', $user->id) }}" method="POST">
                             @csrf
-                                <x-forms.form-button class="w-full mb-1 dark:bg-blue-950/65"> Unfollow </x-forms.form-button>
+                                <x-forms.form-button class="w-full mb-1 bg-blue-950/65"> Unfollow </x-forms.form-button>
                         </form>
                         @else
                             <form action="{{ route('users.follow', $user->id) }}" method="POST">

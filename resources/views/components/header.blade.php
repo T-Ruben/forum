@@ -1,6 +1,6 @@
 
 <header class="w-full">
-    <div class=" bg-blue-950 flex py-5 items-center sm:rounded-t-xl">
+    <div class="bg-blue-950 flex py-5 items-center sm:rounded-t-xl">
         <div class="flex shrink-0">
             <a href="/" class="ml-2 font-medium shrink-0 sm:mx-10"><h1 class="text-2xl sm:text-3xl">Game Updates</h1></a>
             <nav class="hidden gap-2 sm:justify-start sm:items-center sm:flex ">
@@ -73,8 +73,8 @@
             placeholder="Search">
 
             <button type="submit"
-                class="text-lg rounded dark:bg-blue-900 border border-fray-400 px-1
-                        hover:dark:bg-blue-900/80 duration-200 cursor-pointer">
+                class="text-lg rounded bg-blue-900 border border-fray-400 px-1
+                        hover:bg-blue-900/80 duration-200 cursor-pointer">
                         Search
             </button>
             <div

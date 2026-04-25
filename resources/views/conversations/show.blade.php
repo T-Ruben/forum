@@ -129,14 +129,14 @@
 
                         @can('update', $message)
                             <a href="{{ route('conversation.show', ['conversation' => $conversation,  'edit_message' => $message, 'page' => request('page')]) }}#messageForm"
-                                class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                                class="cursor-pointer text-blue-900 hover:text-blue-900/75 hover:underline duration-200 font-semibold">
                                 Edit
                             </a>
                         @endcan
 
 
                         <a href="{{ route('conversation.show', ['conversation' => $conversation, 'reply_to' => $message->id, 'page' => request('page')]) }}#message-{{ $message->parent_id }}"
-                            class="replyReload cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                            class="replyReload cursor-pointer text-blue-900 hover:text-blue-900/75 hover:underline duration-200 font-semibold">
                             Reply
                         </a>
                     </div>
@@ -241,7 +241,7 @@
                     </a>
                 @endif
                 <button type="submit"
-                    class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 cursor-pointer duration-200 ml-auto block border rounded-md p-1">
+                    class="text-white bg-blue-950 hover:bg-blue-900/80 cursor-pointer duration-200 ml-auto block border rounded-md p-1">
                     {{ $isEdit ? 'Save Changes' : 'Post Reply' }}
                 </button>
 

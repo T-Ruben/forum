@@ -107,7 +107,7 @@
                         </a>
                     @endif
                     <button type="submit"
-                        class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 cursor-pointer duration-200 ml-auto block border rounded-md p-1">
+                        class="text-white bg-blue-950 hover:bg-blue-900/80 cursor-pointer duration-200 ml-auto block border rounded-md p-1">
                         {{ $isEdit ? 'Save Changes' : 'Post Reply' }}
                     </button>
 

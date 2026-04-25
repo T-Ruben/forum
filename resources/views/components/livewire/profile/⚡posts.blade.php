@@ -222,12 +222,12 @@ new class extends Component
                 @if ($this->editPost || $this->replyTo)
                 <button type="button"
                     wire:click="cancel()"
-                    class="text-white  bg-red-700 hover:dark:bg-red-900/80 block border rounded-md p-1 select-none cursor-pointer">
+                    class="text-white  bg-red-700 hover:bg-red-900/80 block border rounded-md p-1 select-none cursor-pointer">
                     Cancel Edit
                 </button>
                 @endif
                 <button type="submit"
-                    class="text-white dark:bg-blue-950 hover:dark:bg-blue-900/80 block border rounded-md p-1 select-none cursor-pointer">
+                    class="text-white bg-blue-950 hover:bg-blue-900/80 block border rounded-md p-1 select-none cursor-pointer">
                     Post Reply
                 </button>
             </div>
@@ -265,14 +265,14 @@ new class extends Component
                                 @can('update', $post)
                                     <button wire:click="setEdit({{ $post->id }});
                                             $dispatch('scroll-to-form');"
-                                        class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                                        class="cursor-pointer text-blue-900 hover:text-blue-900/75 hover:underline duration-200 font-semibold">
                                         Edit
                                     </button>
                                 @endcan
 
                                 <button wire:click="setReply({{ $post->id }});
                                         $dispatch('scroll-to-form');"
-                                    class="cursor-pointer dark:text-blue-900 hover:dark:text-blue-900/75 hover:underline duration-200 font-semibold">
+                                    class="cursor-pointer text-blue-900 hover:text-blue-900/75 hover:underline duration-200 font-semibold">
                                     Reply
                                 </button>
                             </div>

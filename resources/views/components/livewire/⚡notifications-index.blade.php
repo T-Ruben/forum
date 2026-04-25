@@ -89,7 +89,7 @@ new class extends Component
 };
 ?>
 <div>
-        <div class="dark:bg-blue-950 flex items-center justify-between pr-2 border-b-2 border-black mt-1">
+        <div class="bg-blue-950 flex items-center justify-between pr-2 border-b-2 border-black mt-1">
             <h3 class="text-2xl font-bold p-2  ">Notifications</h3>
             <form action="{{ route('notifications.read.all') }}" method="POST">
                 @csrf

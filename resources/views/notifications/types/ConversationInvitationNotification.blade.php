@@ -59,14 +59,14 @@
                 <form action="{{ route('conversation.accept', $invitation) }}" method="POST" class="" @click.stop>
                     @csrf
                     <input type="hidden" name="notification_id" value="{{ $notification->id }}">
-                    <button class="w-16 cursor-pointer border p-0.5 rounded-sm dark:bg-blue-900 hover:dark:bg-blue-700 duration-300">
+                    <button class="w-16 cursor-pointer border p-0.5 rounded-sm bg-blue-900 hover:bg-blue-700 duration-300">
                         Accept
                     </button>
                 </form>
                 <form action="{{ route('conversation.reject', $invitation) }}" method="POST" class="" @click.stop>
                     @csrf
                     <input type="hidden" name="notification_id" value="{{ $notification->id }}">
-                    <button class="w-16 cursor-pointer border p-0.5 rounded-sm dark:bg-blue-900 hover:dark:bg-blue-700 duration-300">
+                    <button class="w-16 cursor-pointer border p-0.5 rounded-sm bg-blue-900 hover:bg-blue-700 duration-300">
                         Reject
                     </button>
                 </form>
