@@ -29,7 +29,7 @@
             <a href="{{ route('users.show', $inviterId) }}"
                 @click.stop>
                 <img src="{{ $notification->data['inviter']['avatar'] }}"
-                    class="w-18 h-18 object-cover"
+                    class="w-18 h-18 object-cover ring-1"
                     alt="{{ $notification->data['inviter']['name'] }}">
             </a>
         </div>

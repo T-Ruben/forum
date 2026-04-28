@@ -27,7 +27,8 @@
         <div class="shrink-0 hidden @sm:block">
             <a href="{{ route('users.show', $senderId) }}"
                 @click.stop>
-                <img src="{{ $notification->data['sender']['avatar'] }}" class="w-18 h-18 object-cover" alt="{{ $notification->data['sender']['name'] }}">
+                <img src="{{ $notification->data['sender']['avatar'] }}" class="w-18 h-18 object-cover ring-1"
+                    alt="{{ $notification->data['sender']['name'] }}">
             </a>
         </div>
         <div class="min-w-0 @max-sm:select-none @max-sm:cursor-pointer">

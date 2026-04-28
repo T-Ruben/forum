@@ -47,7 +47,7 @@ class NotificationController extends Controller
         $page = $post->getPageNumberProfile();
 
          Auth::user()->unreadNotifications()
-            ->where('data->post_id', $post->id)
+            ->whereJsonContains('data', ['post_id' => $post->id])
             ->get()
             ->markAsRead();
 
