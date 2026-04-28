@@ -57,7 +57,7 @@ class Thread extends Model
             $slug = $baseSlug;
             $i = 1;
 
-            while(Thread::where('forum_id', $thread->forum_id)
+            while(Thread::query()->where('forum_id', $thread->forum_id)
                 ->where('slug', $slug)
                 ->exists()) {
                     $slug = $baseSlug . '-' . $i++;

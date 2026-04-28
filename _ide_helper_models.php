@@ -35,7 +35,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Conversation whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Conversation withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Conversation withoutTrashed()
- * @mixin \Eloquent
  */
 	class Conversation extends \Eloquent {}
 }
@@ -62,7 +61,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversationInvitation whereInviterId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversationInvitation whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversationInvitation whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class ConversationInvitation extends \Eloquent {}
 }
@@ -92,7 +90,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Forum whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Forum whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Forum whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class Forum extends \Eloquent {}
 }
@@ -115,7 +112,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ForumCategory whereIsAdminOnly($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ForumCategory whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ForumCategory whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class ForumCategory extends \Eloquent {}
 }
@@ -149,7 +145,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Message withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Message withoutTrashed()
- * @mixin \Eloquent
  */
 	class Message extends \Eloquent {}
 }
@@ -170,8 +165,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification query()
- * @method static Builder<static>|Notification read()
- * @method static Builder<static>|Notification unread()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification read()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification unread()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereData($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereId($value)
@@ -180,7 +175,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereReadAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class Notification extends \Eloquent {}
 }
@@ -218,7 +212,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post withoutTrashed()
- * @mixin \Eloquent
  */
 	class Post extends \Eloquent {}
 }
@@ -249,7 +242,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Thread whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Thread whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Thread whereUserId($value)
- * @mixin \Eloquent
  */
 	class Thread extends \Eloquent {}
 }
@@ -257,20 +249,20 @@ namespace App\Models{
 namespace App\Models{
 /**
  * @property int $id
- * @property UserRoles $role
+ * @property \App\Enums\UserRoles $role
  * @property int $is_admin
  * @property string $name
  * @property string $email
- * @property Carbon|null $email_verified_at
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string|null $date_of_birth
  * @property string|null $gender
  * @property string|null $location
  * @property string $password
  * @property string|null $profile_image
  * @property string|null $remember_token
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Conversation> $conversations
  * @property-read int|null $conversations_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $followers
@@ -313,7 +305,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTrashed()
- * @mixin \Eloquent
  */
 	class User extends \Eloquent {}
 }
@@ -332,7 +323,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFollows whereFollowedId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFollows whereFollowerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFollows whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class UserFollows extends \Eloquent {}
 }
