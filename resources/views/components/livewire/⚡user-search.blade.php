@@ -19,7 +19,7 @@ new class extends Component
         $users = [];
 
         if (strlen($this->search) >= 2) {
-            $users = User::where('name', 'like', '%' . $this->search . '%')
+            $users = User::whereLike('name', '%' . $this->search . '%')
                 ->where('id', '!=', auth()->id())
                 ->limit(5)
                 ->get();

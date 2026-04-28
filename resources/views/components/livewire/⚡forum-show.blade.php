@@ -58,7 +58,7 @@ new class extends Component
                     wire:click="setSort('created_at')">
                     Created @if($sort === 'created_at') {{ $direction === 'asc' ? '↑' : '↓' }} @endif</th>
 
-                <th class="hover:bg-blue-900/50 active:bg-blue-900/50 duration-200 cursor-pointer transition-colors py-2 hidden sm:block"
+                <th class="hover:bg-blue-900/50 active:bg-blue-900/50 duration-200 cursor-pointer transition-colors py-2 hidden sm:table-cell"
                     wire:click="setSort('replies')">
                     Replies @if($sort === 'replies') {{ $direction === 'asc' ? '↑' : '↓' }} @endif</th>
 
@@ -97,7 +97,7 @@ new class extends Component
                     </div>
                 </td>
                 <td class="text-center text-sm"><x-time-display :time="$thread->created_at" /></td>
-                <td class="text-center text-sm hidden sm:inline">Replies: {{ $thread->posts_count ?? '0' }}</td>
+                <td class="text-center text-sm hidden sm:table-cell">Replies: {{ $thread->posts_count ?? '0' }}</td>
                 <td class="text-center text-sm">
                     @if ($thread->latestPost?->user)
                         <a href="{{ route('users.show', $thread->latestPost->user) }}">

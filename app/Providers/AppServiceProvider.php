@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Services\NotificationService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -39,6 +40,12 @@ class AppServiceProvider extends ServiceProvider
             $data = $service->getNotifications(Auth::user(), 15);
 
             $view->with($data);
+        });
+
+        Builder::macro('whereLike', function ($column, $value) {
+            $operator = config('database.default') === 'pgsql' ? 'ILIKE' : 'LIKE';
+
+            return $this->where($column, $operator, $value);
         });
 
         RateLimiter::for('make-post', function(HttpRequest $request) {

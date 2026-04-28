@@ -6,15 +6,15 @@
                 class="w-12 h-12 object-cover border">
         </a>
     </div>
-    <div class="flex-2 ml-2">
+    <div class="flex-2 ml-2 min-w-0">
         <div class="flex justify-between w-full">
             <a href="{{ route('threads.show', [$post->thread, $post->thread->slug, 'page' => $post->getPageNumber()]) }}#post-{{ $post->id }}"
-                class="search-results hover:underline text-lg font-bold">
+                class="search-results hover:underline text-lg font-bold truncate">
                 {{ $post->thread->title }}
             </a>
             <span class="text-gray-400">
                 Thread Post
-        </span>
+            </span>
         </div>
 
         <div class="search-results flex justify-between text-sm min-w-0">
