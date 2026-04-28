@@ -42,12 +42,6 @@ class AppServiceProvider extends ServiceProvider
             $view->with($data);
         });
 
-        Builder::macro('whereLike', function ($column, $value) {
-            $operator = config('database.default') === 'pgsql' ? 'ILIKE' : 'LIKE';
-
-            return $this->where($column, $operator, $value);
-        });
-
         RateLimiter::for('make-post', function(HttpRequest $request) {
             return Limit::perSecond(1, 5)->by($request->user()->id)
                 ->response(function ($request, $headers) {

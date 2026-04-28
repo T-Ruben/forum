@@ -5,11 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
+use Laravel\Scout\Attributes\SearchUsingFullText;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
 
 class Thread extends Model
 {
     /** @use HasFactory<\Database\Factories\ThreadFactory> */
     use HasFactory;
+    use Searchable;
+
+    #[SearchUsingFullText(['title'])]
+    public function
+    toSearchableArray(): array
+    {
+        return [
+            'title' => $this->title,
+        ];
+    }
 
     public function forum() {
         return $this->belongsTo(Forum::class);

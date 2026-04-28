@@ -14,12 +14,10 @@ class SearchController extends Controller
     {
         $query = trim($request->query('query') ?? '');
         $threadOnly = $request->boolean('threadOnly');
-        debug($query);
 
         if ($threadOnly) {
-            $threads = Thread::whereLike('title', "%{$query}%")
-                ->with(['user', 'forum'])
-                ->orderByDesc('created_at')
+            $threads = Thread::search($query)
+                ->query(fn ($q) => $q->with(['user', 'forum']))
                 ->get();
 
             $results = collect();
@@ -51,12 +49,12 @@ class SearchController extends Controller
             ]);
         }
 
-        $threads = Thread::whereLike('title', "%{$query}%")
-            ->with(['user', 'forum'])
+        $threads = Thread::search($query)
+            ->query(fn($q) => $q->with(['user', 'forum']))
             ->get();
 
-        $posts = Post::whereLike('content', "%{$query}%")
-            ->with(['user', 'parent' , 'thread', 'profileOwner', 'replies'])
+        $posts = Post::search($query)
+            ->query(fn($q) => $q->with(['user', 'parent' , 'thread', 'profileOwner', 'replies']))
             ->get();
 
         $results = collect();
