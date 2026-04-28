@@ -16,6 +16,7 @@ class Thread extends Model
     use Searchable;
 
     #[SearchUsingFullText(['title'])]
+    #[SearchUsingPrefix(['title'])]
     public function
     toSearchableArray(): array
     {
