@@ -16,8 +16,8 @@ class SearchController extends Controller
         $threadOnly = $request->boolean('threadOnly');
 
         if ($threadOnly) {
-            $threads = Thread::search($query)
-                ->query(fn ($q) => $q->with(['user', 'forum']))
+            $threads = Thread::whereFullText('title', $query)
+                ->with('user', 'forum')
                 ->get();
 
             $results = collect();
@@ -49,12 +49,12 @@ class SearchController extends Controller
             ]);
         }
 
-        $threads = Thread::search($query)
-            ->query(fn($q) => $q->with(['user', 'forum']))
+        $threads = Thread::whereFullText('title' ,$query)
+            ->with(['user', 'forum'])
             ->get();
 
-        $posts = Post::search($query)
-            ->query(fn($q) => $q->with(['user', 'parent' , 'thread', 'profileOwner', 'replies']))
+        $posts = Post::whereFullText('content', $query)
+            ->with(['user', 'parent' , 'thread', 'profileOwner', 'replies'])
             ->get();
 
         $results = collect();
