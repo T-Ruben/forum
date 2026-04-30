@@ -6,6 +6,7 @@ use App\Models\Forum;
 use App\Models\ForumCategory;
 use App\Models\Post;
 use App\Models\Thread;
+use App\Services\ForumService;
 use Illuminate\Http\Request;
 
 
@@ -13,36 +14,14 @@ class ForumController extends Controller
 {
         public function show(Forum $forum) {
 
-
         return view('forums.show', [
             'forum' => $forum,
 
         ]);
     }
 
-    public function index() {
+    public function index(ForumService $service) {
 
-        $forumsCategory = ForumCategory::with(['forums' => function ($query) {
-            $query->withCount(['threads', 'posts'])
-                ->with(['latestThread.latestPost', 'latestThread.latestPost.user', 'latestThread.user', 'latestActiveThread.latestPost.user'
-            ]);
-        }])->get();
-
-        $forumPosts = Post::with(['user', 'thread.forum', 'parent'])
-        ->whereNotNull('thread_id')
-        ->latest()
-        ->take(5)
-        ->get();
-
-        $profilePosts = Post::with(['user', 'profileOwner', 'parent'])
-        ->whereNull('thread_id')
-        ->whereNull('parent_id')
-        ->latest()
-        ->take(5)
-        ->get();
-
-        return view('home', [
-            'forumsCategory' => $forumsCategory, 'forumPosts' => $forumPosts, 'profilePosts' => $profilePosts,
-        ]);
+        return view('home', $service->index());
     }
 }

@@ -43,16 +43,12 @@ class NotificationController extends Controller
         return back();
     }
 
-    public function jump(Post $post) {
-        $page = $post->getPageNumberProfile();
+    public function jump(Post $post, NotificationService $service) {
+        $routeVars = $service->jump($post);
 
-         Auth::user()->unreadNotifications()
-            ->whereJsonContains('data', ['post_id' => $post->id])
-            ->get()
-            ->markAsRead();
 
         return redirect()->to(
-            route('users.show', ['user' => $post->profile_user_id, 'page' => $page, 'highlight' => $post->id]) . "#post-" . $post->id
+            route('users.show', $routeVars) . "#post-" . $post->id
         );
     }
 }

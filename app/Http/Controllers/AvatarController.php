@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Avatar\UpdateAvatarRequest;
 use App\Models\User;
+use App\Services\AvatarService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -12,47 +14,14 @@ use Intervention\Image\Laravel\Facades\Image;
 
 class AvatarController extends Controller
 {
-    public function update(Request $request, User $user)
+    public function update(UpdateAvatarRequest $request, User $user, AvatarService $service)
     {
         Gate::authorize('update', $user);
 
-        $request->validate([
-            'avatar' => 'required|image|mimes:png,jpg,jpeg|max:2048',
-        ]);
-
-        $user = Auth::user();
+        $request->validated();
 
         try {
-            if($user->profile_image) {
-                Storage::disk('public')->delete('avatars/' . $user->profile_image);
-            }
-
-                $image = Image::read($request->file('avatar'));
-
-                $filename = 'avatar_' . Auth::user()->id . '.jpg';
-
-                Log::info('Avatar upload:', [
-                    'mime' => $request->file('avatar')->getMimeType(),
-                    'size' => $request->file('avatar')->getSize(),
-                    'original_name' => $request->file('avatar')->getClientOriginalName(),
-                ]);
-
-
-                // $image
-                //     ->scaleDown(512)
-                //     ->encodeByExtension('jpg', 85)
-                //     ->save(storage_path("app/public/avatars/{$filename}"));
-
-                $encoded = $image
-                    ->scaleDown(512)
-                    ->encodeByExtension('jpg', 85);
-
-
-                Storage::disk('public')->put("avatars/{$filename}", (string) $encoded);
-
-                $user->update([
-                    'profile_image' => $filename,
-                ]);
+            $service->updateAvatar(Auth::user(), $request->file('avatar'));
 
             return back()->with('success', 'Profile image uploaded.');
         } catch(\Exception $e) {
@@ -64,15 +33,13 @@ class AvatarController extends Controller
 
     }
 
-    public function destroy()
+    public function destroy(User $user, AvatarService $service)
     {
-        $user = Auth::user();
+        Gate::authorize('delete', $user);
         try {
-            if($user->profile_image) {
-                Storage::disk('public')->delete('avatars/' . $user->profile_image);
-                $user->update(['profile_image' => null]);
-                return back();
-            }
+            $service->destroyAvatar(Auth::user());
+            return back();
+
         } catch(\Exception $e) {
                 Log::error('Avatar deletion failed', [
                     'user_id' => $user->id,

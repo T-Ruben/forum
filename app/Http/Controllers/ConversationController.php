@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Conversation\ConversationStoreRequest;
 use App\Models\Conversation;
 use App\Models\ConversationInvitation;
 use App\Models\Message;
 use App\Models\User;
 use App\Notifications\ConversationInvitationNotification;
+use App\Services\ConversationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -33,51 +35,14 @@ class ConversationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, User $user, ConversationInvitation $conversationInvitation)
+    public function store(ConversationStoreRequest $request, User $user, ConversationService $service)
     {
         Gate::authorize('create', Conversation::class);
 
-        $content = $request->input('content');
-
-        $plain = trim(strip_tags($content));
-        if(strlen($plain) < 1) {
-            return back()
-                ->withErrors(['content' => 'Must have at least one character.']);
-        }
-        if(strlen($plain) > 5000) {
-            return back()
-                ->withErrors(['content' => 'Must have less than 5000 characters.']);
-        }
-
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'min:2', 'max:100'],
-            'content' => ['required', 'string']
-        ]);
-
-        $validated['content'] = trim($validated['content']);
+        $validated = $request->validated();
 
         try {
-        $conversation = Conversation::create([
-            'title' => $validated['title'],
-        ]);
-
-        // $conversation->users()->attach([$user->id, Auth::user()->id]);
-        $conversation->users()->attach([Auth::user()->id]);
-
-        $invitation = $conversationInvitation->create([
-            'conversation_id' => $conversation->id,
-            'inviter_id' => Auth::user()->id,
-            'invited_user_id' => $user->id,
-        ]);
-
-        $conversation->messages()->create([
-            'conversation_id' => $conversation->id,
-            'user_id' => Auth::user()->id,
-            'content' => $validated['content']
-        ]);
-
-
-        $user->notify(new ConversationInvitationNotification($invitation));
+            $conversation = $service->store($validated, Auth::user(), $user);
 
         return redirect()->route('conversation.show', $conversation->id);
         } catch (\Exception $e) {

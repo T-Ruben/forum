@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Notifications\ConversationMessageNotification;
 use App\Notifications\ProfilePostNotification;
 use App\Notifications\ThreadPostNotification;
+use Auth;
 
 class NotificationService
 {
@@ -17,7 +18,7 @@ class NotificationService
      * Create a new class instance.
      */
 
-    protected static $requestCache = [];
+    protected static array $requestCache = [];
 
     public function getNotifications(User $user, int $perPage = 10, $type = null)
     {
@@ -63,6 +64,17 @@ class NotificationService
         static::$requestCache[$cacheKey] = $result;
 
         return $result;
+    }
+
+    public function jump(object $post) {
+        $page = $post->getPageNumberProfile();
+
+         Auth::user()->unreadNotifications()
+            ->whereJsonContains('data', ['post_id' => $post->id])
+            ->get()
+            ->markAsRead();
+
+        return ['user' => $post->profile_user_id, 'page' => $page, 'highlight' => $post->id];
     }
 
 }

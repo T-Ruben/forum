@@ -24,7 +24,7 @@
                     placeholder="Write your post...">{{ old('content') }}</textarea>
 
             <x-forms.form-error error="title" />
-            <x-forms.form-error error="content" />
+            <x-forms.form-error error="plain_content" />
 
             <div class="flex justify-center w-full">
                 <x-forms.form-button>Create Private Thread</x-forms.form-button>
