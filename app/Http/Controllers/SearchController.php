@@ -18,7 +18,6 @@ class SearchController extends Controller
 
         $paginated = $service->searchResults($query, $threadOnly);
 
-
         return view('search.results', [
             'results' => $paginated,
             'query' => $query,

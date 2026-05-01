@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -16,65 +17,35 @@ use function Laravel\Prompts\error;
 
 class UserController extends Controller
 {
-    public function show(User $user, Request $request) {
+    public function show(User $user, UserService $service) {
 
     // Quite a bit of refactoring took place here using AI for editing/replying with livewire.
 
-        $user = $user->loadCount(['followers', 'following']);
+        $data = $service->prepareUserShow($user);
 
-        $following = $user->following()
-            ->limit(4)
-            ->get();
-
-        $followers = $user->followers()
-            ->limit(4)
-            ->get();
-
-        return view('users.show', [
-            'user' => $user,
-            'following' => $following,
-            'followers' => $followers
-            ]);
+        return view('users.show', $data);
     }
 
-    public function index(User $user, Request $request) {
+    public function index(User $user, Request $request, UserService $service) {
         $sortOrder = $request->query('sort', 'newest');
 
-        $query = User::query()->with(['followers', 'following', 'posts'])->withCount(['followers', 'following', 'posts']);
+        $data = $service->prepareUserIndex($sortOrder);
 
-        match($sortOrder) {
-            'newest' => $query->orderBy('created_at', 'desc'),
-            'oldest' => $query->orderBy('created_at', 'asc'),
-            'name_asc' => $query->orderBy('name', 'asc'),
-            default => $query->orderBy('created_at', 'desc'),
-        };
-
-        $users = $query
-            ->paginate(24)
-            ->withQueryString();
-
-        return view('users.index', [
-            'users' => $users,
-            'currentSort' => $sortOrder
-            ]);
+        return view('users.index', $data);
     }
 
-    public function following(User $user) {
-        $following = $user->following()
-            ->with(['followers', 'following', 'posts'])
-            ->withCount('following', 'followers', 'posts')
-            ->paginate(25);
+    public function following(User $user, UserService $service) {
 
-        return view('users.following', ['following' => $following, 'user' => $user]);
+        $data = $service->prepareUserFollowing($user);
+
+        return view('users.following', $data);
     }
 
-    public function followers(User $user) {
-        $followers = $user->followers()
-            ->with(['followers', 'following', 'posts'])
-            ->withCount('following', 'followers', 'posts')
-            ->paginate(25);
+    public function followers(User $user, UserService $service) {
 
-        return view('users.followers', ['followers' => $followers, 'user' => $user]);
+        $data = $service->prepareUserFollowers($user);
+
+        return view('users.followers', $data);
     }
 
     public function follow(User $user) {
@@ -102,7 +73,7 @@ class UserController extends Controller
             Auth::logout();
         }
 
-        $user->delete();
+        $user->delete($user);
 
         return redirect('/');
     }

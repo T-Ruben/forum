@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Thread\ThreadStoreRequest;
 use App\Models\Forum;
 use App\Models\Post;
 use App\Models\Thread;
 use App\Models\User;
+use App\Services\ThreadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,84 +17,35 @@ use Mews\Purifier\Facades\Purifier;
 
 class ThreadController extends Controller
 {
-    public function show(Thread $thread, Request $request)
+    public function show(Thread $thread, Request $request, ThreadService $service)
     {
-        $replyTo = null;
-        $editPost = null;
+        $filter = [
+            'reply' => $request->reply_to,
+            'edit' => $request->edit_post
+        ];
 
-        if($request->filled('edit_post')) {
-            $editPost = Post::where('thread_id', $thread->id)
-                ->findOrFail($request->edit_post);
+        $data = $service->threadService($filter, $thread);
 
-            Gate::authorize('update', $editPost);
-        }
-            elseif($request->filled('reply_to'))
-        {
-            $replyTo = Post::where('thread_id', $thread->id)
-                ->findOrFail($request->reply_to);
-        }
-
-        $thread->load(['latestPost.user']);
-
-
-        $posts = $thread->posts()
-            ->with(['user.following', 'parent.user', 'user.followers', 'user' => function ($query) {
-                $query->withCount('posts', 'following', 'followers');
-            }])
-            ->orderBy('created_at', 'asc')
-            ->paginate(10);
-
-        return view('threads.show', [
-            'thread' => $thread,
-            'posts' => $posts,
-            'replyTo' => $replyTo,
-            'editPost' => $editPost
-        ]);
+        return view('threads.show', $data);
     }
 
     public function create(Forum $forum) {
         return view('threads.create', ['forum' => $forum]);
     }
 
-    public function store(Request $request, Forum $forum){
+    public function store(ThreadStoreRequest $request, Forum $forum, ThreadService $service){
         Gate::authorize('create', [Thread::class, $forum]);
-        $content = $request->input('content');
 
-        $plain = trim(strip_tags($content));
-        if(strlen($plain) < 1) {
-            return back()
-                ->withErrors(['content' => 'Must have at least one character.']);
-        }
-        if(strlen($plain) > 5000) {
-            return back()
-                ->withErrors(['content' => 'Must have less than 5000 characters.']);
-        }
-
-
-
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'min:4', 'max:100'],
-            'content' => ['required', 'string']
-        ]);
+        $validated = $request->validated();
 
     try {
         DB::beginTransaction();
-        $validated['content'] = trim($validated['content']);
 
-
-        $thread = $forum->threads()->create([
-            'title' => $validated['title'],
-            'user_id' => Auth::user()->id,
-        ]);
-
-        $thread->posts()->create([
-            'user_id' => Auth::user()->id,
-            'content' => $validated['content']
-        ]);
+        $data = $service->createThread($forum, $validated);
 
         DB::commit();
 
-        return redirect()->route('threads.show', [$thread, $thread->slug])
+        return redirect()->route('threads.show', $data)
         ->with('success', 'Thread created successfully!');
         } catch (\Exception $e) {
             DB::rollBack();

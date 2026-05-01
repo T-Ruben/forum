@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Conversation;
 use App\Models\Thread;
+use App\Services\SettingsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,51 +18,21 @@ class SettingsController extends Controller
         return view('users.privacy', ['user' => Auth::user()]);
     }
 
-    public function threads(Request $request) {
+    public function threads(Request $request, SettingsService $service) {
         $sortOrder = $request->query('sort', 'latest_activity');
 
 
-        $query = Auth::user()->threads()->withCount(['posts']);
+        $routeVar = $service->threadsService($sortOrder);
 
-        [$column, $direction] = match ($sortOrder) {
-            'latest_activity' => ['updated_at', 'desc'],
-            'asc', 'oldest'   => ['created_at', 'asc'],
-            'most_posts'   => ['posts_count', 'desc'],
-            default           => ['created_at', 'desc'],
-        };
-
-        $userThreads = $query->orderBy($column, $direction)
-            ->paginate(10)
-            ->withQueryString();
-
-        return view('users.threads', [
-            'user' => Auth::user(),
-            'threads' => $userThreads,
-            'currentSort' => $sortOrder
-            ]);
+        return view('users.threads', $routeVar);
     }
 
-    public function conversations(Request $request) {
+    public function conversations(Request $request, SettingsService $service) {
         $sortOrder = $request->query('sort', 'latest_activity');
 
-        $query = Auth::user()->conversations()->withCount(['messages', 'users']);
+        $routeVar = $service->conversationsService($sortOrder);
 
-        [$column, $direction] = match ($sortOrder) {
-            'latest_activity' => ['updated_at', 'desc'],
-            'asc', 'oldest'   => ['created_at', 'asc'],
-            'most_messages'   => ['messages_count', 'desc'],
-            'most_members'    => ['users_count', 'desc'],
-            default           => ['created_at', 'desc'],
-        };
 
-        $conversations = $query->orderBy($column, $direction)
-            ->paginate(10)
-            ->withQueryString();
-
-        return view('users.conversations', [
-            'user' => Auth::user(),
-            'conversations' => $conversations,
-            'currentSort' => $sortOrder
-            ]);
+        return view('users.conversations', $routeVar);
     }
 }
