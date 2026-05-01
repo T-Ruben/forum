@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Notifications\ProfilePostNotification;
 use App\Notifications\ThreadPostNotification;
 use App\Services\PostService;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -61,9 +62,10 @@ class PostController extends Controller
                     'page' => $post->getPageNumber()
                 ]);
 
-        } catch (\Exception $e) {
+        } catch (QueryException $e) {
+            Log::error("Post update failed: " . $e->getMessage());
             return back()
-                ->withErrors(['content' => $e->getMessage()])
+                ->withErrors(['content' => 'The database is currently busy. Please try again.'])
                 ->withInput();
         }
     }
