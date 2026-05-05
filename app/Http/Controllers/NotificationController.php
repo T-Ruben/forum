@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Conversation;
 use App\Models\ConversationInvitation;
+use App\Models\Message;
 use App\Models\Post;
 use App\Models\User;
 use App\Services\NotificationService;
@@ -43,12 +44,10 @@ class NotificationController extends Controller
         return back();
     }
 
-    public function jump(Post $post, NotificationService $service) {
-        $routeVars = $service->jump($post);
+    public function jump(string $notificationId, NotificationService $service) {
 
+        $url = $service->jump($notificationId);
 
-        return redirect()->to(
-            route('users.show', $routeVars) . "#post-" . $post->id
-        );
+        return redirect()->to($url);
     }
 }

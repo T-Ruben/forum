@@ -1,6 +1,10 @@
 @props(['post', 'thread'])
 
-<section class="my-2 border p-2 flex max-sm:flex-col h-fit bg-gray-200/85 text-black">
+<section @class([
+    'my-2 p-2 flex max-sm:flex-col h-fit bg-gray-200/85 text-black',
+    'border-indigo-700 shadow-lg border-2 bg-gray-300/75' => request('highlight') == $post->id,
+    'border-gray-300 border' => request('highlight') != $post->id,
+])>
 
 {{-- User Profile --}}
     <div class="h-full py-3 bg-gray-400/25 border-gray-400 border shadow-sm shadow-black/50

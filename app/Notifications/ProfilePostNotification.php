@@ -82,7 +82,7 @@ class ProfilePostNotification extends Notification
 
             'profile_name' => $this->post->profileOwner->name,
             'profile_id' => $this->post->profile_user_id,
-            'target_url' => route('notification.jump', $this->post->id),
+            'target_url' => route('notification.jump', $this->id),
 
             'post_id' => $this->post->id,
             'action' => $action,

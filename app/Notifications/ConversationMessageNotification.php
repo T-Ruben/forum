@@ -73,6 +73,8 @@ class ConversationMessageNotification extends Notification
                     ->count('user_id')
             ],
 
+            'target_url' => route('notification.jump', $this->id),
+
             'message_id' => $this->message->id
         ];
     }

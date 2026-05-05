@@ -23,7 +23,7 @@
                 })
             "
         @endif
-        class="flex gap-2 h-full w-1/2 @max-sm:w-full @max-sm:cursor-pointer"
+        class="flex gap-2 h-full w-4/5 @max-sm:w-full @max-sm:cursor-pointer"
     >
         <div class="shrink-0 hidden @sm:block">
             <a href="{{ route('users.show', $inviterId) }}"

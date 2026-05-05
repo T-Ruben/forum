@@ -41,7 +41,10 @@
 
 {{-- User Profile --}}
     <div>
-        <section class="my-2 border p-2 flex max-sm:flex-col h-fit bg-gray-200/85 text-black">
+        <section @class([
+            'my-2 p-2 flex max-sm:flex-col h-fit bg-gray-200/85 text-black',
+            'border-indigo-700 shadow-lg border-2 bg-gray-300/75' => request('highlight') == $message->id,
+            'border-gray-300 border' => request('highlight') != $message->id])>
             <div class="h-full py-3 bg-gray-400/25 border-gray-400 border shadow-sm shadow-black/50
                 text-left flex flex-col items-center justify-center min-w-42 max-w-42
                 max-sm:min-w-full max-sm:flex-row max-sm:pl-2 max-sm:max-h-32 max-sm:py-2 max-sm:items-start">

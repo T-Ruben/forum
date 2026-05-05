@@ -75,6 +75,8 @@ class ThreadPostNotification extends Notification
                 'avatar' => $this->sender->profile_image_url
             ],
 
+            'target_url' => route('notification.jump', $this->id),
+
             'post_id' => $this->post->id
         ];
     }

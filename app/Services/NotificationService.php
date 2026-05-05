@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Conversation;
 use App\Models\ConversationInvitation;
+use App\Models\Message;
 use App\Models\Post;
 use App\Models\Thread;
 use App\Models\User;
@@ -66,15 +67,38 @@ class NotificationService
         return $result;
     }
 
-    public function jump(object $post) {
-        $page = $post->getPageNumberProfile();
+    public function jump(string $notificationId) {
+        $notification = Auth::user()->notifications()->findOrFail($notificationId);
 
-         Auth::user()->unreadNotifications()
-            ->whereJsonContains('data', ['post_id' => $post->id])
-            ->get()
-            ->markAsRead();
+        $data = $notification->data;
+        $notification->markAsRead();
 
-        return ['user' => $post->profile_user_id, 'page' => $page, 'highlight' => $post->id];
+        if(isset($data['post_id'])) {
+            $post = Post::withTrashed()->find($data['post_id']);
+            if($post->profile_user_id) {
+                $page = $post->getPageNumberProfile();
+
+                    return route('users.show', ['user' => $post->profile_user_id, 'page' => $page, 'highlight' => $post->id]) . "#post-" . $post->id;
+            } elseif($post->thread_id) {
+                $page = $post->getPageNumber();
+
+                return route('threads.show', [$post->thread->id, $post->thread->slug, 'page' => $page, 'highlight' => $post->id]) . "#post-" . $post->id;
+            }
+        }
+
+        if(isset($data['message_id'])) {
+            $message = Message::withTrashed()->find($data['message_id']);
+            $page = $message->getPageNumber();
+
+            Auth::user()->unreadNotifications()
+                ->whereJsonContains('data', ['message_id' => $message->id])
+                ->get()
+                ->markAsRead();
+
+                return route('conversation.show', [$message->conversation->id, 'page' => $page, 'highlight' => $message->id]) . "#message-" . $message->id;
+        }
+
+        return back();
     }
 
 }

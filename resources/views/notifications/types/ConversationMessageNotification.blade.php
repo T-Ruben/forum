@@ -18,11 +18,11 @@
                         'Accept': 'application/json'
                     }
                 }).then(() => {
-                    window.location.href = '{{ route('notifications.index', Auth::user()) }}'
+                    window.location.href = '{{ $notification->data['target_url'] }}'
                 })
             "
         @endif
-        class="flex gap-2 h-full w-1/2 @max-sm:w-full @max-sm:cursor-pointer"
+        class="flex gap-2 h-full w-7/8 @max-sm:w-full @max-sm:cursor-pointer"
     >
         <div class="shrink-0 hidden @sm:block">
             <a href="{{ route('users.show', $senderId) }}"
@@ -43,9 +43,7 @@
             <p class="block truncate">
                 Conversation name:
                 <span class="font-bold truncate hover:underline">
-                    <a href="{{ route('conversation.show', [
-                        $notification->data['conversation']['id'],
-                    ]) }}" @click.stop>
+                    <a href="{{ $notification->data['target_url'] }}" @click.stop>
                         {{ $notification->data['conversation']['title'] }}
                     </a>
                 </span>
