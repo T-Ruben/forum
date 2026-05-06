@@ -34,6 +34,7 @@
                                     {{ $user->display_name }}
                                 </a>
                             </span></li>
+                            <li>Status: <span data-user-status="{{ $user->id }}">Checking...</span></li>
                             <li>Member since: <span class="text-indigo-200">{{ $user->created_at->diffForHumans() }}</span></li>
                             <li>Following: <span class="text-indigo-200">{{ $user->following_count }}</span></li>
                             <li>Followers: <span class="text-indigo-200">{{ $user->followers_count }}</span></li>

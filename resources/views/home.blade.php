@@ -110,7 +110,7 @@
                             </li>
                             <li>
                                 @auth
-                                    <p class="text-sm">Messages: {{ Auth::user()->countMessagePostTotal() }}</p>
+                                    <p>Status: <span data-user-status="{{ auth()->id() }}">Checking... </span></p>
                                 @endauth
                             </li>
                         </ul>

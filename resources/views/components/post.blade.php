@@ -39,10 +39,7 @@
                     <p class="text-sm"><span class="text-gray-950/75">Messages: </span></p><p class="text-sm">{{ optional($post->user)->countMessagePostTotal() ?? 0 }}</p>
                 </div>
                 <div class="flex justify-between">
-                    <p class="text-sm"><span class="text-gray-950/75">Following: </span></p><p class="text-sm">{{ $post->user->following_count }}</p>
-                </div>
-                <div class="flex justify-between">
-                    <p class="text-sm"><span class="text-gray-950/75">Followers: </span></p><p class="text-sm">{{ $post->user->followers_count }}</p>
+                    <p class="text-sm"><span class="text-gray-950/75">Status: </span></p><p data-user-status="{{ $post->user->id }}" class="text-sm">Checking...</p>
                 </div>
             </div>
         </div>

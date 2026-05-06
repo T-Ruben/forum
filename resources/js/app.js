@@ -146,3 +146,42 @@ function insertBBCode(tag) {
     textarea.focus();
     textarea.setSelectionRange(start + tag.length + 2, start + insertion.length - tag.length - 3);
 }
+
+// Broadcast: USER STATUS
+
+document.addEventListener('DOMContentLoaded', function () {
+    let onlineUserIds = [];
+
+    const updateUI = () => {
+        document.querySelectorAll('[data-user-status]').forEach(el => {
+            const userId = parseInt(el.getAttribute('data-user-status'));
+
+            if(onlineUserIds.includes(userId)) {
+                el.innerText = 'Online';
+                el.classList.add('text-green-500');
+                el.classList.remove('text-white/75');
+            } else {
+                el.innerText = 'Offline';
+                el.classList.add('text-white/75');
+                el.classList.remove('text-green-500');
+            }
+        });
+    };
+
+    window.Echo.join('forum.online')
+        .here((users) => {
+                onlineUserIds = users.map(user => user.id);
+                updateUI();
+        })
+        .joining((user) => {
+            if(!onlineUserIds.includes(user.id)) {
+                onlineUserIds.push(user.id);
+            }
+            updateUI();
+        })
+        .leaving((user) => {
+            onlineUserIds = onlineUserIds.filter(id => id !== user.id);
+            updateUI();
+        })
+});
+

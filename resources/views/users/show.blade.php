@@ -61,6 +61,7 @@
                 <div class="border-0.5 m-2 p-2 ring-1 ring-white">
                     <ul>
                         <li class="flex justify-between text-sm"><span class="text-gray-300/75">Joined: </span><span>{{ $user->created_at->format('M d, Y') }}</span></li>
+                        <li class="flex justify-between text-sm">Status: <span data-user-status="{{ $user->id }}">Checking... </span></li>
                     </ul>
                 </div>
 

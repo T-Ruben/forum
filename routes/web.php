@@ -185,6 +185,5 @@ Route::middleware(['auth'])->group(function() {
     ->name('message.store');
     Route::delete('message/destroy/{message}', [MessageController::class, 'destroy'])
         ->name('message.destroy');
-
 });
 

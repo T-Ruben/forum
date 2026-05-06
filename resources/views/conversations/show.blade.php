@@ -28,10 +28,13 @@
                             data-pin-nopin="true">
                         </a>
                     </div>
-                    <a href="{{ $user->user_url }}"
-                        class="inline w-fit h-fit hover:underline">
-                        {{ $user->display_name }}
-                    </a>
+                    <div>
+                        <a href="{{ $user->user_url }}"
+                            class="inline w-fit h-fit hover:underline">
+                            {{ $user->display_name }}
+                        </a>
+                        <p class="text-sm">Status: <span data-user-status="{{ $user->id }}">Checking... </span></p>
+                    </div>
                 </li>
             @endforeach
         </ul>
@@ -77,10 +80,7 @@
                             <p class="text-sm"><span class="text-gray-950/75">Messages: </span></p><p class="text-sm">{{ optional($message->user)->countMessagePostTotal() ?? 0 }}</p>
                         </div>
                         <div class="flex justify-between">
-                            <p class="text-sm"><span class="text-gray-950/75">Following: </span></p><p class="text-sm">{{ $message->user->following_count }}</p>
-                        </div>
-                        <div class="flex justify-between">
-                            <p class="text-sm"><span class="text-gray-950/75">Followers: </span></p><p class="text-sm">{{ $message->user->followers_count }}</p>
+                            <p class="text-sm"><span class="text-gray-950/75">Status: </span></p><p data-user-status="{{ $message->user->id }}">Checking...</p>
                         </div>
                     </div>
                 </div>
