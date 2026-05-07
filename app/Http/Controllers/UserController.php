@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Notifications\FollowingNotification;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,7 +56,19 @@ class UserController extends Controller
             return abort(422, 'Cannot follow yourself.');
         }
 
-        $auth->following()->syncWithoutDetaching([$user->id]);
+        $following = $auth->following()->syncWithoutDetaching([$user->id]);
+
+        if(!empty($following['attached'])) {
+            $alreadyHasUnread = $user->unreadNotifications()
+                ->where('type', FollowingNotification::class)
+                ->where('data->sender->id', $auth->id)
+                ->exists();
+
+            if(!$alreadyHasUnread){
+                $user->notify(new FollowingNotification($auth));
+            }
+        }
+
         return back();
     }
 

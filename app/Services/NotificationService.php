@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Models\Thread;
 use App\Models\User;
 use App\Notifications\ConversationMessageNotification;
+use App\Notifications\FollowingNotification;
 use App\Notifications\ProfilePostNotification;
 use App\Notifications\ThreadPostNotification;
 use Auth;
@@ -36,6 +37,7 @@ class NotificationService
             'unreadNotifications as thread' => fn ($q) => $q->where('type', ThreadPostNotification::class)->limit(100),
             'unreadNotifications as convMessage' => fn ($q) => $q->where('type', ConversationMessageNotification::class)->limit(100),
             'unreadNotifications as convInvite' => fn ($q) => $q->where('type', ConversationInvitation::class)->limit(100),
+            'unreadNotifications as followingNotif' => fn ($q) => $q->where('type', FollowingNotification::class)->limit(100),
         ]);
 
         $query = $user->notifications()->latest();

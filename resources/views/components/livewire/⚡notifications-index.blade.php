@@ -8,6 +8,7 @@ use \App\Notifications\ProfilePostNotification;
 use \App\Notifications\ThreadPostNotification;
 use \App\Notifications\ConversationMessageNotification;
 use \App\Notifications\ConversationInvitationNotification;
+use \App\Notifications\FollowingNotification;
 
 new class extends Component
 {
@@ -21,6 +22,7 @@ new class extends Component
                 'thread_posts'  => ThreadPostNotification::class,
                 'conv_messages' => ConversationMessageNotification::class,
                 'conv_invites'  => ConversationInvitationNotification::class,
+                'following_you'  => FollowingNotification::class,
                 default         => null,
             };
         $this->resetPage();
@@ -66,6 +68,13 @@ new class extends Component
              'label' => 'Conversation Invites',
              'value' => ConversationInvitationNotification::class,
              'count' => $user->convInvite ?? 0,
+             'has_hr' => true],
+
+            ['key' => 'following_you',
+             'type' => 'followingNotif',
+             'label' => 'Following You',
+             'value' => FollowingNotification::class,
+             'count' => $user->followingNotif ?? 0,
              'has_hr' => false]
         ];
     }
