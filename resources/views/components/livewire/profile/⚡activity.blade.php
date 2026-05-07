@@ -23,8 +23,8 @@ new class extends Component
     }
 
     public function getActivitiesProperty(){
-        $posts = $this->user->posts()->with('user', 'profileOwner', 'parent', 'thread', 'thread.forum')->get();
-        $threads = $this->user->threads()->with('forum')->get();
+        $posts = $this->user->posts()->with('user', 'profileOwner', 'parent', 'thread', 'thread.forum')->limit(100)->get();
+        $threads = $this->user->threads()->with('forum')->limit(100)->get();
 
         $postActivities = $posts->map(function ($post) {
             if($post->thread_id) {
