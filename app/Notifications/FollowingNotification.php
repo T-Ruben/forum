@@ -60,8 +60,6 @@ class FollowingNotification extends Notification
                 'name' => $this->user->display_name,
                 'avatar' => $this->user->profile_image_url,
             ],
-
-            'target_url' => route('notification.jump', $this->id),
         ];
     }
 }

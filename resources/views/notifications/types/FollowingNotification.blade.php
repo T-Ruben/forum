@@ -18,7 +18,7 @@
                         'Accept': 'application/json'
                     }
                 }).then(() => {
-                    window.location.href = '{{ $notification->data['target_url'] }}'
+                    window.location.href = '{{ route('users.show', $senderId) }}'
                 })
             "
         @endif
