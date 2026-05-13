@@ -56,38 +56,10 @@ class ConversationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Conversation $conversation, Request $request)
+    public function show(Conversation $conversation)
     {
-        Gate::authorize('view', $conversation);
-        $conversation = $conversation->load(['messages']);
 
-        $replyTo = null;
-        $editMessage = null;
-
-        if($request->filled('edit_message')) {
-            $editMessage = Message::where('conversation_id', $conversation->id)
-                ->findOrFail($request->edit_message);
-
-            Gate::authorize('update', $editMessage);
-        }
-            elseif($request->filled('reply_to'))
-        {
-            $replyTo = Message::where('conversation_id', $conversation->id)
-                ->findOrFail($request->reply_to);
-        }
-
-        $messages = $conversation->messages()
-            ->with(['user.following', 'parent.user', 'user.followers', 'user' => function ($query) {
-                $query->withCount('messages', 'followers', 'following');
-            }])
-            ->orderBy('created_at', 'asc')
-            ->paginate(10);
-
-        return view('conversations.show', [$conversation->id,
-                                            'conversation' => $conversation,
-                                            'messages' => $messages,
-                                            'replyTo' => $replyTo,
-                                            'editMessage' => $editMessage]);
+        return view('conversations.show', compact('conversation'));
     }
 
     /**

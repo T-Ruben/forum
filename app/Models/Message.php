@@ -31,7 +31,8 @@ class Message extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Message::class, 'parent_id');
+        return $this->belongsTo(Message::class, 'parent_id')
+            ->withTrashed();
     }
 
     public function replies()

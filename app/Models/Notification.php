@@ -19,7 +19,7 @@ class Notification extends BaseNotification
     public function prunable()
     {
         return static::whereNotNull('read_at')
-            ->where('read_at', '<=', now()->subMinutes(1));
+            ->where('read_at', '<=', now()->days(1));
     }
 
 
