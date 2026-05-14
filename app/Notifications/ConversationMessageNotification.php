@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -11,9 +12,9 @@ class ConversationMessageNotification extends Notification
 {
     use Queueable;
 
-    protected $message;
-    protected $sender;
-    protected $type;
+    public $message;
+    public $sender;
+    public $type;
 
     /**
      * Create a new notification instance.
@@ -35,8 +36,9 @@ class ConversationMessageNotification extends Notification
         if($this->message->user_id === $notifiable->id) {
             return [];
         }
-        return ['database'];
+        return ['database', 'broadcast'];
     }
+
 
     /**
      * Get the mail representation of the notification.
@@ -47,6 +49,14 @@ class ConversationMessageNotification extends Notification
             ->line('The introduction to the notification.')
             ->action('Notification Action', url('/'))
             ->line('Thank you for using our application!');
+    }
+
+    public function toBroadcast($notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'conversation_id' => $this->message->conversation_id,
+            'message' => 'New message in ' . $this->message->conversation->title
+        ]);
     }
 
     /**

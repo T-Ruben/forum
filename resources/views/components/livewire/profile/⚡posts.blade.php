@@ -240,7 +240,9 @@ new class extends Component
             @if ($post->trashed())
                 <div class=" mb-3 w-full">[Deleted]</div>
             @else
-            <div class="flex shrink-0 gap-3" wire:key="post-{{ $post->id }}">
+            <div @class(["flex shrink-0 gap-3 p-1",
+                'border-indigo-700 shadow-lg border-2 bg-gray-300/35' => request('highlight') == $post->id])
+                wire:key="post-{{ $post->id }}">
 
                 <div class="w-10 sm:w-20 h-10 sm:h-20 flex shrink-0 border-1">
                     <a href="{{ $post->user?->user_url }}" class="w-full h-full">
@@ -249,7 +251,7 @@ new class extends Component
                     </a>
                 </div>
 
-                <div class="overflow-hidden w-full min-w-0 mb-4 mt-2">
+                <div class="overflow-hidden w-full min-w-0 mb-1 mt-2">
                     <div id="post-{{ $post->id }}">
                         <div>
                             <a href="{{ $post->user?->user_url }}"

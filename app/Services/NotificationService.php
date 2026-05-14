@@ -22,11 +22,11 @@ class NotificationService
 
     protected static array $requestCache = [];
 
-    public function getNotifications(User $user, int $perPage = 10, $type = null)
+    public function getNotifications(User $user, int $perPage = 10, $type = null, bool $isDropdown = false)
     {
         $cacheKey = "user_notifs_" . $user->id . "_" . $perPage . "_" . ($type ?? 'all');
 
-        if(isset(static::$requestCache[$cacheKey])) {
+        if(isset(static::$requestCache[$cacheKey]) && !request()->hasHeader('X-Livewire')) {
             return static::$requestCache[$cacheKey];
         }
 
@@ -101,6 +101,29 @@ class NotificationService
         }
 
         return back();
+    }
+
+
+    public function getNotificationsDropdown(User $user)
+    {
+        $notifications = $user->notifications()->latest()->limit(15)->get();
+
+        $invitationIds = $notifications
+        ->pluck('data.invitation.id')
+        ->filter()
+        ->unique();
+
+        $invitations = ConversationInvitation::whereIn('id', $invitationIds)
+        ->get()
+        ->keyBy('id');
+
+        $result = [
+            'user' => $user,
+            'notifications' => $notifications,
+            'invitations' => $invitations
+        ];
+
+        return $result;
     }
 
 }

@@ -185,3 +185,26 @@ document.addEventListener('DOMContentLoaded', function () {
         })
 });
 
+
+// FOR NOTIF LINKS
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hash) {
+        const id = window.location.hash.substring(1);
+        const element = document.getElementById(id);
+
+        if (element) {
+            setTimeout(() => {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 50);
+        }
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+        const url = new URL(window.location);
+        if (url.searchParams.has('highlight')) {
+            url.searchParams.delete('highlight');
+            window.history.replaceState({}, document.title, url.pathname + url.search);
+        }
+    });

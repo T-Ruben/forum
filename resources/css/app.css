@@ -31,3 +31,7 @@
 button[wire\:click] {
     cursor: pointer;
 }
+
+html {
+    scroll-behavior: smooth;
+}

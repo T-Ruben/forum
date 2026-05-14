@@ -36,15 +36,15 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(DatabaseNotificationCollection::class, Notification::class);
 
-        View::composer('components.header', function ($view) {
-            if(!Auth::check()) return;
+        // View::composer('components.header', function ($view) {
+        //     if(!Auth::check()) return;
 
-            $service = app(NotificationService::class);
+        //     $service = app(NotificationService::class);
 
-            $data = $service->getNotifications(Auth::user(), 15);
+        //     $data = $service->getNotifications(Auth::user(), 15);
 
-            $view->with($data);
-        });
+        //     $view->with($data);
+        // });
 
         RateLimiter::for('make-post', function(HttpRequest $request) {
             return Limit::perSecond(1, 5)->by($request->user()->id)

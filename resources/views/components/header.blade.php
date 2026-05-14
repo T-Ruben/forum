@@ -23,10 +23,10 @@
                     x-data="{ open: false }"
                     @click="open = !open"
                     @click.outside="open = false">
-                    @if (Auth::user()->total >= 1)
+                    @if (Auth::user()->unreadNotifications()->count() >= 1)
                         <button class="absolute translate-x-1 z-50 size-6 rounded-lg text-xs
                             font-bold text-white border border-black bg-red-600 text-shadow-lg/25 cursor-pointer">
-                            {{ Auth::user()->total }}
+                            {{ Auth::user()->unreadNotifications()->count() }}
                         </button>
                     @endif
                     <button
@@ -37,14 +37,14 @@
                         <span class="sr-only">View notifications</span>
                     </button>
 
-                    <div
+                    <div wire:key="header-notification-dropdown"
                         x-show="open"
                         x-cloak
                         x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 -translate-y-2"
                         x-transition:enter-end="opacity-100 translate-y-0"
                         class="absolute -right-22 top-9 w-70 shadow-lg sm:right-0 sm:top-9">
-                        @include('notifications.dropdown')
+                        <livewire:livewire.notifications-dropdown />
                     </div>
                 </div>
 

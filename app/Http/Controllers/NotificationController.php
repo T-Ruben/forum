@@ -21,7 +21,7 @@ class NotificationController extends Controller
 
     public function dropdown(NotificationService $service)
     {
-        $data = $service->getNotifications(Auth::user(), 15);
+        $data = $service->getNotificationsDropdown(Auth::user());
 
         return view('notifications.dropdown', $data);
     }

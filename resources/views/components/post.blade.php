@@ -4,7 +4,8 @@
     'my-2 p-2 flex max-sm:flex-col h-fit bg-gray-200/85 text-black',
     'border-indigo-700 shadow-lg border-2 bg-gray-300/75' => request('highlight') == $post->id,
     'border-gray-300 border' => request('highlight') != $post->id,
-])>
+])
+    id="post-{{ $post->id }}">
 
 {{-- User Profile --}}
     <div class="h-full py-3 bg-gray-400/25 border-gray-400 border shadow-sm shadow-black/50
@@ -46,7 +47,7 @@
     </div>
 
     <div class="py-2 pr-2 pl-5 w-full min-h-full text-md break-words overflow-hidden ">
-        <article class="post-content break-words" id="post-{{ $post->id }}">
+        <article class="post-content break-words" >
             @if ($post->parent)
                 <blockquote class="flow-root border border-gray-600 p-1 rounded bg-white/25 ">
                     <div class="border-b b-2 py-2 leading-0">
@@ -54,19 +55,19 @@
                     </div>
 
                     <div class="relative">
-                        <input type="checkbox" id="$post-{{ $post->id }}" class="peer hidden">
+                        <input type="checkbox" id="$post-content-{{ $post->id }}" class="peer hidden">
 
                         <div class="whitespace-pre-line line-clamp-5 peer-checked:line-clamp-none">
                             {!! \App\Services\BBCodeParser::parse($post->parent?->content) !!}
                         </div>
 
                         @if (strlen($post->parent?->content) > 300)
-                        <label for="$post-{{ $post->id }}"
+                        <label for="$post-content-{{ $post->id }}"
                             class="select-none cursor-pointer text-blue-500 hover:underline mt-2 block peer-checked:hidden">
                             Read more...
                         </label>
 
-                        <label for="$post-{{ $post->id }}"
+                        <label for="$post-content-{{ $post->id }}"
                             class="select-none cursor-pointer text-blue-500 hover:underline mt-2 hidden peer-checked:block">
                             Show less
                         </label>

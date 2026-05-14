@@ -31,6 +31,11 @@ new class extends Component
         // Gate::authorize('view', $this->conversation);
     }
 
+    public function updatingSearch()
+    {
+        $this->resetPage(); // Reset to page 1 on new search
+    }
+
     // Computed Property for the Reply Preview
     public function getReplyToMessageProperty()
     {
