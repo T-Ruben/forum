@@ -2,26 +2,31 @@
 
 namespace App\Notifications;
 
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Override;
 
 class FollowingNotification extends Notification
 {
     use Queueable;
 
-    protected $user;
+    public $follower;
+    public $followed;
     protected $type;
 
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($user, $type = 'following')
+    public function __construct($follower, $followed, $type = 'following')
     {
-        $this->user = $user;
+        $this->follower = $follower;
         $this->type = $type;
+        $this->followed = $followed;
     }
 
     /**
@@ -31,7 +36,7 @@ class FollowingNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -45,6 +50,20 @@ class FollowingNotification extends Notification
             ->line('Thank you for using our application!');
     }
 
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'userId' => $this->follower->id,
+            'message' => $this->follower->display_name . ' is now following you.'
+        ]);
+    }
+
+    #[Override]
+    public function broadcastOn()
+    {
+        return new PrivateChannel('App.Models.User.' . $this->followed->id);
+    }
+
     /**
      * Get the array representation of the notification.
      *
@@ -56,9 +75,9 @@ class FollowingNotification extends Notification
             'type' => $this->type,
 
             'sender' => [
-                'id' => $this->user->id,
-                'name' => $this->user->display_name,
-                'avatar' => $this->user->profile_image_url,
+                'id' => $this->follower->id,
+                'name' => $this->follower->display_name,
+                'avatar' => $this->follower->profile_image_url,
             ],
         ];
     }

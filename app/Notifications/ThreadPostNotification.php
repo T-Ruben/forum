@@ -2,10 +2,13 @@
 
 namespace App\Notifications;
 
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Override;
 
 class ThreadPostNotification extends Notification
 {
@@ -36,7 +39,7 @@ class ThreadPostNotification extends Notification
             return [];
         }
 
-        return ['database'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -48,6 +51,28 @@ class ThreadPostNotification extends Notification
             ->line('The introduction to the notification.')
             ->action('Notification Action', url('/'))
             ->line('Thank you for using our application!');
+    }
+
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+        $preparedPost = null;
+        if($this->type === 'new_post') {
+            $preparedPost = $this->sender->display_name . ' sent a new post in Thread: ' . $this->post->thread->title;
+        } else {
+            $preparedPost = $this->sender->display_name . ' replied to your post in Thread: ' . $this->post->thread->title;
+        }
+
+        return new BroadcastMessage([
+            'thread_id' => $this->post->thread,
+            'post_id' => $this->post->id,
+            'message' => $preparedPost,
+        ]);
+    }
+
+    #[Override]
+    public function broadcastOn()
+    {
+        return new PrivateChannel('App.Models.User.' . $this->post->thread->user_id);
     }
 
     /**

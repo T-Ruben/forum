@@ -91,6 +91,13 @@ new class extends Component
         $this->dispatch('$refresh');
     }
 
+    #[On('echo-private:App.Models.User.{user.id},ProfilePostEvent')]
+    public function handlePostSent($event)
+    {
+
+    }
+
+
     protected function updatePost()
     {
         $post = Post::findOrFail($this->editPost);

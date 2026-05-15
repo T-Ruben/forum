@@ -93,6 +93,13 @@ new class extends Component
         $this->dispatch('$refresh');
     }
 
+
+    #[On('echo-private:App.Models.User.{user.id},ProfilePostEvent')]
+    public function handlePostSent($event)
+    {
+
+    }
+
     public function delete(Post $post)
     {
         Gate::authorize('delete', $post);

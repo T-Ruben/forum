@@ -14,13 +14,13 @@ new class extends Component
     {
         $userId = auth()->id();
         return [
-            "echo-private:App.Models.User.{$userId},.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated" => '$refresh',
+            "echo-private:App.Models.User.{$userId},.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated" => 'refreshNotifications',
         ];
     }
 
-    public function refreshNotifications()
+    public function refreshNotifications($event)
     {
-
+        $this->dispatch('notification-updated');
     }
 
     public function render(NotificationService $service) {

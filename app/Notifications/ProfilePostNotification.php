@@ -2,11 +2,14 @@
 
 namespace App\Notifications;
 
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
+use Override;
 
 class ProfilePostNotification extends Notification
 {
@@ -32,7 +35,7 @@ class ProfilePostNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -44,6 +47,21 @@ class ProfilePostNotification extends Notification
             ->line('The introduction to the notification.')
             ->action('Notification Action', url('/'))
             ->line('Thank you for using our application!');
+    }
+
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'sender' => $this->sender->id,
+            'message' => $this->sender->display_name . ' ' . ($this->type === 'new_post' ? 'sent a new post on your profile.'
+                : 'replied to a post on your profile.'),
+        ]);
+    }
+
+    #[Override]
+    public function broadcastOn()
+    {
+        return new PrivateChannel('App.Models.User.' . $this->post->profile_user_id);
     }
 
     /**

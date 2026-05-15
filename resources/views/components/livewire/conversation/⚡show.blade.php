@@ -102,7 +102,7 @@ new class extends Component
         $this->cancel();
     }
 
-    #[On('echo-private:chat.{conversation.id},MessageSent')]
+    #[On('echo-private:chat.{conversation.id},MessageSentEvent')]
     public function handleMessageSent($event)
     {
 

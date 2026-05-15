@@ -53,9 +53,16 @@ class ConversationMessageNotification extends Notification
 
     public function toBroadcast($notifiable): BroadcastMessage
     {
+        $preparedMessage = null;
+        if($this->type === 'new_message') {
+            $preparedMessage = $this->sender->display_name . ' sent a new message in Chat: ' . $this->message->conversation->title;
+        } else {
+            $preparedMessage = $this->sender->display_name . ' replied to your message in Chat: ' . $this->message->conversation->title;
+        }
+
         return new BroadcastMessage([
             'conversation_id' => $this->message->conversation_id,
-            'message' => 'New message in ' . $this->message->conversation->title
+            'message' => $preparedMessage,
         ]);
     }
 

@@ -65,7 +65,7 @@ class UserController extends Controller
                 ->exists();
 
             if(!$alreadyHasUnread){
-                $user->notify(new FollowingNotification($auth));
+                $user->notify(new FollowingNotification($auth, $user));
             }
         }
 

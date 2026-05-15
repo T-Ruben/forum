@@ -1,6 +1,7 @@
 <?php
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 use App\Models\User;
 use App\Models\Message;
 use Livewire\WithPagination;
@@ -31,6 +32,20 @@ new class extends Component
                             ->latest()
                             ->paginate(10),
         ];
+    }
+
+    public function getListeners()
+    {
+        $userId = auth()->id();
+
+        return [
+            "echo-private:App.Models.User.{$userId},.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated" => 'refreshInvites',
+        ];
+    }
+
+    public function refreshInvites($event)
+    {
+
     }
 };
 ?>

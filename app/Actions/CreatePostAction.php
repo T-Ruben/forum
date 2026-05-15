@@ -1,5 +1,7 @@
 <?php
 namespace App\Actions;
+
+use App\Events\ProfilePostEvent;
 use App\Models\Post;
 use App\Models\User;
 use App\Notifications\ProfilePostNotification;
@@ -27,6 +29,8 @@ public function execute(User $user, array $data): Post
     elseif ($post->profileOwner->id !== $post->user_id && !$post->parent_id) {
         $post->profileOwner->notify(new ProfilePostNotification($post));
     }
+
+    ProfilePostEvent::dispatch($post);
 
     return $post;
 }

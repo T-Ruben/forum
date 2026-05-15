@@ -21,3 +21,4 @@ Broadcast::channel('chat.{conversationId}', function ($user, $conversationId) {
         ->where('user_id', $user->id)
         ->exists();
 });
+

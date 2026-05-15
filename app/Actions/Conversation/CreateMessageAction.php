@@ -1,7 +1,7 @@
 <?php
 namespace App\Actions\Conversation;
 
-use App\Events\MessageSent;
+use App\Events\MessageSentEvent;
 use App\Models\Message;
 use App\Models\User;
 use App\Notifications\ConversationMessageNotification;
@@ -35,7 +35,7 @@ public function execute(User $user, array $data): Message
 
     }
 
-    MessageSent::dispatch($message);
+    MessageSentEvent::dispatch($message);
 
     return $message;
 }

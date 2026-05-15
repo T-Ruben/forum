@@ -20,15 +20,18 @@
 
             @auth
                 <div class="w-fit relative inline-block cursor-pointer group mr-3"
-                    x-data="{ open: false }"
+                    x-data="{
+                        open: false,
+                        count: {{ auth()->user()->unreadNotifications->count() }}
+                    }"
+                    x-on:notification-updated.window="count++"
                     @click="open = !open"
                     @click.outside="open = false">
-                    @if (Auth::user()->unreadNotifications()->count() >= 1)
-                        <button class="absolute translate-x-1 z-50 size-6 rounded-lg text-xs
-                            font-bold text-white border border-black bg-red-600 text-shadow-lg/25 cursor-pointer">
-                            {{ Auth::user()->unreadNotifications()->count() }}
+                        <button x-show="count > 0"
+                            class="absolute translate-x-1 z-50 size-6 rounded-lg text-xs
+                            font-bold text-white border border-black bg-red-600 text-shadow-lg/25 cursor-pointer"
+                            x-text="count">
                         </button>
-                    @endif
                     <button
                         type="button"
                         class="relative ml-auto shrink-0 rounded-full p-1 text-gray-400 group-hover:text-white
