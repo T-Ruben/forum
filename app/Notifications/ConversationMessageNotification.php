@@ -36,6 +36,18 @@ class ConversationMessageNotification extends Notification
         if($this->message->user_id === $notifiable->id) {
             return [];
         }
+
+        $prefs = $notifiable->muted_notifications ?? [];
+
+        if($prefs['all'] ?? false) {
+            return [];
+        }
+
+        $mutedTypes = $prefs['types'] ?? [];
+        if(in_array('convMessages', $mutedTypes)) {
+            return [];
+        }
+
         return ['database', 'broadcast'];
     }
 

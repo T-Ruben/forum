@@ -15,12 +15,15 @@ use Livewire\Attributes\On;
 
 new class extends Component
 {
-    use WithPagination;
-
     public Conversation $conversation;
 
     public $replyTo = null;
-    public $editMessageId = null; // Renamed to avoid confusion with the model
+    public $editMessageId = null;
+    public $amount = 10;
+
+    public function loadMore() {
+        $this->amount += 10;
+    }
 
     #[Validate('required|string|min:1|max:1000')]
     public $content = '';
@@ -33,10 +36,9 @@ new class extends Component
 
     public function updatingSearch()
     {
-        $this->resetPage(); // Reset to page 1 on new search
+        $this->resetPage();
     }
 
-    // Computed Property for the Reply Preview
     public function getReplyToMessageProperty()
     {
         return $this->replyTo ? Message::with('user')->find($this->replyTo) : null;
@@ -44,7 +46,7 @@ new class extends Component
 
     public function setReply($id)
     {
-        $this->cancel(); // Reset state before setting new action
+        $this->cancel();
         $this->replyTo = (int) $id;
     }
 
@@ -97,7 +99,7 @@ new class extends Component
                 'parent_id' => $this->replyTo,
             ]
         );
-
+        $this->amount++;
         RateLimiter::hit($key, 3);
         $this->cancel();
     }
@@ -134,18 +136,27 @@ new class extends Component
         return view('components.livewire.conversation.⚡show', [
             'messages' => $this->conversation->messages()
                 ->with(['parent.user', 'user',])
-                ->orderBy('created_at', 'asc')
-                ->paginate(10)
+                ->orderBy('created_at', 'desc')
+                ->take($this->amount)
+                ->get()
+                ->reverse()
         ]);
     }
 };
 ?>
 
 <div class="bg-gray-400 ">
+    <div class="w-full flex justify-center">
+        <button class="my-2 p-1 bg-blue-900 hover:bg-blue-900/80 duration-200
+            cursor-pointer px-4 text-xl rounded-sm"
+            wire:click="loadMore()">
+            Load Older Messages
+        </button>
+    </div>
     <div wire:key="messages-container">
         @foreach ($messages as $message)
             {{-- User Profile --}}
-            <div wire:key="message-{{ $message->id }}"
+            <div id="message-{{ $message->id }}"
                 @class([
                 'my-0.5 p-2 flex flex-col max-sm:flex-col h-fit hover:bg-gray-300 text-black duration-100',
                 'border-indigo-700 shadow-lg border-2 bg-gray-300/75' => request('highlight') == $message->id,
@@ -176,12 +187,12 @@ new class extends Component
                 </div>
                 {{-- Content --}}
                 <div class="py-2 pr-2 pl-5 w-full min-h-full text-md break-words overflow-hidden ">
-                    <article class="post-content break-words" id="message-{{ $message->id }}">
+                    <article class="post-content break-words">
                         @if ($message->parent)
                             <blockquote wire:key="reply-to-{{ $message->parent_id }}"
                                 class="flow-root border border-gray-600 p-1 rounded bg-white/25 ">
                                 <div class="border-b b-2 py-2 leading-0">
-                                    <p class="text-sm inline">Replying to: <span class="font-semibold hover:underline duration-200"><a href="{{ route('conversation.show', [$conversation, 'page' => $message->parent->getPageNumber()]) }}#message-{{ $message->parent_id }}">{{ $message->parent?->user->display_name }}</a></span></p>
+                                    <p class="text-sm inline">Replying to: <span class="font-semibold hover:underline duration-200"><a href="{{ route('conversation.show', [$conversation, 'highlight' => $message->parent_id]) }}#message-{{ $message->parent_id }}">{{ $message->parent?->user->display_name }}</a></span></p>
                                 </div>
 
                                 <div class="relative">
@@ -273,10 +284,10 @@ new class extends Component
                     <div wire:key="reply-preview-{{ $this->replyToMessage->id }}"
                         class="mb-4 p-3 border rounded text-sm border-gray-600 text-black">
                         <p class="flex justify-between border-b">
-                            <span>Replying to <a href="#message-{{ $this->replyToMessage->id }}"
+                            <span>Replying to <a href="{{ route('conversation.show', [$conversation, 'highlight' => $this->replyToMessage->id]) }}#message-{{ $this->replyToMessage->id }}"
                                 class="hover:underline font-semibold duration-200">{{ $this->replyToMessage->user->display_name }}</a></span>
-                            <a href="{{ route('conversation.show', [$conversation, 'page' => request('page')]) }}"
-                                class="formReload hover:text-red-500/75 duration-200">@include('icons.cancel')</a>
+                            <button wire:click="cancel()"
+                                class="formReload hover:text-red-500/75 duration-200">@include('icons.cancel')</button>
                         </p>
 
                         <div class="relative w-full">
@@ -334,9 +345,9 @@ new class extends Component
                 </div>
             </form>
 
-            <div class="mt-3" wire:key="messages-pagination">
+            {{-- <div class="mt-3" wire:key="messages-pagination">
                 {{ $messages->links() }}
-            </div>
+            </div> --}}
         </div>
 
 

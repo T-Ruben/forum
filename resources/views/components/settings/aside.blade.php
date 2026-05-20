@@ -31,6 +31,11 @@
                         <div class="w-full h-px bg-gray-600"></div>
                     </li>
                     <li>
+                        <x-link page="settings_link" :active="request()->routeIs('settings.notifications')"
+                            href="{{ route('settings.notifications') }}">Notifications</x-link>
+                        <div class="w-full h-px bg-gray-600"></div>
+                    </li>
+                    <li>
                         <form action="{{ route('logout.destroy') }}" method="POST">
                             @csrf
                             <button

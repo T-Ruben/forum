@@ -39,6 +39,17 @@ class ThreadPostNotification extends Notification
             return [];
         }
 
+        $prefs = $notifiable->muted_notifications ?? [];
+
+        if($prefs['all'] ?? false) {
+            return [];
+        }
+
+        $mutedTypes = $prefs['types'] ?? [];
+        if(in_array('threadPosts', $mutedTypes)) {
+            return [];
+        }
+
         return ['database', 'broadcast'];
     }
 

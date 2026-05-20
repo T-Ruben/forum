@@ -44,6 +44,10 @@
                         <x-link page="settings_link" :active="request()->routeIs('settings.privacy')"
                             href="{{ route('settings.privacy') }}">Privacy</x-link>
                     </li>
+                    <li>
+                        <x-link page="settings_link" :active="request()->routeIs('settings.notifications')"
+                            href="{{ route('settings.notifications') }}">Notifications</x-link>
+                    </li>
                 </ul>
             </div>
             <div class="">

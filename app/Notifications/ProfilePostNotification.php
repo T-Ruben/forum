@@ -35,6 +35,17 @@ class ProfilePostNotification extends Notification
      */
     public function via(object $notifiable): array
     {
+        $prefs = $notifiable->muted_notifications ?? [];
+
+        if($prefs['all'] ?? false) {
+            return [];
+        }
+
+        $mutedTypes = $prefs['types'] ?? [];
+        if(in_array('profilePosts', $mutedTypes)) {
+            return [];
+        }
+
         return ['database', 'broadcast'];
     }
 

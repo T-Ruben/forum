@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Conversation;
 use App\Models\Thread;
+use App\Models\User;
 use App\Services\SettingsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,5 +35,10 @@ class SettingsController extends Controller
 
 
         return view('users.conversations', $routeVar);
+    }
+
+    public function notifications() {
+
+        return view('users.notifications');
     }
 }

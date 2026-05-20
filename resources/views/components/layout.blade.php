@@ -55,16 +55,9 @@
             document.addEventListener('livewire:navigated', () => {
                 window.Echo.private(`App.Models.User.{{ auth()->id() }}`)
                     .notification((notification) => {
-                        // 1. Log it to see the data structure
-                        console.log('New Notification:', notification);
-
-                        // 2. Dispatch a browser event that your UI can react to
                         window.dispatchEvent(new CustomEvent('notify', {
                             detail: notification.message
                         }));
-
-                        // 3. Optional: Refresh specific Livewire components
-                        // Livewire.dispatch('refreshNotificationCount');
                     });
             });
         </script>

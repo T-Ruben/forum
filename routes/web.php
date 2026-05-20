@@ -130,6 +130,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/settings/privacy', [SettingsController::class, 'privacy'])->name('settings.privacy');
     Route::get('/settings/threads', [SettingsController::class, 'threads'])->name('settings.threads');
     Route::get('/settings/conversations', [SettingsController::class, 'conversations'])->name('settings.conversations');
+    Route::get('/settings/notifications', [SettingsController::class, 'notifications'])->name('settings.notifications');
 });
 
 // Conversation

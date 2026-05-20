@@ -21,6 +21,7 @@ class User extends Authenticatable
 
     protected $casts = [
         'role' => UserRoles::class,
+        'muted_notifications' => 'array'
     ];
 
     protected static function booted()
@@ -118,7 +119,8 @@ class User extends Authenticatable
         'role',
         'gender',
         'location',
-        'date_of_birth'
+        'date_of_birth',
+        'muted_notifications'
     ];
 
     /**
