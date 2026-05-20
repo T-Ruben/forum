@@ -69,11 +69,11 @@ class ProfilePostNotification extends Notification
         ]);
     }
 
-    #[Override]
-    public function broadcastOn()
-    {
-        return new PrivateChannel('App.Models.User.' . $this->post->profile_user_id);
-    }
+    // #[Override]
+    // public function broadcastOn()
+    // {
+    //     return new PrivateChannel('App.Models.User.' . $this->post->profile_user_id);
+    // }
 
     /**
      * Get the array representation of the notification.

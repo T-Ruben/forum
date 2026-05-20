@@ -30,7 +30,7 @@
                         <button x-show="count > 0"
                             class="absolute translate-x-1 z-50 size-6 rounded-lg text-xs
                             font-bold text-white border border-black bg-red-600 text-shadow-lg/25 cursor-pointer"
-                            x-text="count">
+                            x-text="count > 99 ? '99+' : count ">
                         </button>
                     <button
                         type="button"

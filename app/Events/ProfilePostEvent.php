@@ -7,20 +7,21 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ProfilePostEvent implements ShouldBroadcast
+class ProfilePostEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public object $post;
+    public int $profileId;
 
     /**
      * Create a new event instance.
      */
     public function __construct(object $post)
     {
-        $this->post = $post;
+        $this->profileId = $post->profile_user_id;
     }
 
     /**
@@ -31,7 +32,7 @@ class ProfilePostEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('App.Models.User.' . $this->post->profile_user_id),
+            new PrivateChannel('App.Models.User.' . $this->profileId),
         ];
     }
 }

@@ -21,7 +21,7 @@ public function execute(User $user, array $data): Post
 
     $post = $user->posts()->create($data);
 
-    if ($post->parent && $replyToPost && $post->user_id !== $replyToPost->user_id) {
+    if ($post->parent && $replyToPost && $post->user_id !== $replyToPost->user_id && $post->user_id !== $post->profile_user_id) {
         $replyToPost->user->notify(
             new ProfilePostNotification($post, 'reply')
         );
