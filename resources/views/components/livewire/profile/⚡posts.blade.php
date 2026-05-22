@@ -214,7 +214,13 @@ new class extends Component
 
             <textarea
                 id="content"
-                wire:model.defer="content"
+                wire:model.live="content"
+                x-data
+                @keydown.enter="
+                    if (!$event.shiftKey) {
+                        $event.preventDefault();
+                        $wire.submit();
+                    }"
                 rows="6"
                 maxlength="1000"
                 class="w-full p-2 bg-gray-200 text-black resize-none border border-gray-600 outline-none"

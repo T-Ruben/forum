@@ -88,6 +88,13 @@
                     <textarea
                         id="content"
                         name="content"
+                        x-data
+                        onkeydown="
+                            if (event.key === 'Enter' && !event.shiftKey) {
+                                event.preventDefault();
+                                this.form.submit();
+                            }
+                        "
                         rows="6"
                         maxlength="5000"
                         class="w-full p-2 bg-gray-200 text-black resize-none overflow-hidden border border-gray-600

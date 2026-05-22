@@ -25,6 +25,23 @@ new class extends Component
         $this->amount += 10;
     }
 
+    public function jumpToMessage($messageId) {
+        $targetMessage = Message::where('conversation_id', $this->conversation->id)
+            ->find($messageId);
+
+        if(!$targetMessage) return;
+
+        $messagesAboveCount = Message::where('conversation_id', $this->conversation->id)
+            ->where('created_at', '>=', $targetMessage->created_at)
+            ->count();
+
+        if($messagesAboveCount > $this->amount) {
+            $this->amount = $messagesAboveCount + 5;
+        }
+
+        $this->dispatch('scroll-to-message', id: $messageId);
+    }
+
     #[Validate('required|string|min:1|max:1000')]
     public $content = '';
 
@@ -192,7 +209,18 @@ new class extends Component
                             <blockquote wire:key="reply-to-{{ $message->parent_id }}"
                                 class="flow-root border border-gray-600 p-1 rounded bg-white/25 ">
                                 <div class="border-b b-2 py-2 leading-0">
-                                    <p class="text-sm inline">Replying to: <span class="font-semibold hover:underline duration-200"><a href="{{ route('conversation.show', [$conversation, 'highlight' => $message->parent_id]) }}#message-{{ $message->parent_id }}">{{ $message->parent?->user->display_name }}</a></span></p>
+                                    <p class="text-sm inline">Replying to:
+                                        <span class="font-semibold hover:underline duration-200">
+                                            <a href="#"  x-data
+                                            @click.prevent="
+                                                let target = document.getElementById('message-{{ $message->parent_id }}');
+                                                if (target) {
+                                                    target.scrollIntoView({ behavior: 'smooth' });
+                                                    highlightElement(target);
+                                                } else {
+                                                    $wire.jumpToMessage({{ $message->parent_id }});
+                                                }
+                                            ">{{ $message->parent?->user->display_name }}</a></span></p>
                                 </div>
 
                                 <div class="relative">
@@ -284,8 +312,17 @@ new class extends Component
                     <div wire:key="reply-preview-{{ $this->replyToMessage->id }}"
                         class="mb-4 p-3 border rounded text-sm border-gray-600 text-black">
                         <p class="flex justify-between border-b">
-                            <span>Replying to <a href="{{ route('conversation.show', [$conversation, 'highlight' => $this->replyToMessage->id]) }}#message-{{ $this->replyToMessage->id }}"
-                                class="hover:underline font-semibold duration-200">{{ $this->replyToMessage->user->display_name }}</a></span>
+                            <span>Replying to <a href="#"  x-data
+                                            @click.prevent="
+                                                let target = document.getElementById('message-{{ $message->parent_id }}');
+                                                if (target) {
+                                                    target.scrollIntoView({ behavior: 'smooth' });
+                                                    highlightElement(target);
+                                                } else {
+                                                    $wire.jumpToMessage({{ $message->parent_id }});
+                                                }
+                                            "
+                                            class="hover:underline font-semibold duration-200">{{ $this->replyToMessage->user->display_name }}</a></span>
                             <button wire:click="cancel()"
                                 class="formReload hover:text-red-500/75 duration-200">@include('icons.cancel')</button>
                         </p>
@@ -313,13 +350,17 @@ new class extends Component
                 @endif
             </div>
 
-            <form wire:submit.prevent="submit" class="w-full formReload" id="postForm">
+            <form class="w-full formReload" id="postForm">
 
                 <textarea
                     id="content"
                     x-data
                     wire:model.live="content"
-                    @keydown.enter.exact.prevent="$wire.submit()"
+                    @keydown.enter="
+                            if (!$event.shiftKey) {
+                                $event.preventDefault();
+                                $wire.submit();
+                            }"
                     rows="6"
                     maxlength="1000"
                     class="w-full p-2 bg-gray-200 text-black resize-none border border-gray-600 outline-none"
@@ -344,12 +385,25 @@ new class extends Component
                     </button>
                 </div>
             </form>
-
-            {{-- <div class="mt-3" wire:key="messages-pagination">
-                {{ $messages->links() }}
-            </div> --}}
         </div>
 
 
+<div x-data
+     x-on:scroll-to-message.window="
+         $nextTick(() => {
+             let target = document.getElementById('message-' + $event.detail.id);
+             if (target) {
+                 target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                 highlightElement(target);
+             }
+         });
+     ">
+</div>
+<script>
+    function highlightElement(el) {
+        el.classList.add('border-indigo-700', 'border-2', 'bg-gray-300/75', 'duration-700');
+        setTimeout(() => el.classList.remove('border-indigo-700', 'bg-gray-300/75', 'border-2'), 2500);
+    }
+</script>
 
 </div>
