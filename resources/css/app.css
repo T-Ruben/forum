@@ -35,3 +35,11 @@ button[wire\:click] {
 html {
     scroll-behavior: smooth;
 }
+
+.post-content img {
+    max-width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 0.375rem;
+    display: block;
+}

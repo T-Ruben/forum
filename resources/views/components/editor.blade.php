@@ -15,6 +15,9 @@
         <button type="button" onclick="insertBBCode('URL')" class="cursor-pointer px-2 py-1 bg-gray-300 text-black hover:bg-gray-500 rounded">
             URL
         </button>
+        <button type="button" onclick="insertBBCode('IMG')" class="cursor-pointer px-2 py-1 bg-gray-300 text-black hover:bg-gray-500 rounded">
+            IMG
+        </button>
 
     </div>
 
